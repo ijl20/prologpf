@@ -1,0 +1,399 @@
+/****************************************************************************
+PrologPF: A Parallel Functional Prolog Compiler    Cambridge University
+Version 0.02                                       I.Lewis, D.Diaz(wamcc)-1994
+
+File : simp_cut.wam
+Main : main([o_utils])
+****************************************************************************/
+
+#define DEBUG_LEVEL    0
+
+#include "wam_engine.h"
+
+#include "simp_cut.h"
+#include "simp_cut.usr"
+
+
+#define ASCII_PRED "a"
+#define PRED       X61
+#define ARITY      1
+
+Begin_Private_Pred
+      allocate(1)
+      get_y_variable(0,0)
+      put_y_value(0,0)
+      call(Pred_Name(X62,1),1,1,"b",1)          /* begin sub 1 */
+      put_y_value(0,0)
+      call(Pred_Name(X63,1),1,2,"c",1)          /* begin sub 2 */
+      put_y_value(0,0)
+      deallocate
+      execute(Pred_Name(X64,1),1,"d",1)
+
+End_Pred
+
+#undef ASCII_PRED
+#undef PRED
+#undef ARITY
+
+
+
+#define ASCII_PRED "b"
+#define PRED       X62
+#define ARITY      1
+
+Begin_Private_Pred
+      try_me_else(6)
+      switch_on_term(G_label(2),G_label(1),fail,fail,fail)
+
+label(1)
+      switch_on_constant(2,[(a,3),(a1,5)])
+
+label(2)
+      try_me_else(4)
+
+label(3)
+      get_constant(X61,0,"a")
+      proceed
+
+label(4)
+      trust_me_else_fail
+
+label(5)
+      get_constant(X6131,0,"a1")
+      put_constant(X62,0,"b")
+      execute(Pred_Name(X63,1),1,"c",1)
+
+label(6)
+      retry_me_else(7)
+      allocate(1)
+      get_y_bc_reg(0)
+      call(Pred_Name(X64,1),1,1,"d",1)          /* begin sub 1 */
+      cut_y(0)
+      deallocate
+      proceed
+
+label(7)
+      trust_me_else_fail
+      switch_on_term(G_label(8),G_label(8),fail,fail,fail)
+
+label(8)
+      get_constant(X62,0,"b")
+      proceed
+
+End_Pred
+
+#undef ASCII_PRED
+#undef PRED
+#undef ARITY
+
+
+
+#define ASCII_PRED "c"
+#define PRED       X63
+#define ARITY      1
+
+Begin_Private_Pred
+      switch_on_term(G_label(2),G_label(1),fail,fail,fail)
+
+label(1)
+      switch_on_constant(2,[(b,3),(d,5)])
+
+label(2)
+      try_me_else(4)
+
+label(3)
+      get_constant(X62,0,"b")
+      proceed
+
+label(4)
+      trust_me_else_fail
+
+label(5)
+      get_constant(X64,0,"d")
+      proceed
+
+End_Pred
+
+#undef ASCII_PRED
+#undef PRED
+#undef ARITY
+
+
+
+#define ASCII_PRED "d"
+#define PRED       X64
+#define ARITY      1
+
+Begin_Private_Pred
+      switch_on_term(G_label(1),G_label(1),fail,fail,fail)
+
+label(1)
+      get_constant(X64,0,"d")
+      proceed
+
+End_Pred
+
+#undef ASCII_PRED
+#undef PRED
+#undef ARITY
+
+
+
+#define ASCII_PRED "$exe_1"
+#define PRED       X246578655F31
+#define ARITY      0
+
+Begin_Private_Pred
+      try_me_else(1)
+      put_constant(X74727565,0,"true")
+      put_constant(X74727565,1,"true")
+      execute(Pred_Name(X746F705F6C6576656C,2),0,"top_level",2)
+
+label(1)
+      trust_me_else_fail
+      put_constant(X74727565,0,"true")
+      put_constant(X74727565,1,"true")
+      execute(Pred_Name(X746F705F6C6576656C,2),0,"top_level",2)
+
+End_Pred
+
+#undef ASCII_PRED
+#undef PRED
+#undef ARITY
+
+
+
+#define ASCII_PRED "$orc_a"
+#define PRED       X246F72635F61
+#define ARITY      5
+
+Begin_Private_Pred
+      switch_on_term(G_label(1),fail,G_label(1),fail,fail)
+
+label(1)
+      allocate(7)
+      get_integer(1,0)
+      get_y_variable(3,1)
+      get_list(2)
+      unify_integer(1)
+      unify_y_variable(5)
+      get_y_variable(1,3)
+      get_y_variable(0,4)
+      put_y_value(0,0)
+      call(Pred_Name(X62,1),1,1,"b",1)          /* begin sub 1 */
+      put_y_variable(6,0)
+      put_y_value(3,1)
+      call(Pred_Name(X6F5F6E657874,2),0,2,"o_next",2)          /* begin sub 2 */
+      put_y_value(6,0)
+      put_y_value(3,1)
+      put_y_value(5,2)
+      put_y_variable(2,3)
+      put_y_value(0,4)
+      call(Pred_Name(X246F72635F63,5),0,3,"$orc_c",5)          /* begin sub 3 */
+      put_y_variable(4,0)
+      put_y_value(3,1)
+      call(Pred_Name(X6F5F6E657874,2),0,4,"o_next",2)          /* begin sub 4 */
+      put_y_unsafe_value(4,0)
+      put_y_value(3,1)
+      put_y_unsafe_value(2,2)
+      put_y_value(1,3)
+      put_y_value(0,4)
+      deallocate
+      execute(Pred_Name(X246F72635F64,5),0,"$orc_d",5)
+
+End_Pred
+
+#undef ASCII_PRED
+#undef PRED
+#undef ARITY
+
+
+
+#define ASCII_PRED "$orc_b"
+#define PRED       X246F72635F62
+#define ARITY      5
+
+Begin_Private_Pred
+      switch_on_term(G_label(2),fail,G_label(1),fail,fail)
+
+label(1)
+      switch_on_integer(2,[(1,3),(2,5)])
+
+label(2)
+      try_me_else(4)
+
+label(3)
+      get_integer(1,0)
+      get_list(2)
+      unify_integer(1)
+      unify_x_variable(0)
+      get_x_value(0,3)
+      get_constant(X61,4,"a")
+      proceed
+
+label(4)
+      trust_me_else_fail
+
+label(5)
+      allocate(4)
+      get_integer(2,0)
+      get_y_variable(2,1)
+      get_list(2)
+      unify_integer(2)
+      unify_y_variable(1)
+      get_y_variable(0,3)
+      get_constant(X6131,4,"a1")
+      put_y_variable(3,0)
+      put_y_value(2,1)
+      call(Pred_Name(X6F5F6E657874,2),0,1,"o_next",2)          /* begin sub 1 */
+      put_y_unsafe_value(3,0)
+      put_y_value(2,1)
+      put_y_value(1,2)
+      put_y_value(0,3)
+      put_constant(X62,4,"b")
+      deallocate
+      execute(Pred_Name(X246F72635F63,5),0,"$orc_c",5)
+
+End_Pred
+
+#undef ASCII_PRED
+#undef PRED
+#undef ARITY
+
+
+
+#define ASCII_PRED "$orc_c"
+#define PRED       X246F72635F63
+#define ARITY      5
+
+Begin_Private_Pred
+      switch_on_term(G_label(2),fail,G_label(1),fail,fail)
+
+label(1)
+      switch_on_integer(2,[(1,3),(2,5)])
+
+label(2)
+      try_me_else(4)
+
+label(3)
+      get_integer(1,0)
+      get_list(2)
+      unify_integer(1)
+      unify_x_variable(0)
+      get_x_value(0,3)
+      get_constant(X62,4,"b")
+      proceed
+
+label(4)
+      trust_me_else_fail
+
+label(5)
+      get_integer(2,0)
+      get_list(2)
+      unify_integer(2)
+      unify_x_variable(0)
+      get_x_value(0,3)
+      get_constant(X64,4,"d")
+      proceed
+
+End_Pred
+
+#undef ASCII_PRED
+#undef PRED
+#undef ARITY
+
+
+
+#define ASCII_PRED "$orc_d"
+#define PRED       X246F72635F64
+#define ARITY      5
+
+Begin_Private_Pred
+      switch_on_term(G_label(1),fail,G_label(1),fail,fail)
+
+label(1)
+      get_integer(1,0)
+      get_list(2)
+      unify_integer(1)
+      unify_x_variable(0)
+      get_x_value(0,3)
+      get_constant(X64,4,"d")
+      proceed
+
+End_Pred
+
+#undef ASCII_PRED
+#undef PRED
+#undef ARITY
+
+
+Begin_Init_Tables(simp_cut)
+
+ Define_Atom(X5B5D,"[]")
+ Define_Atom(X61,"a")
+ Define_Atom(X62,"b")
+ Define_Atom(X6131,"a1")
+ Define_Atom(X63,"c")
+ Define_Atom(X64,"d")
+ Define_Atom(X246578655F31,"$exe_1")
+ Define_Atom(X74727565,"true")
+ Define_Atom(X246F72635F61,"$orc_a")
+ Define_Atom(X246F72635F62,"$orc_b")
+ Define_Atom(X246F72635F63,"$orc_c")
+ Define_Atom(X246F72635F64,"$orc_d")
+
+
+ Define_Pred(X61,1,0)
+
+ Define_Pred(X62,1,0)
+
+ Define_Pred(X63,1,0)
+
+ Define_Pred(X64,1,0)
+
+ Define_Pred(X246578655F31,0,0)
+
+ Define_Pred(X246F72635F61,5,0)
+
+ Define_Pred(X246F72635F62,5,0)
+
+ Define_Pred(X246F72635F63,5,0)
+
+ Define_Pred(X246F72635F64,5,0)
+
+ Init_Usr_File
+
+End_Init_Tables
+
+
+Begin_Exec_Directives(simp_cut)
+
+
+ Exec_Directive(1,Pred_Name(X246578655F31,0))
+
+End_Exec_Directives
+
+
+/*** MAIN ***/
+
+int main(int argc,char *argv[])
+
+{
+ unix_argc=argc;
+ unix_argv=argv;
+
+
+ Init_Wam_Engine();
+
+ Init_Tables_Of_Module(Builtin)
+ Init_Tables_Of_Module(o_utils)
+ Init_Tables_Of_Module(simp_cut)
+
+ Exec_Directives_Of_Module(Builtin)
+ Exec_Directives_Of_Module(o_utils)
+ Exec_Directives_Of_Module(simp_cut)
+
+ Term_Wam_Engine();
+
+ return 0;
+}

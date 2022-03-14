@@ -1,0 +1,19 @@
+% test of function translation to lambda format
+
+fun map(_,[]) = [];
+    map(F,[H|T]) = [F @ [H]|map(F,T)].
+
+fun inc(X) = X + 1.
+
+map_goal(X) :- X = map(inc,[1,2,3]).
+
+fun sum(X,Y) = X + Y.
+
+map_goal2(X) :- X = map(sum @ [2], [5,4,3]).
+
+fun f(X,1) = a;
+    f(X,Y) = b.
+
+f_goal(X,Y,Z) :- Z = f(X,Y).
+
+f_goal2(X,Y,Z) :- X = f @ [2], Y = X @ [Z].

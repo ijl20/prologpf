@@ -1,0 +1,152 @@
+\relax 
+\citation{Sar95}
+\citation{Sar95}
+\citation{Sar95}
+\citation{Sar95}
+\@writefile{toc}{\contentsline {chapter}{\numberline {3}Prolog with Breadth-First Partitioning}{59}}
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\newlabel{bfp_depth}{{3}{59}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.1}Introduction}{59}}
+\citation{Sar95}
+\citation{Sar95}
+\@writefile{toc}{\contentsline {section}{\numberline {3.2}Benchmarks used}{60}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.1}8-queens}{60}}
+\citation{Sar95}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.1}{\ignorespaces Search tree for 8 queens problem.}}{61}}
+\newlabel{q8_tree}{{3.1}{61}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.2}10-queens}{61}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.3}Pentominoes}{61}}
+\citation{Kle91}
+\citation{Sar95}
+\citation{War83}
+\citation{AK90}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2.4}Other benchmarks in DelphiKS}{62}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.3}Implementation differences}{62}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.1}DelphiKS}{62}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.2}Prototype PrologPF with Prolog oracles}{63}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.3}PrologPF with C oracles}{64}}
+\newlabel{c_macros}{{3.3.3}{64}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3.4}BFP and oracle allocation algorithm}{68}}
+\newlabel{oracle_alloc}{{3.3.4}{68}}
+\citation{Kle91}
+\citation{Sar95}
+\citation{BBP+94}
+\@writefile{toc}{\contentsline {section}{\numberline {3.4}Single CPU performance}{69}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4.1}Single CPU comparison: DelphiKS, PrologPF, sequential Prolog}{69}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.2}{\ignorespaces Single cpu runtimes for 8-queens benchmark.}}{70}}
+\newlabel{single_cpu_queens8}{{3.2}{70}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.1}{\ignorespaces Single cpu execution times (in milliseconds)}}{70}}
+\newlabel{single_cpu_table}{{3.1}{70}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.3}{\ignorespaces Single cpu runtimes for 10-queens benchmark.}}{71}}
+\newlabel{single_cpu_queens10}{{3.3}{71}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.2}{\ignorespaces Overhead of PrologPF(C) oracle support.}}{71}}
+\newlabel{prologpf_overhead}{{3.2}{71}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.5}Parallel execution performance}{71}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.1}8-queens}{71}}
+\newlabel{RF1}{{3.5}{72}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.3}{\ignorespaces Parallel execution performance of PrologPF}}{72}}
+\newlabel{parallel_perf}{{3.3}{72}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.4}{\ignorespaces Single cpu performance for Pentominoes benchmark.}}{73}}
+\newlabel{single_cpu_pentbook}{{3.4}{73}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.2}10-queens}{73}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.5}{\ignorespaces Runtimes for 8-queens benchmark for $G=1\dots  30$ and $L=21$.}}{74}}
+\newlabel{queens8_cut_c_L_21}{{3.5}{74}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.3}Pentominoes}{74}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.6}{\ignorespaces Speedup for 8-queens benchmark for $G=1\dots  30$ and $L=21$.}}{75}}
+\newlabel{q8_cut_c_L_21_spdup}{{3.6}{75}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.7}{\ignorespaces Runtimes for 10-queens benchmark for $G=1\dots  30$ and $L=27$.}}{76}}
+\newlabel{queens10_cut_c_L_27}{{3.7}{76}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5.4}Summary}{76}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.8}{\ignorespaces Speedup for 10-queens benchmark for $G=1\dots  30$ and $L=27$.}}{77}}
+\newlabel{q10_cut_c_L_27_spdup}{{3.8}{77}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.6}Issues}{77}}
+\newlabel{bfp_issues}{{3.6}{77}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.9}{\ignorespaces Runtimes for Pentominoes benchmark for $G=1\dots  30$ and $L=21$.}}{78}}
+\newlabel{pentbook_cut_c_L_21}{{3.9}{78}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.10}{\ignorespaces Speedup for Pentominoes benchmark for $G=1\dots  30$ and $L=21$.}}{79}}
+\newlabel{pent_cut_c_L_21_spdup}{{3.10}{79}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6.1}Oracle discovery and allocation}{79}}
+\newlabel{orc_discovery}{{3.6.1}{79}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.4}{\ignorespaces Oracle work distribution for 8-queens at $L=21$}}{79}}
+\newlabel{q8_orcs}{{3.4}{79}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.5}{\ignorespaces Oracle work distribution for 10-queens at $L=27$.}}{80}}
+\newlabel{q10_orcs}{{3.5}{80}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.6}{\ignorespaces Oracle work distribution for Pentominoes at $L=21$}}{81}}
+\newlabel{pent_orc_groups}{{3.6}{81}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.7}{\ignorespaces Large oracle allocation in Pentominoes}}{81}}
+\newlabel{pent_top_four}{{3.7}{81}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.8}{\ignorespaces Runtimes of four longest running path processors in Pentominoes problem $G=24$.}}{81}}
+\newlabel{pent_long_runs}{{3.8}{81}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.11}{\ignorespaces Runtimes for Pentominoes benchmark for $G=1\dots  30$ and $L=21$ versus $L=24$.}}{82}}
+\newlabel{pentbook_cut_c_L_24}{{3.11}{82}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.9}{\ignorespaces Oracle work distribution for Pentominoes at $L=21,24$.}}{83}}
+\newlabel{pent24_orc_groups}{{3.9}{83}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.6.1.1}All-solutions versus first-solution parallel runtimes}{83}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.10}{\ignorespaces Pentominoes runtimes for $G=12$, $L=24$}}{83}}
+\newlabel{pent_12_runtimes}{{3.10}{83}}
+\citation{Sar95}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6.2}Work function estimation}{84}}
+\newlabel{work_estimation}{{3.6.2}{84}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.12}{\ignorespaces Work in milliseconds under each oracle for Pentominoes $L=21$}}{84}}
+\newlabel{pent_orcs}{{3.12}{84}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.13}{\ignorespaces Work in milliseconds under oracle number 200 to 400 for Pentominoes $L=21$}}{85}}
+\newlabel{pent_orcs_200_to_400}{{3.13}{85}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6.3}Partitioning depth}{86}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.14}{\ignorespaces Actual and limits for speedup of 8-queens benchmark for $G=30$ and $L=1\dots  36$.}}{87}}
+\newlabel{q8_cut_c_G_30_spdup}{{3.14}{87}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6.4}Fixed versus demand-based oracle allocation}{87}}
+\newlabel{demand_alloc}{{3.6.4}{87}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.15}{\ignorespaces Speedup for 10-queens benchmark for $G=30$ and $L=1\dots  30$.}}{88}}
+\newlabel{q10_cut_c_G_30_spdup}{{3.15}{88}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.16}{\ignorespaces Speedup for Pentominoes benchmark for $G=30$ and $L=1\dots  30$.}}{89}}
+\newlabel{pent_cut_c_G_30_spdup}{{3.16}{89}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.11}{\ignorespaces Oracle count $S$ and oracle sizes for 8-queens with $L=1\dots  36$.}}{90}}
+\newlabel{q8_orc_counts}{{3.11}{90}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.12}{\ignorespaces Runtimes of each path processor for Pentominoes $G=12$, $L=21$ using demand allocation with no retrieval delay.}}{90}}
+\newlabel{pent_demand0}{{3.12}{90}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.17}{\ignorespaces Speedup for 8-queens benchmark for $G=1\dots  30$ and $L=1\dots  36$.}}{91}}
+\newlabel{q8_3d}{{3.17}{91}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.18}{\ignorespaces Speedup for 10-queens benchmark for $G=1\dots  30$ and $L=1\dots  39$.}}{92}}
+\newlabel{q10_3d}{{3.18}{92}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.6.5}Work splitting}{92}}
+\newlabel{bfp_work_splitting}{{3.6.5}{92}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.19}{\ignorespaces Speedup for Pentominoes benchmark for $G=1\dots  30$ and $L=1\dots  33$.}}{93}}
+\newlabel{pent_3d}{{3.19}{93}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.13}{\ignorespaces Oracle count $S$ and initial oracle discovery time (BFtime) for Pentominoes problem with $L=1\dots  30$.}}{94}}
+\newlabel{pent_L_S_BFtime}{{3.13}{94}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.20}{\ignorespaces Work splitting at busy path processor.}}{95}}
+\newlabel{work_split_figure}{{3.20}{95}}
+\citation{New90}
+\@writefile{toc}{\contentsline {section}{\numberline {3.7}Breadth-first partitioning versus stream-AND parallelism}{96}}
+\newlabel{bfp_stream_and}{{3.7}{96}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3.21}{\ignorespaces Search tree for \texttt  {member/fact} program.}}{97}}
+\newlabel{stream_and}{{3.21}{97}}
+\@writefile{toc}{\contentsline {section}{\numberline {3.8}Conclusions}{98}}
+\citation{War83}
+\citation{CD95}
+\@writefile{toc}{\contentsline {section}{\numberline {3.9}Summary}{99}}
+\@writefile{lot}{\contentsline {table}{\numberline {3.14}{\ignorespaces Single cpu runtime ratios.}}{100}}
+\newlabel{single_cpu_ratios}{{3.14}{100}}
+\citation{Kle91}
+\citation{Sar95}
+\@setckpt{bfp_depth/bfp_depth}{
+\setcounter{page}{103}
+\setcounter{equation}{0}
+\setcounter{enumi}{4}
+\setcounter{enumii}{0}
+\setcounter{enumiii}{0}
+\setcounter{enumiv}{0}
+\setcounter{footnote}{2}
+\setcounter{mpfootnote}{0}
+\setcounter{part}{0}
+\setcounter{chapter}{3}
+\setcounter{section}{9}
+\setcounter{subsection}{0}
+\setcounter{subsubsection}{0}
+\setcounter{paragraph}{0}
+\setcounter{subparagraph}{0}
+\setcounter{figure}{21}
+\setcounter{table}{14}
+\setcounter{subfigure}{0}
+}

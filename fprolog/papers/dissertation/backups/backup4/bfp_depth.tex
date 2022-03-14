@@ -1,0 +1,40 @@
+\chapter{The State of the Art: Pure Prolog with Breadth-First Partitioning} 
+\label{bfp_depth}
+
+\section{Introduction}
+
+\section{Benchmarks used}
+
+\section{Performance of existing implementation}
+
+\section{Issues}
+
+\subsection{Oracle distribution}
+
+\subsection{Work function estimation}
+
+\subsection{Partitioning depth}
+
+\subsection{Work splitting}
+
+\section{Performance of PrologPF for pure Prolog}
+
+\section{Breadth-first partioning versus stream-and parallelism}
+
+\todo{diagram for tree for goal below}
+
+\begin{verbatim}
+member(X,[X|_]).
+member(X,[_|Y]) :- member(X,Y).
+
+fact(1,1).
+fact(X,F) :- X > 1, X1 is X-1, fact(X1,F1), F is X*F1.
+
+:- member(X,[1,2,3,4]), fact(X,Y).
+\end{verbatim}
+
+\section{Issues Analysis}
+
+\section{Conclusions}
+
+\section{Summary}

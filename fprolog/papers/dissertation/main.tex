@@ -1,0 +1,82 @@
+\documentclass[a4paper,11pt,twoside]{report}
+
+\hyphenation{PrologPF}
+
+\newcommand{\todo}[1]{\vbox{
+                            \hrule 
+                            \hbox{\strut \vrule{} {\textbf{todo:} #1} \vrule}
+                            \hrule 
+                           }}
+
+
+%\renewcommand{\topfraction}{.8}
+%\renewcommand{\bottomfraction}{.8}
+%\renewcommand{\textfraction}{.2}
+%\renewcommand{\floatpagefraction}{.8}
+%\renewcommand{\baselinestretch}{1.1}
+\setlength{\parindent}{0pt}
+%\setlength{\parskip}{3pt}
+
+% This is to change the width of a page
+%\textwidth 15.3cm
+
+
+\def\postscript{{\sc postscript}}
+\input{psfig}
+
+\psfull
+
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{latexsym}
+\usepackage{alltt}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\includeonly{title/title,
+              intro/intro,
+              background/background,
+              bfp_depth/bfp_depth,
+              cut/cut,
+              functions/functions,
+              case/case,
+              kappa/kappa,
+              sok/sok,
+              conclusions/conclusions,
+              system/system,
+              benchmarks/benchmarks,
+              kappa_macro/kappa_macro,
+              references/references
+	}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\bibliographystyle{ijl20}
+
+\setlength{\parskip}{8pt}
+
+\include{title/title}
+
+\setlength{\parskip}{8pt}
+
+\pagestyle{headings}
+
+\include{intro/intro}
+\include{background/background}
+\include{bfp_depth/bfp_depth}
+\include{cut/cut}
+\include{functions/functions}
+\include{case/case}
+\include{kappa/kappa}
+\include{sok/sok}
+\include{conclusions/conclusions}
+
+\appendix
+\include{system/system}
+\include{benchmarks/benchmarks}
+\include{kappa_macro/kappa_macro}
+\include{references/references}
+
+\end{document}

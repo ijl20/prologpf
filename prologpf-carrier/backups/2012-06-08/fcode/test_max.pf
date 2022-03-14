@@ -1,0 +1,24 @@
+fun max_list([X]) = X;
+    max_list([Head|Tail]) = if (M = max_list(Tail))
+                            then
+                            (
+                                if (Head > M)
+                                then Head
+                                else M
+                            )
+                            else not_found.
+
+fun z(A) =  if (A < 20) 
+            then (  if (A > 12)
+                    then middle
+                    else lower
+                 )
+            else upper.
+            
+max_goal(X) :- X = max_list([3,8,2,9,1,6]).
+
+z_goal(X,A) :- A = z(X).
+
+fun if_test(X) = if (X=1) then a.
+
+if_goal(X,Y) :- Y = if_test(X).

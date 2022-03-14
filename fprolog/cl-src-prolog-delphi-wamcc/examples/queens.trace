@@ -1,0 +1,505 @@
+{Warning: [X,Y] - singleton variables in safe/3}
+
+Returned from read_files
+Main:
+main([o_utils])
+ocode:
+get_solutions(_178,_179) :-
+    solve(_178,[],_179).
+
+solve(_204,[square(_204,_205)|_209],[square(_204,_205)|_209]).
+
+solve(_235,_236,_237) :-
+    newsquare(_236,_242,_235),
+    solve(_235,[_242|_236],_237).
+
+newsquare([square(_273,_274)|_278],square(_281,_282),_286) :-
+    _273<_286,
+    _281 is _273+1,
+    snint(_282,_286),
+    notthreatened(_273,_274,_281,_282),
+    safe(_281,_282,_278).
+
+newsquare([],square(1,_341),_345) :-
+    snint(_341,_345).
+
+snint(_370,_370).
+
+snint(_388,_389) :-
+    _393 is _389-1,
+    _393>0,
+    snint(_388,_393).
+
+notthreatened(_429,_430,_431,_432) :-
+    _429\==_431,
+    _430\==_432,
+    _444 is _429-_430,
+    _451 is _431-_432,
+    _444\==_451,
+    _461 is _429+_430,
+    _468 is _431+_432,
+    _461\==_468,
+    !.
+
+safe(_519,_520,[]) :-
+    !.
+
+safe(_562,_563,[square(_564,_565)|_569]) :-
+    notthreatened(_564,_565,_562,_563),
+    safe(_562,_563,_569).
+
+query :-
+    get_solutions(8,_605),
+    o_send_soln(_605).
+
+$exe_1 :-
+    o_bfp,
+    !.
+
+$exe_2 :-
+    top_level(true,true).
+
+$orc_2_get_solutions(1,_667,[1|_669],_671,_178,_179) :-
+    o_next(_1821,_667),
+    $orc_3_solve(_1821,_667,_669,_671,_178,[],_179).
+
+$orc_3_solve(1,_924,[1|_919],_919,_204,[square(_204,_205)|_209],[square(_204,_205)|_209]).
+
+$orc_3_solve(2,_942,[2|_944],_946,_235,_236,_237) :-
+    o_next(_1985,_942),
+    $orc_3_newsquare(_1985,_942,_944,_2139,_236,_242,_235),
+    o_next(_2161,_942),
+    $orc_3_solve(_2161,_942,_2139,_946,_235,[_242|_236],_237).
+
+$orc_3_newsquare(1,_1072,[1|_1074],_1076,[square(_273,_274)|_278],square(_281,_282),_286) :-
+    _273<_286,
+    _281 is _273+1,
+    o_next(_2329,_1072),
+    $orc_2_snint(_2329,_1072,_1074,_1076,_282,_286),
+    notthreatened(_273,_274,_281,_282),
+    safe(_281,_282,_278).
+
+$orc_3_newsquare(2,_1230,[2|_1232],_1234,[],square(1,_341),_345) :-
+    o_next(_2484,_1230),
+    $orc_2_snint(_2484,_1230,_1232,_1234,_341,_345).
+
+$orc_2_snint(1,_1503,[1|_1498],_1498,_370,_370).
+
+$orc_2_snint(2,_1520,[2|_1522],_1524,_388,_389) :-
+    _393 is _389-1,
+    _393>0,
+    o_next(_2644,_1520),
+    $orc_2_snint(_2644,_1520,_1522,_1524,_388,_393).
+
+$orc_0_query(1,_1659,[1|_1661],_1663) :-
+    o_next(_2799,_1659),
+    $orc_2_get_solutions(_2799,_1659,_1661,_1663,8,_605),
+    o_send_soln(_605).
+
+
+exec_passes output:
+[
+      clcomp(get_solutions/2,_3026,[get_x_variable(0,0),get_x_variable(2,1),put_x_value(0,0),put_nil(1),put_x_value(2,2),execute(solve/3)]),
+      clcomp(solve/3,_3434,[get_x_variable(0,0),get_list(1),unify_x_variable(1),unify_x_variable(3),get_structure(square/2,1),unify_x_local_value(0),unify_x_variable(1),get_list(2),unify_x_variable(2),unify_x_value(3),get_structure(square/2,2),unify_x_local_value(0),unify_x_value(1),proceed]),
+      clcomp(solve/3,_4224,[allocate(4),get_y_variable(3,0),get_y_variable(1,1),get_y_variable(0,2),put_y_value(1,0),put_y_variable(2,1),put_y_value(3,2),call(newsquare/3),put_y_value(3,0),put_list(1),unify_y_local_value(2),unify_y_local_value(1),put_y_value(0,2),deallocate,execute(solve/3)]),
+      clcomp(newsquare/3,. /2,[allocate(5),get_list(0),unify_x_variable(0),unify_y_variable(0),get_structure(square/2,0),unify_y_variable(4),unify_y_variable(3),get_structure(square/2,1),unify_y_variable(2),unify_y_variable(1),get_x_variable(2,2),math_load_y_value(4,0),math_load_x_value(2,2),builtin_2(lt,0,2),math_load_y_value(4,0),function_1(inc,0,0),get_y_value(2,0),put_y_value(1,0),put_x_value(2,1),call(snint/2),put_y_value(4,0),put_y_value(3,1),put_y_value(2,2),put_y_value(1,3),call(notthreatened/4),put_y_value(2,0),put_y_value(1,1),put_y_value(0,2),deallocate,execute(safe/3)]),
+      clcomp(newsquare/3,[]/0,[get_nil(0),get_structure(square/2,1),unify_integer(1),unify_x_variable(0),get_x_variable(2,2),put_x_value(0,0),put_x_value(2,1),execute(snint/2)]),
+      clcomp(snint/2,_6571,[get_x_variable(0,0),get_x_value(0,1),proceed]),
+      clcomp(snint/2,_6724,[get_x_variable(0,0),get_x_variable(1,1),math_load_x_value(1,1),function_1(dec,1,1),get_x_variable(1,1),math_load_x_value(1,1),put_integer(0,2),builtin_2(gt,1,2),put_x_value(0,0),put_x_value(1,1),execute(snint/2)]),
+      clcomp(notthreatened/4,_7729,[get_x_variable(0,0),get_x_variable(1,1),get_x_variable(2,2),get_x_variable(3,3),get_x_bc_reg(255),put_x_value(0,0),put_x_value(2,2),builtin_2(term_neq,0,2),put_x_value(1,1),put_x_value(3,3),builtin_2(term_neq,1,3),math_load_x_value(0,0),math_load_x_value(1,1),function_2(sub,5,0,1),get_x_variable(5,5),math_load_x_value(2,2),math_load_x_value(3,3),function_2(sub,4,2,3),get_x_variable(4,4),put_x_value(5,5),put_x_value(4,4),builtin_2(term_neq,5,4),math_load_x_value(0,0),math_load_x_value(1,1),function_2(add,1,0,1),get_x_variable(1,1),math_load_x_value(2,2),math_load_x_value(3,3),function_2(add,0,2,3),get_x_variable(0,0),put_x_value(1,1),put_x_value(0,0),builtin_2(term_neq,1,0),cut_x(255),proceed]),
+      clcomp(safe/3,_16262,[get_x_variable(0,0),get_x_variable(1,1),get_nil(2),get_x_bc_reg(255),cut_x(255),proceed]),
+      clcomp(safe/3,_16645,[allocate(3),get_y_variable(2,0),get_y_variable(1,1),get_list(2),unify_x_variable(0),unify_y_variable(0),get_structure(square/2,0),unify_x_variable(0),unify_x_variable(1),put_x_value(0,0),put_x_value(1,1),put_y_value(2,2),put_y_value(1,3),call(notthreatened/4),put_y_value(2,0),put_y_value(1,1),put_y_value(0,2),deallocate,execute(safe/3)]),
+      clcomp(query/0,_17433,[allocate(1),put_integer(8,0),put_y_variable(0,1),call(get_solutions/2),put_y_unsafe_value(0,0),deallocate,execute(o_send_soln/1)]),
+      clcomp($exe_1/0,_17666,[allocate(1),get_y_bc_reg(0),call(o_bfp/0),cut_y(0),deallocate,proceed]),
+      clcomp($exe_2/0,_17853,[put_constant(true,0),put_constant(true,1),execute(top_level/2)]),
+      clcomp($orc_2_get_solutions/6,1/0,[allocate(6),get_integer(1,0),get_y_variable(4,1),get_list(2),unify_integer(1),unify_y_variable(3),get_y_variable(2,3),get_y_variable(1,4),get_y_variable(0,5),put_y_variable(5,0),put_y_value(4,1),call(o_next/2),put_y_unsafe_value(5,0),put_y_value(4,1),put_y_value(3,2),put_y_value(2,3),put_y_value(1,4),put_nil(5),put_y_value(0,6),deallocate,execute($orc_3_solve/7)]),
+      clcomp($orc_3_solve/7,1/0,[get_integer(1,0),get_x_variable(1,1),get_list(2),unify_integer(1),unify_x_variable(0),get_x_value(0,3),get_x_variable(4,4),get_list(5),unify_x_variable(0),unify_x_variable(2),get_structure(square/2,0),unify_x_local_value(4),unify_x_variable(0),get_list(6),unify_x_variable(1),unify_x_value(2),get_structure(square/2,1),unify_x_local_value(4),unify_x_value(0),proceed]),
+      clcomp($orc_3_solve/7,2/0,[allocate(10),get_integer(2,0),get_y_variable(6,1),get_list(2),unify_integer(2),unify_y_variable(8),get_y_variable(4,3),get_y_variable(3,4),get_y_variable(1,5),get_y_variable(0,6),put_y_variable(9,0),put_y_value(6,1),call(o_next/2),put_y_value(9,0),put_y_value(6,1),put_y_value(8,2),put_y_variable(5,3),put_y_value(1,4),put_y_variable(2,5),put_y_value(3,6),call($orc_3_newsquare/7),put_y_variable(7,0),put_y_value(6,1),call(o_next/2),put_y_unsafe_value(7,0),put_y_value(6,1),put_y_unsafe_value(5,2),put_y_value(4,3),put_y_value(3,4),put_list(5),unify_y_local_value(2),unify_y_local_value(1),put_y_value(0,6),deallocate,execute($orc_3_solve/7)]),
+      clcomp($orc_3_newsquare/7,1/0,[allocate(10),get_integer(1,0),get_y_variable(8,1),get_list(2),unify_integer(1),unify_y_variable(7),get_y_variable(6,3),get_list(4),unify_x_variable(0),unify_y_variable(0),get_structure(square/2,0),unify_y_variable(4),unify_y_variable(3),get_structure(square/2,5),unify_y_variable(2),unify_y_variable(1),get_y_variable(5,6),math_load_y_value(4,1),math_load_y_value(5,0),builtin_2(lt,1,0),math_load_y_value(4,0),function_1(inc,0,0),get_y_value(2,0),put_y_variable(9,0),put_y_value(8,1),call(o_next/2),put_y_value(9,0),put_y_value(8,1),put_y_value(7,2),put_y_value(6,3),put_y_value(1,4),put_y_value(5,5),call($orc_2_snint/6),put_y_value(4,0),put_y_value(3,1),put_y_value(2,2),put_y_value(1,3),call(notthreatened/4),put_y_value(2,0),put_y_value(1,1),put_y_value(0,2),deallocate,execute(safe/3)]),
+      clcomp($orc_3_newsquare/7,2/0,[allocate(6),get_integer(2,0),get_y_variable(4,1),get_list(2),unify_integer(2),unify_y_variable(3),get_y_variable(2,3),get_nil(4),get_structure(square/2,5),unify_integer(1),unify_y_variable(1),get_y_variable(0,6),put_y_variable(5,0),put_y_value(4,1),call(o_next/2),put_y_unsafe_value(5,0),put_y_value(4,1),put_y_value(3,2),put_y_value(2,3),put_y_value(1,4),put_y_value(0,5),deallocate,execute($orc_2_snint/6)]),
+      clcomp($orc_2_snint/6,1/0,[get_integer(1,0),get_x_variable(1,1),get_list(2),unify_integer(1),unify_x_variable(0),get_x_value(0,3),get_x_variable(4,4),get_x_value(4,5),proceed]),
+      clcomp($orc_2_snint/6,2/0,[allocate(6),get_integer(2,0),get_y_variable(4,1),get_list(2),unify_integer(2),unify_y_variable(3),get_y_variable(2,3),get_y_variable(1,4),get_x_variable(5,5),math_load_x_value(5,5),function_1(dec,0,5),get_y_variable(0,0),math_load_y_value(0,1),put_integer(0,0),builtin_2(gt,1,0),put_y_variable(5,0),put_y_value(4,1),call(o_next/2),put_y_unsafe_value(5,0),put_y_value(4,1),put_y_value(3,2),put_y_value(2,3),put_y_value(1,4),put_y_unsafe_value(0,5),deallocate,execute($orc_2_snint/6)]),
+      clcomp($orc_0_query/4,1/0,[allocate(5),get_integer(1,0),get_y_variable(3,1),get_list(2),unify_integer(1),unify_y_variable(2),get_y_variable(1,3),put_y_variable(4,0),put_y_value(3,1),call(o_next/2),put_y_value(4,0),put_y_value(3,1),put_y_value(2,2),put_y_value(1,3),put_integer(8,4),put_y_variable(0,5),call($orc_2_get_solutions/6),put_y_unsafe_value(0,0),deallocate,execute(o_send_soln/1)])
+]
+
+cree_paquets output:
+[
+      paq(get_solutions/2,[cl(_26496,_3026,[get_x_variable(0,0),get_x_variable(2,1),put_x_value(0,0),put_nil(1),put_x_value(2,2),execute(solve/3)])]),
+      paq(solve/3,[cl(_26459,_3434,[get_x_variable(0,0),get_list(1),unify_x_variable(1),unify_x_variable(3),get_structure(square/2,1),unify_x_local_value(0),unify_x_variable(1),get_list(2),unify_x_variable(2),unify_x_value(3),get_structure(square/2,2),unify_x_local_value(0),unify_x_value(1),proceed]),cl(_26448,_4224,[allocate(4),get_y_variable(3,0),get_y_variable(1,1),get_y_variable(0,2),put_y_value(1,0),put_y_variable(2,1),put_y_value(3,2),call(newsquare/3),put_y_value(3,0),put_list(1),unify_y_local_value(2),unify_y_local_value(1),put_y_value(0,2),deallocate,execute(solve/3)])]),
+      paq(newsquare/3,[cl(_26413,. /2,[allocate(5),get_list(0),unify_x_variable(0),unify_y_variable(0),get_structure(square/2,0),unify_y_variable(4),unify_y_variable(3),get_structure(square/2,1),unify_y_variable(2),unify_y_variable(1),get_x_variable(2,2),math_load_y_value(4,0),math_load_x_value(2,2),builtin_2(lt,0,2),math_load_y_value(4,0),function_1(inc,0,0),get_y_value(2,0),put_y_value(1,0),put_x_value(2,1),call(snint/2),put_y_value(4,0),put_y_value(3,1),put_y_value(2,2),put_y_value(1,3),call(notthreatened/4),put_y_value(2,0),put_y_value(1,1),put_y_value(0,2),deallocate,execute(safe/3)]),cl(_26402,[]/0,[get_nil(0),get_structure(square/2,1),unify_integer(1),unify_x_variable(0),get_x_variable(2,2),put_x_value(0,0),put_x_value(2,1),execute(snint/2)])]),
+      paq(snint/2,[cl(_26369,_6571,[get_x_variable(0,0),get_x_value(0,1),proceed]),cl(_26358,_6724,[get_x_variable(0,0),get_x_variable(1,1),math_load_x_value(1,1),function_1(dec,1,1),get_x_variable(1,1),math_load_x_value(1,1),put_integer(0,2),builtin_2(gt,1,2),put_x_value(0,0),put_x_value(1,1),execute(snint/2)])]),
+      paq(notthreatened/4,[cl(_26327,_7729,[get_x_variable(0,0),get_x_variable(1,1),get_x_variable(2,2),get_x_variable(3,3),get_x_bc_reg(255),put_x_value(0,0),put_x_value(2,2),builtin_2(term_neq,0,2),put_x_value(1,1),put_x_value(3,3),builtin_2(term_neq,1,3),math_load_x_value(0,0),math_load_x_value(1,1),function_2(sub,5,0,1),get_x_variable(5,5),math_load_x_value(2,2),math_load_x_value(3,3),function_2(sub,4,2,3),get_x_variable(4,4),put_x_value(5,5),put_x_value(4,4),builtin_2(term_neq,5,4),math_load_x_value(0,0),math_load_x_value(1,1),function_2(add,1,0,1),get_x_variable(1,1),math_load_x_value(2,2),math_load_x_value(3,3),function_2(add,0,2,3),get_x_variable(0,0),put_x_value(1,1),put_x_value(0,0),builtin_2(term_neq,1,0),cut_x(255),proceed])]),
+      paq(safe/3,[cl(_26298,_16262,[get_x_variable(0,0),get_x_variable(1,1),get_nil(2),get_x_bc_reg(255),cut_x(255),proceed]),cl(_26287,_16645,[allocate(3),get_y_variable(2,0),get_y_variable(1,1),get_list(2),unify_x_variable(0),unify_y_variable(0),get_structure(square/2,0),unify_x_variable(0),unify_x_variable(1),put_x_value(0,0),put_x_value(1,1),put_y_value(2,2),put_y_value(1,3),call(notthreatened/4),put_y_value(2,0),put_y_value(1,1),put_y_value(0,2),deallocate,execute(safe/3)])]),
+      paq(query/0,[cl(_26260,_17433,[allocate(1),put_integer(8,0),put_y_variable(0,1),call(get_solutions/2),put_y_unsafe_value(0,0),deallocate,execute(o_send_soln/1)])]),
+      paq($exe_1/0,[cl(_26235,_17666,[allocate(1),get_y_bc_reg(0),call(o_bfp/0),cut_y(0),deallocate,proceed])]),
+      paq($exe_2/0,[cl(_26212,_17853,[put_constant(true,0),put_constant(true,1),execute(top_level/2)])]),
+      paq($orc_2_get_solutions/6,[cl(_26191,1/0,[allocate(6),get_integer(1,0),get_y_variable(4,1),get_list(2),unify_integer(1),unify_y_variable(3),get_y_variable(2,3),get_y_variable(1,4),get_y_variable(0,5),put_y_variable(5,0),put_y_value(4,1),call(o_next/2),put_y_unsafe_value(5,0),put_y_value(4,1),put_y_value(3,2),put_y_value(2,3),put_y_value(1,4),put_nil(5),put_y_value(0,6),deallocate,execute($orc_3_solve/7)])]),
+      paq($orc_3_solve/7,[cl(_26172,1/0,[get_integer(1,0),get_x_variable(1,1),get_list(2),unify_integer(1),unify_x_variable(0),get_x_value(0,3),get_x_variable(4,4),get_list(5),unify_x_variable(0),unify_x_variable(2),get_structure(square/2,0),unify_x_local_value(4),unify_x_variable(0),get_list(6),unify_x_variable(1),unify_x_value(2),get_structure(square/2,1),unify_x_local_value(4),unify_x_value(0),proceed]),cl(_26161,2/0,[allocate(10),get_integer(2,0),get_y_variable(6,1),get_list(2),unify_integer(2),unify_y_variable(8),get_y_variable(4,3),get_y_variable(3,4),get_y_variable(1,5),get_y_variable(0,6),put_y_variable(9,0),put_y_value(6,1),call(o_next/2),put_y_value(9,0),put_y_value(6,1),put_y_value(8,2),put_y_variable(5,3),put_y_value(1,4),put_y_variable(2,5),put_y_value(3,6),call($orc_3_newsquare/7),put_y_variable(7,0),put_y_value(6,1),call(o_next/2),put_y_unsafe_value(7,0),put_y_value(6,1),put_y_unsafe_value(5,2),put_y_value(4,3),put_y_value(3,4),put_list(5),unify_y_local_value(2),unify_y_local_value(1),put_y_value(0,6),deallocate,execute($orc_3_solve/7)])]),
+      paq($orc_3_newsquare/7,[cl(_26144,1/0,[allocate(10),get_integer(1,0),get_y_variable(8,1),get_list(2),unify_integer(1),unify_y_variable(7),get_y_variable(6,3),get_list(4),unify_x_variable(0),unify_y_variable(0),get_structure(square/2,0),unify_y_variable(4),unify_y_variable(3),get_structure(square/2,5),unify_y_variable(2),unify_y_variable(1),get_y_variable(5,6),math_load_y_value(4,1),math_load_y_value(5,0),builtin_2(lt,1,0),math_load_y_value(4,0),function_1(inc,0,0),get_y_value(2,0),put_y_variable(9,0),put_y_value(8,1),call(o_next/2),put_y_value(9,0),put_y_value(8,1),put_y_value(7,2),put_y_value(6,3),put_y_value(1,4),put_y_value(5,5),call($orc_2_snint/6),put_y_value(4,0),put_y_value(3,1),put_y_value(2,2),put_y_value(1,3),call(notthreatened/4),put_y_value(2,0),put_y_value(1,1),put_y_value(0,2),deallocate,execute(safe/3)]),cl(_26133,2/0,[allocate(6),get_integer(2,0),get_y_variable(4,1),get_list(2),unify_integer(2),unify_y_variable(3),get_y_variable(2,3),get_nil(4),get_structure(square/2,5),unify_integer(1),unify_y_variable(1),get_y_variable(0,6),put_y_variable(5,0),put_y_value(4,1),call(o_next/2),put_y_unsafe_value(5,0),put_y_value(4,1),put_y_value(3,2),put_y_value(2,3),put_y_value(1,4),put_y_value(0,5),deallocate,execute($orc_2_snint/6)])]),
+      paq($orc_2_snint/6,[cl(_26118,1/0,[get_integer(1,0),get_x_variable(1,1),get_list(2),unify_integer(1),unify_x_variable(0),get_x_value(0,3),get_x_variable(4,4),get_x_value(4,5),proceed]),cl(_26107,2/0,[allocate(6),get_integer(2,0),get_y_variable(4,1),get_list(2),unify_integer(2),unify_y_variable(3),get_y_variable(2,3),get_y_variable(1,4),get_x_variable(5,5),math_load_x_value(5,5),function_1(dec,0,5),get_y_variable(0,0),math_load_y_value(0,1),put_integer(0,0),builtin_2(gt,1,0),put_y_variable(5,0),put_y_value(4,1),call(o_next/2),put_y_unsafe_value(5,0),put_y_value(4,1),put_y_value(3,2),put_y_value(2,3),put_y_value(1,4),put_y_unsafe_value(0,5),deallocate,execute($orc_2_snint/6)])]),
+      paq($orc_0_query/4,[cl(_26094,1/0,[allocate(5),get_integer(1,0),get_y_variable(3,1),get_list(2),unify_integer(1),unify_y_variable(2),get_y_variable(1,3),put_y_variable(4,0),put_y_value(3,1),call(o_next/2),put_y_value(4,0),put_y_value(3,1),put_y_value(2,2),put_y_value(1,3),put_integer(8,4),put_y_variable(0,5),call($orc_2_get_solutions/6),put_y_unsafe_value(0,0),deallocate,execute(o_send_soln/1)])])
+]
+
+exec_index output:
+[
+  paq(get_solutions/2,
+    [
+      label(0),
+      get_x_variable(0,0),
+      get_x_variable(2,1),
+      put_x_value(0,0),
+      put_nil(1),
+      put_x_value(2,2),
+      execute(solve/3)
+
+    ]
+  paq(solve/3,
+    [
+      label(0),
+      try_me_else(1),
+      [get_x_variable(0,0),get_list(1),unify_x_variable(1),unify_x_variable(3),get_structure(square/2,1),unify_x_local_value(0),unify_x_variable(1),get_list(2),unify_x_variable(2),unify_x_value(3),get_structure(square/2,2),unify_x_local_value(0),unify_x_value(1),proceed],
+      label(1),
+      trust_me_else_fail,
+      allocate(4),
+      get_y_variable(3,0),
+      get_y_variable(1,1),
+      get_y_variable(0,2),
+      put_y_value(1,0),
+      put_y_variable(2,1),
+      put_y_value(3,2),
+      call(newsquare/3),
+      put_y_value(3,0),
+      put_list(1),
+      unify_y_local_value(2),
+      unify_y_local_value(1),
+      put_y_value(0,2),
+      deallocate,
+      execute(solve/3)
+
+    ]
+  paq(newsquare/3,
+    [
+      label(0),
+      switch_on_term(1,4,fail,2,fail),
+      label(1),
+      try_me_else(3),
+      label(2),
+      [allocate(5),get_list(0),unify_x_variable(0),unify_y_variable(0),get_structure(square/2,0),unify_y_variable(4),unify_y_variable(3),get_structure(square/2,1),unify_y_variable(2),unify_y_variable(1),get_x_variable(2,2),math_load_y_value(4,0),math_load_x_value(2,2),builtin_2(lt,0,2),math_load_y_value(4,0),function_1(inc,0,0),get_y_value(2,0),put_y_value(1,0),put_x_value(2,1),call(snint/2),put_y_value(4,0),put_y_value(3,1),put_y_value(2,2),put_y_value(1,3),call(notthreatened/4),put_y_value(2,0),put_y_value(1,1),put_y_value(0,2),deallocate,execute(safe/3)],
+      label(3),
+      trust_me_else_fail,
+      label(4),
+      get_nil(0),
+      get_structure(square/2,1),
+      unify_integer(1),
+      unify_x_variable(0),
+      get_x_variable(2,2),
+      put_x_value(0,0),
+      put_x_value(2,1),
+      execute(snint/2)
+
+    ]
+  paq(snint/2,
+    [
+      label(0),
+      try_me_else(1),
+      [get_x_variable(0,0),get_x_value(0,1),proceed],
+      label(1),
+      trust_me_else_fail,
+      get_x_variable(0,0),
+      get_x_variable(1,1),
+      math_load_x_value(1,1),
+      function_1(dec,1,1),
+      get_x_variable(1,1),
+      math_load_x_value(1,1),
+      put_integer(0,2),
+      builtin_2(gt,1,2),
+      put_x_value(0,0),
+      put_x_value(1,1),
+      execute(snint/2)
+
+    ]
+  paq(notthreatened/4,
+    [
+      label(0),
+      get_x_variable(0,0),
+      get_x_variable(1,1),
+      get_x_variable(2,2),
+      get_x_variable(3,3),
+      get_x_bc_reg(255),
+      put_x_value(0,0),
+      put_x_value(2,2),
+      builtin_2(term_neq,0,2),
+      put_x_value(1,1),
+      put_x_value(3,3),
+      builtin_2(term_neq,1,3),
+      math_load_x_value(0,0),
+      math_load_x_value(1,1),
+      function_2(sub,5,0,1),
+      get_x_variable(5,5),
+      math_load_x_value(2,2),
+      math_load_x_value(3,3),
+      function_2(sub,4,2,3),
+      get_x_variable(4,4),
+      put_x_value(5,5),
+      put_x_value(4,4),
+      builtin_2(term_neq,5,4),
+      math_load_x_value(0,0),
+      math_load_x_value(1,1),
+      function_2(add,1,0,1),
+      get_x_variable(1,1),
+      math_load_x_value(2,2),
+      math_load_x_value(3,3),
+      function_2(add,0,2,3),
+      get_x_variable(0,0),
+      put_x_value(1,1),
+      put_x_value(0,0),
+      builtin_2(term_neq,1,0),
+      cut_x(255),
+      proceed
+
+    ]
+  paq(safe/3,
+    [
+      label(0),
+      try_me_else(1),
+      [get_x_variable(0,0),get_x_variable(1,1),get_nil(2),get_x_bc_reg(255),cut_x(255),proceed],
+      label(1),
+      trust_me_else_fail,
+      allocate(3),
+      get_y_variable(2,0),
+      get_y_variable(1,1),
+      get_list(2),
+      unify_x_variable(0),
+      unify_y_variable(0),
+      get_structure(square/2,0),
+      unify_x_variable(0),
+      unify_x_variable(1),
+      put_x_value(0,0),
+      put_x_value(1,1),
+      put_y_value(2,2),
+      put_y_value(1,3),
+      call(notthreatened/4),
+      put_y_value(2,0),
+      put_y_value(1,1),
+      put_y_value(0,2),
+      deallocate,
+      execute(safe/3)
+
+    ]
+  paq(query/0,
+    [
+      label(0),
+      allocate(1),
+      put_integer(8,0),
+      put_y_variable(0,1),
+      call(get_solutions/2),
+      put_y_unsafe_value(0,0),
+      deallocate,
+      execute(o_send_soln/1)
+
+    ]
+  paq($exe_1/0,
+    [
+      label(0),
+      allocate(1),
+      get_y_bc_reg(0),
+      call(o_bfp/0),
+      cut_y(0),
+      deallocate,
+      proceed
+
+    ]
+  paq($exe_2/0,
+    [
+      label(0),
+      put_constant(true,0),
+      put_constant(true,1),
+      execute(top_level/2)
+
+    ]
+  paq($orc_2_get_solutions/6,
+    [
+      label(0),
+      switch_on_term(1,fail,1,fail,fail),
+      label(1),
+      allocate(6),
+      get_integer(1,0),
+      get_y_variable(4,1),
+      get_list(2),
+      unify_integer(1),
+      unify_y_variable(3),
+      get_y_variable(2,3),
+      get_y_variable(1,4),
+      get_y_variable(0,5),
+      put_y_variable(5,0),
+      put_y_value(4,1),
+      call(o_next/2),
+      put_y_unsafe_value(5,0),
+      put_y_value(4,1),
+      put_y_value(3,2),
+      put_y_value(2,3),
+      put_y_value(1,4),
+      put_nil(5),
+      put_y_value(0,6),
+      deallocate,
+      execute($orc_3_solve/7)
+
+    ]
+  paq($orc_3_solve/7,
+    [
+      label(0),
+      switch_on_term(2,fail,1,fail,fail),
+      label(1),
+      switch_on_integer(1,2,[(1,3),(2,5)]),
+      label(2),
+      try_me_else(4),
+      label(3),
+      [get_integer(1,0),get_x_variable(1,1),get_list(2),unify_integer(1),unify_x_variable(0),get_x_value(0,3),get_x_variable(4,4),get_list(5),unify_x_variable(0),unify_x_variable(2),get_structure(square/2,0),unify_x_local_value(4),unify_x_variable(0),get_list(6),unify_x_variable(1),unify_x_value(2),get_structure(square/2,1),unify_x_local_value(4),unify_x_value(0),proceed],
+      label(4),
+      trust_me_else_fail,
+      label(5),
+      allocate(10),
+      get_integer(2,0),
+      get_y_variable(6,1),
+      get_list(2),
+      unify_integer(2),
+      unify_y_variable(8),
+      get_y_variable(4,3),
+      get_y_variable(3,4),
+      get_y_variable(1,5),
+      get_y_variable(0,6),
+      put_y_variable(9,0),
+      put_y_value(6,1),
+      call(o_next/2),
+      put_y_value(9,0),
+      put_y_value(6,1),
+      put_y_value(8,2),
+      put_y_variable(5,3),
+      put_y_value(1,4),
+      put_y_variable(2,5),
+      put_y_value(3,6),
+      call($orc_3_newsquare/7),
+      put_y_variable(7,0),
+      put_y_value(6,1),
+      call(o_next/2),
+      put_y_unsafe_value(7,0),
+      put_y_value(6,1),
+      put_y_unsafe_value(5,2),
+      put_y_value(4,3),
+      put_y_value(3,4),
+      put_list(5),
+      unify_y_local_value(2),
+      unify_y_local_value(1),
+      put_y_value(0,6),
+      deallocate,
+      execute($orc_3_solve/7)
+
+    ]
+  paq($orc_3_newsquare/7,
+    [
+      label(0),
+      switch_on_term(2,fail,1,fail,fail),
+      label(1),
+      switch_on_integer(1,2,[(1,3),(2,5)]),
+      label(2),
+      try_me_else(4),
+      label(3),
+      [allocate(10),get_integer(1,0),get_y_variable(8,1),get_list(2),unify_integer(1),unify_y_variable(7),get_y_variable(6,3),get_list(4),unify_x_variable(0),unify_y_variable(0),get_structure(square/2,0),unify_y_variable(4),unify_y_variable(3),get_structure(square/2,5),unify_y_variable(2),unify_y_variable(1),get_y_variable(5,6),math_load_y_value(4,1),math_load_y_value(5,0),builtin_2(lt,1,0),math_load_y_value(4,0),function_1(inc,0,0),get_y_value(2,0),put_y_variable(9,0),put_y_value(8,1),call(o_next/2),put_y_value(9,0),put_y_value(8,1),put_y_value(7,2),put_y_value(6,3),put_y_value(1,4),put_y_value(5,5),call($orc_2_snint/6),put_y_value(4,0),put_y_value(3,1),put_y_value(2,2),put_y_value(1,3),call(notthreatened/4),put_y_value(2,0),put_y_value(1,1),put_y_value(0,2),deallocate,execute(safe/3)],
+      label(4),
+      trust_me_else_fail,
+      label(5),
+      allocate(6),
+      get_integer(2,0),
+      get_y_variable(4,1),
+      get_list(2),
+      unify_integer(2),
+      unify_y_variable(3),
+      get_y_variable(2,3),
+      get_nil(4),
+      get_structure(square/2,5),
+      unify_integer(1),
+      unify_y_variable(1),
+      get_y_variable(0,6),
+      put_y_variable(5,0),
+      put_y_value(4,1),
+      call(o_next/2),
+      put_y_unsafe_value(5,0),
+      put_y_value(4,1),
+      put_y_value(3,2),
+      put_y_value(2,3),
+      put_y_value(1,4),
+      put_y_value(0,5),
+      deallocate,
+      execute($orc_2_snint/6)
+
+    ]
+  paq($orc_2_snint/6,
+    [
+      label(0),
+      switch_on_term(2,fail,1,fail,fail),
+      label(1),
+      switch_on_integer(1,2,[(1,3),(2,5)]),
+      label(2),
+      try_me_else(4),
+      label(3),
+      [get_integer(1,0),get_x_variable(1,1),get_list(2),unify_integer(1),unify_x_variable(0),get_x_value(0,3),get_x_variable(4,4),get_x_value(4,5),proceed],
+      label(4),
+      trust_me_else_fail,
+      label(5),
+      allocate(6),
+      get_integer(2,0),
+      get_y_variable(4,1),
+      get_list(2),
+      unify_integer(2),
+      unify_y_variable(3),
+      get_y_variable(2,3),
+      get_y_variable(1,4),
+      get_x_variable(5,5),
+      math_load_x_value(5,5),
+      function_1(dec,0,5),
+      get_y_variable(0,0),
+      math_load_y_value(0,1),
+      put_integer(0,0),
+      builtin_2(gt,1,0),
+      put_y_variable(5,0),
+      put_y_value(4,1),
+      call(o_next/2),
+      put_y_unsafe_value(5,0),
+      put_y_value(4,1),
+      put_y_value(3,2),
+      put_y_value(2,3),
+      put_y_value(1,4),
+      put_y_unsafe_value(0,5),
+      deallocate,
+      execute($orc_2_snint/6)
+
+    ]
+  paq($orc_0_query/4,
+    [
+      label(0),
+      switch_on_term(1,fail,1,fail,fail),
+      label(1),
+      allocate(5),
+      get_integer(1,0),
+      get_y_variable(3,1),
+      get_list(2),
+      unify_integer(1),
+      unify_y_variable(2),
+      get_y_variable(1,3),
+      put_y_variable(4,0),
+      put_y_value(3,1),
+      call(o_next/2),
+      put_y_value(4,0),
+      put_y_value(3,1),
+      put_y_value(2,2),
+      put_y_value(1,3),
+      put_integer(8,4),
+      put_y_variable(0,5),
+      call($orc_2_get_solutions/6),
+      put_y_unsafe_value(0,0),
+      deallocate,
+      execute(o_send_soln/1)
+
+    ]
+]
+

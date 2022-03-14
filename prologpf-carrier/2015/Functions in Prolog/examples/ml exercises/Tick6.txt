@@ -1,0 +1,28 @@
+(* ML ASSESSED EXERCISES. TICK 6 SUBMISSION *)
+
+(* PROBLEM 1. Definition of integer streams                   *)
+
+datatype stream = Item of int * (unit->stream);
+fun cons (x,xs) = Item(x, xs);
+fun head (Item(i,xf)) = i;
+fun tail (Item(i,xf)) = xf();
+fun makeints n = cons(n, fn()=> makeints(n+1));
+
+(* PROBLEM 2. A function maps that applies a function to all  *)
+(*            elements in the stream                          *)
+
+fun maps f xs = cons(f (head xs), fn()=> maps f (tail xs));
+
+(* PROBLEM 3. A function nth that returns the nth element of  *)
+(*            a stream s                                      *)
+
+fun nth(s,1)=head(s)
+  | nth(s,n)=nth(tail(s),n-1);
+
+(* PROBLEM 4. A function filters that returns a stream of all *)
+(*            elements of a stream xs that satisfy f          *)
+
+fun filters f xs=if f(head(xs)) then
+                   cons(head xs,fn()=>filters f (tail xs))
+                 else
+                   filters f (tail xs);

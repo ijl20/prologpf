@@ -1,0 +1,1827 @@
+\chapter{Higher-Order Functions in PrologPF}
+\label{functions}
+
+\section{Introduction}
+
+The earlier implementations of parallel Prolog exploiting the Delphi
+principle (\cite{CA87,Clo87,Wre90,Kle91,Sar95})
+can support programs written in a pure subset of Prolog (see Chapter
+\ref{cut}).
+
+PrologPF extends the Delphi Machine to allow the use of \textit{cut},
+but only for
+deterministic procedures.  The programmer must avoid the
+intentional or accidental use of \textit{cut} within
+procedures which still (in spite of the \textit{cut}) have
+multiple solutions.  
+
+However, the need for \textit{cut} within a
+PrologPF program is greatly reduced as
+support is included for the definition and application
+of functions, in which the deterministic
+execution is ensured by the system.  Also, boolean functions can often
+be used where Prolog would rely upon the use of failure to express negation.
+
+The higher-order functional support in PrologPF is sufficient to allow
+straightforward programming of all the exercises in an undergraduate ML
+functional programming course \cite{Pau88}, and to allow a version of the SRI Prolog 
+Technology Theorem Prover \cite{Sti88} to be implemented without \textit{cuts}
+(Chapters \ref{case_fcs} and \ref{case_pttp}).
+
+PrologPF extends Prolog with support of the definition and deterministic
+evaluation of higher-order functions, with the functions treated as
+first-class values within the logic system.  The Delphi oracles do not
+extend into the functional reduction graph, and no parallelism is provided for
+the evaluation of an individual function call.  This is consistent with the
+objective of replacing Prolog procedures containing \textit{cuts}.  
+PrologPF does not
+attempt to exploit all the parallelism available in the non-deterministic but
+complete evaluation of functions treated as general equational theories using
+algorithms such as lazy narrowing \cite{CL91}.
+
+While PrologPF provides a consistent environment for
+higher-order functional
+programming, the language has the same syntax (with the definition of some
+additional operators) as normal Prolog.  Thus a PrologPF program can be
+read by a standard Prolog compiler to produce a program in which all
+function applications are treated as irreducible Prolog terms.
+
+By careful selection of the specially treated operators, the functional
+syntax of PrologPF will be familiar to users of Standard ML.
+
+
+\subsection{Implementation Goals}
+
+\begin{enumerate}
+
+\item{To  be compatible with the Delphi principle, functional reduction
+  must be deterministic}
+\item{The capabilities of the functional component of PrologPF should
+  minimise the requirement for \textit{cut} in the body of Prolog
+  rules}
+\item{The syntax should allow functional algorithms to be clearly expressed,
+  with support for Prolog terms and variables including those representing
+  functions, i.e. higher-order functions should be supported}
+\item{The syntax and semantics of PrologPF should facilitate the
+  straightforward use of functions within Prolog rules, and permit
+  deterministic calls to Prolog procedures from within functions}
+
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Other Functional Logic Languages} %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+A more detailed review of the many approaches is given
+in Chapter \ref{background}
+and in \cite{BL86, Han94}.
+
+While there seems to be no other implementation of a \textit{parallel}
+functional logic language, there are many implementations of sequential
+languages which support functional and logic programming.
+They can be
+broadly categorised as follows:
+\begin{description}
+\item [External functions callable from Prolog] {
+  \cite{BM88,MBB+93} }
+
+\item [Logic support provided within a functional programming system.] {
+  These languages, such as LogLisp \cite{RS82}...}
+
+\item [Logical relations treated as set-based functions] {
+  e.g. \cite{CSA87}, Escher \cite{Llo94}..}
+
+\item [Logic with equations and narrowing.] {
+  \cite{DvH87}, ALF \cite{Han92}, Babel \cite{MNRA92}, K-LEAF \cite{BCM88},
+  SLOG \cite{Fri85} }
+
+\item [Callable function extensions to Prolog.] {
+  Such as \textit{call/N} (cite Mercury) and \textit{apply/3} (cite Naish)
+  }
+
+\end{description}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Function definition: the \texttt{fun} relation} %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\label{definition}
+
+% extension of '=' relation
+% guarded definitions can be 'A = B :- C'
+% '=' redefinition:
+%       less portable,
+%       most flexible,
+%       guards provide non-deterministic access to Prolog relations
+%       no constraints on equality definitions implied, e.g.
+%           left-linearity
+%           '=' can represent bidirectional rewrite rules
+% 'fun' relation:          
+%       fun definition explicit, so determinism explicit
+%       function namespace separate from relation namespace
+%       syntax familiar to functional programmers
+%       body of 'fun' relation can be compiled into efficient deterministic
+%           machine code.
+%       syntactic suppoert for currying in definition same as in application
+
+
+\subsection{A PrologPF example}
+%%%%%%%%%%%%
+
+Before reviewing the syntax and semantics of PrologPF functions in detail with
+comparison to other approaches, the following examples of the factorial and
+append functions in PrologPF may place the alternatives in context.
+
+Firstly, the factorial function:
+\begin{verbatim}
+fun fact(1) = 1;
+    fact(N) = N * fact(N-1).
+\end{verbatim}
+or equally (see \ref{alt_if}):
+\begin{verbatim}
+fun fact(N) = if (N = 1)
+              then 1
+              else N * fact(N-1).
+\end{verbatim}
+The \texttt{append} function can be defined thus:
+\begin{verbatim}
+fun append(    [],Y) = Y;
+    append([X|Xs],Y) = [X|append(Xs,Y)].
+\end{verbatim}
+
+\subsection{The PrologPF approach}
+%%%%%%%%%%%%
+
+Functions are defined in PrologPf with the special relation
+\texttt{fun/1}, which is defined as a Prolog
+prefix operator of low precedence (\texttt{op(1200,fx,fun)}).
+
+Function definition in PrologPF also uses the \texttt{=} and \texttt{;}
+operators but the standard Prolog precedence has been maintained.
+
+The syntax supported is shown in table \ref{syntax:fun}
+
+\begin{table}[htbp]
+{\small
+\begin{tabular}{|l r l|}
+\hline
+ & &\\[2mm]
+Function\_{}Definition & ::= & \texttt{\textbf{fun}}
+                               Alternate\_{}Definitions
+                               \texttt{\textbf{.}}\\[4mm]
+
+Alternate\_{}Definitions & ::= & Fun\_{}Equality\\
+                      & $|$ & Fun\_{}Equality \texttt{\textbf{;}}
+                              Alternate\_{}Definitions\\[4mm]
+
+Fun\_{}Equality  & ::= & Fun\_{}Head \texttt{\textbf{=}} PrologPF\_{}Term\\[4mm]
+
+Fun\_{}Head      & ::= & Prolog\_{}Atom \texttt{\textbf{(}} Args\ldots \texttt{\textbf{)}}\\
+                 &  $|$  & Prolog\_{}Atom \texttt{\textbf{@ [}} Args\ldots
+                            \texttt{\textbf{]}}\\
+                 &  $|$  & Prolog\_{}Atom \texttt{\textbf{@ []}}\\[4mm]
+
+Args             & ::= & Prolog\_{}Term\\
+                 &   $|$ & Prolog\_{}Term \texttt{\textbf{,}} Args\\[4mm]
+
+PrologPF\_{}Term & ::= & Prolog\_{}Term\\
+                 & $|$ & Function\_{}Application\\[4mm]
+ 
+\hline
+\end{tabular}
+}
+\caption{Syntax: Function Definition with the \texttt{fun} Relation}
+\label{syntax:fun}
+\end{table}
+
+In PrologPF, the underlying Delphi Machine has been extended to support \textit{cut}
+(see Chapter \ref{cut}), and this support is exploited to implement deterministic 
+functional reduction.
+
+Each \texttt{fun} relation is transformed through a process of \textit{flattening}
+(\cite{CF93}) into a deterministic procedure, with the actual arguments being
+matched against the formal parameters until a successful unification is made, at which
+point the choice of equality rule is committed and the reduction continuing with the
+term on the right-hand-side.
+
+Thus the selection of the appropriate equality rule is top-down, and the rewrite
+is strictly left-to-right.
+
+The equality is required to be \textit{constructor-based}, that is the terms in the
+function head must not themselves contain any defined functions. 
+This requirement is also described as \textit{head normal form} \cite{HAK+97}.
+The syntax of the
+formal parameters is given in table \ref{syntax:fun} as Prolog\_{}Term, i.e. a
+standard Prolog term not including the application of any defined functions.
+
+While the operational semantics of function evaluation in PrologPF 
+have most in common with
+languages such as Standard ML (\cite{Pau91}), the argument matching process is
+replaced with Prolog's \textit{unification}.  Argument unification in PrologPF thus
+differs from the matching in functional languages such as ML in two significant
+ways:
+\begin{enumerate}
+\item{There is no requirement for left-linearity
+  in the equality rules, i.e. variables can be repeated in the function head.  The
+  functional component of PrologPF, like the underlying Prolog, has no occurs check.
+  As with Prolog, it is the programmer's responsibility to avoid actual parameters which
+  would cause the unification algorithm to loop, as with the goal \texttt{:- Y = a(Y)}.
+}
+\item{Partially instantantiated data structures (i.e. terms
+containing variables) can be passed as arguments and returned as results.  This
+means that, for example, difference lists can be supported and that a list of 
+variables can be appended to another.}
+\end{enumerate}
+
+The Prolog atom used to name a defined function denotes a function of fixed arity, set
+by the number of formal parameters given in the \texttt{fun} relation.  Alternative
+definition of functions using the same name but a differing number of parameters is
+flagged as an error by the PrologPF compiler.  This approach clearly differs from the
+Prolog style where a relation name can be considered a combination of the naming
+atom and the arity (as in \texttt{foo/2}), but is essential to permit currying within
+the standard Prolog syntax.
+
+\subsection{Alternative approaches}
+%%%%%%%%%%%%
+
+\subsubsection{Deterministic relations in Prolog}
+
+Within Prolog, it is possible to define deterministic relations which then
+can be treated as functions:
+
+\begin{verbatim}
+fact(1,1).
+fact(N,F) :- N > 1, N1 is N - 1, fact(N1,F1), F is N * F1.
+\end{verbatim}
+
+In general, however, determinism inference is an undecidable problem, at
+least dependent upon the solution of the halting problem:
+
+\begin{verbatim}
+foo(X,Y) :- complicated(X,Y).
+foo(X,X).
+\end{verbatim}
+
+\texttt{foo/2} can have more than one solution only if
+\texttt{complicated/2} can succeed.
+
+In many cases, the programmer uses \textit{cut} within the Prolog
+program to ensure determinacy of an otherwise non-deterministic
+relation. For example:
+
+\begin{verbatim}
+fact(1,1) :- !.
+fact(N,F) :- N1 is N - 1, fact(N1,F1), F is N * F1.
+\end{verbatim}
+
+However, the presence of \textit{cut} is not enough to
+guarantee determinacy, as in the following example:
+
+\begin{verbatim}
+a(a).
+a(b) :- !.
+a(c).
+\end{verbatim}
+
+The query \texttt{:-a(X).} has the multiple solutions
+\texttt{X=a, X=b}.
+
+Deterministic reduction is essential for the successful
+support of functions on the Delphi Machine (see Chapter
+\ref{cut}), so the use of un-annotated Prolog relations to define
+functions would introduce a significant possibility of error.
+
+\subsubsection{Mercury}
+
+In the Mercury system, each procedure is annotated with determinism
+information \cite{HCSR95}. The syntax of Prolog relation definition
+permits the use of relations and functions in multiple \textit{modes},
+i.e. differing arguments being instantiated at the time of the call,
+with others expected as results.  Mercury functions are thus annotated
+with determinism information for each mode.
+For example:
+\begin{verbatim}
+:- pred factorial(int, int).
+:- mode factorial(in,out) is det.
+
+factorial(N, F) :-
+    ( N =< 0 ->
+        F = 1
+    ;
+        N1 is N - 1,
+        factorial(N1, F1),
+        F is F1 * N
+    ).
+\end{verbatim}
+Note that the mode information defines \texttt{factorial} to be
+\texttt{det}, i.e. deterministic, while the relational style of 
+definition is retained.
+The Mercury compiler checks the supplied determinism information by
+analysis of the code.  In this example the alternative representation of
+the function shown below would be inferred to be non-deterministic through
+limitations in the compiler's analysis of mutually exclusive conditions,
+so the earlier if-then-else form must be used:
+\begin{verbatim}
+factorial(0, 1).
+factorial(N, F) :-
+    N > 0,
+    N1 is N - 1,
+    factorial(N1, F1),
+    F is F1 * N.
+\end{verbatim}
+The use of Mercury's determinism and type inferencing techniques have
+potential for exploitation on the Delphi Machine.  In PrologPF all
+functions are, to use Mercury terminology, semi-deterministic.  That is
+they can succeed once or fail.  Non-determistic modes of functions are
+not required, and the syntax of function definition and application can
+be considerably simplified and optimized for the deterministic use.
+
+\subsubsection{Curry}
+%%%%%%%%%%%%%%%
+
+The logic capabilities of the language Curry \cite{HAK+97} are provided
+through the support for \textit{non-deterministic functions}, and the
+function definition syntax supports this:
+\begin{verbatim}
+f :: Int -> Int
+f 1 = 10
+f 2 = 20
+f 2 = 30
+\end{verbatim}
+The language is typed, with \texttt{f} defined as
+\textit{int $\rightarrow$ int} above.  The call \texttt{f 2} will
+produce the multiple results \texttt{20} and \texttt{30}.
+The left-hand-sides of the functional equality definitions can be
+defined with conditional guards, such that the definitions are
+referred to as \texttt{conditional equations} where the conditions are
+constraints which must be solved in order for the equation to be applied.
+This form is used in the definition of \texttt{factorial}:
+\begin{verbatim}
+factorial :: Int -> Int
+factorial 1 = 1
+factorial n | n > 1 = n * factorial (n - 1)
+\end{verbatim}
+The constraint \texttt{n $>$ 1} is added to the second equality defining
+the factorial function to ensure deterministic evaluation of 
+\texttt{factorial 1} which would otherwise match the rhs of both rules.
+To ensure deterministic execution of a function in Curry, the defining
+equations
+must be checked to ensure that the conditions are not simultaneously
+satisfiable \cite{MNRA92}, and no new variables can be introduced
+in the equations' right-hand-sides.
+
+The condition constraint in Curry can also be a boolean function
+expression, as an abbreviation for the rule \texttt{<bool\_{}expr>=True}.
+This is similar to the treatment of function applications
+in relation positions in PrologPF, discussed in Section \ref{bool}.
+
+\subsubsection{External procedures}
+
+The functions can be defined in a language other than Prolog, and
+called as external procedures.  Many existing implementations of Prolog
+support this capability, and effort has been made to formalise the
+approach (\cite{BM88, MBB+93, Bon92}).  These systems do not support 
+higher-order programming.
+
+\subsubsection{Logic programming with equality}
+
+A more general solution is to define functions in terms of a set of
+equalities \cite{Han94, Nai91},
+extending Prolog's '\texttt{=}' relation, with conditional
+support provided in the form of \textit{guards}.  For example:
+
+\begin{verbatim}
+fact(1) = 1.
+fact(N) = N * fact(N-1) :- N \== 1.
+\end{verbatim}
+
+The use of guards (in this example \texttt{N $\backslash$== 1})
+provides access to Prolog relations, including those
+with multiple solutions.  The use of the equality relation itself imposes
+no constraints on the form of the definition, permitting for example
+
+\texttt{append(X,append(Y,Z)) = append(append(X,Y),Z).}\\
+
+This is useful if a most general equation solving procedure is to
+be used, with non-deterministic selection of rewrite rules and
+of terms for reduction, and right-to-left as well as left-to-right
+application of each equality rule.
+
+The non-deterministic solution of equations would provide interesting
+opportunities for the application of the Delphi principle to the
+extended proof tree.  However, the research in this dissertation
+ensures the functional reduction process is deterministic such that
+the parallelized program has the efficiency associated with
+direct execution
+of compiled machine code.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Function application: the \texttt{@} operator} %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Extending Prolog for explicit function application}
+%%%%%%%%%%%
+
+The standard syntax for Prolog terms is supported, with special meaning 
+applied to a new operator \texttt{@} (defined in PrologPF as
+\texttt{op(600,yfx,@)}).  The presence of the operator in a PrologPF
+term indicates that the normal unification step should be preceded by
+functional evaluation.  For example, in the goal for the relation \texttt{=}:
+
+\texttt{:- Z = foo @ [a].}
+
+the term \texttt{foo @ [a]} should be evaluated
+before the terms \texttt{Z} and the result of
+\texttt{foo @ [a]} are unified with
+the arguments of the \texttt{=} relation.
+
+If \texttt{foo} is a \textit{defined function} 
+(i.e. defined with the \texttt{fun} relation described in 
+section \ref{definition}), then the rewrite rules specified
+in the associated \texttt{fun} relation are used for the reduction.
+Otherwise \texttt{foo} is a \textit{constructor} and the term is
+irreducible.
+
+For nested \texttt{@} terms, function evaluation is \textit{strict},
+i.e. innermost arguments are evaluated first.
+For example in:
+
+\texttt{:- Z = foo @ [goo @ [a], hoo @ [b]].}
+
+the terms \texttt{goo @ [a]} and \texttt{hoo @ [b]} will be evaluated
+before the results are used in the evaluation of \texttt{foo} with
+those arguments.  The evaluation of argument terms takes place
+left-to-right.  Evaluation ordering is significant in PrologPF because
+the usual functional programming one-way \textit{matching} is
+replaced with \textit{unification}, and variable arguments are permitted.
+
+\todo{example of argument unification needed here?}
+
+The full \texttt{@} syntax is given in table \ref{syntax:application}.
+
+\begin{table}[htbp]
+{\small
+\begin{tabular}{| l r l |}
+\hline
+ & & \\[2mm]
+Function\_{}Application & ::= & Function\_{}Term \texttt{\textbf{@ [}} Args\ldots \texttt{\textbf{]}}\\
+ & $|$ & Function\_{}Term \texttt{\textbf{@ []}}\\
+ & $|$ & Defined\_{}Atom \texttt{\textbf{(}} Args\ldots \texttt{\textbf{)}}\\[4mm]
+Function\_{}Term & ::= & Defined\_{}Atom\\
+ & $|$ & Variable\\
+ & $|$ & Lambda\_{}Expression\\
+ & $|$ & Function\_{}Application\\[4mm]
+Lambda\_{}Expression & ::= & \texttt{\textbf{lambda([}} Formal\_{}Args\ldots \texttt{\textbf{] ,}}
+                                PrologPF\_{}Term \texttt{\textbf{)}}\\
+ & $|$ & \texttt{\textbf{lambda([],}} PrologPF\_{}Term \texttt{\textbf{)}}\\[4mm]
+Formal\_{}Args\ldots & ::= & Prolog\_{}Term\\
+ & $|$ & Prolog\_{}Term \texttt{\textbf{,}} Formal\_{}Args\ldots\\[4mm]
+Args\ldots & ::= & PrologPF\_{}Term\\
+ & $|$ & PrologPF\_{}Term \texttt{\textbf{,}} Args\ldots\\[4mm]
+Defined\_{}Atom & ::= & Prolog\_{}Atom defined in earlier \texttt{fun} clause\\
+\hline
+\end{tabular}
+}
+\caption{Syntax: Function Application with the \texttt{@} Operator}
+\label{syntax:application}
+\end{table}
+
+Note that a function is always applied to a \textbf{list} of arguments,
+so terms such as
+\texttt{foo @ a} or \texttt{foo @ X}
+do \textbf{not} denote function application (the correct syntax would be
+\texttt{foo @ [a]} and \texttt{foo @ [X]}).
+
+A function \texttt{foo} can be
+defined with no arguments, and the reduction of that function can be made
+explicit with \texttt{foo @ []}.  This use of \textit{nil} is similar to
+the value \textit{unit} in Standard ML, and is useful where function
+abstractions are used to emulate laziness, as in the example with infinite
+lists in Chapter \ref{case_fcs}.  Nil argument functions are
+discussed further in section
+\ref{unit}.
+
+\subsection{Function application: syntactic sugaring}
+%%%%%%%%%%%
+It should be noted that in PrologPF the term:
+
+\texttt{foo(a,b)}
+
+in which \texttt{foo} is a defined function, is semantically equivalent to:
+
+\texttt{foo @ [a,b]}
+
+This allows the most convenient syntax for function application to be used
+within Prolog programs and allows consistent treatment of constructors and
+functions. For example, the solution of the goal:
+
+\texttt{:- Z = foo(goo(a),hoo(b)).}
+
+can involve functional reduction of any of \texttt{foo}, \texttt{goo}, or
+\texttt{hoo}.  With
+\texttt{fun goo(X) = gg.} and \texttt{fun hoo(X) = hh.} then the goal
+will succeed with the single solution \texttt{Z = foo(gg,hh)}.
+
+This consistent treatment of constructors and functions can be seen in the
+definition of a \texttt{wrap}
+function which maps a list to a similar list with each element wrapped with
+the constructor \texttt{envelope}:
+\begin{verbatim}
+fun wrap([])    = [];
+    wrap([X|T]) = [envelope(X)|wrap(T)].
+\end{verbatim}
+\todo{cite Clocksin's new book}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Higher-Order Functions and Currying} %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\label{higher-order}
+
+A goal of the PrologPF system is to support functions as first-class data
+items in the extended Prolog semantics, and to permit a syntax which 
+facilitates the straightforward creation and application of function closures.
+
+The approach in PrologPF owes much to Standard ML, with support for
+nameless functions as lambda-expressions and the creation of closures
+via currying \cite{Cur30, Sch24}.
+
+\subsection{Lambda-expressions}
+%%%%%%%%%%%
+
+Nameless functions are created in PrologPF using the special constructor
+\texttt{lambda/2}.  The syntax is given in table \ref{syntax:application}.
+
+An example of a goal using a lambda expression representing the increment
+function is:
+
+\texttt{:- Z = lambda([X],X+1) @ [6].}
+
+returning the single solution \texttt{Z = 7}.
+
+As with defined functions in PrologPF,
+the evaluation of the function term proceeds
+with the unification of the actual parameter (in this example
+\texttt{6}) with the argument of the lambda expression (\texttt{X}).
+The instantiated second argument of the \texttt{lambda} term is then evaluated
+to produce the final result.
+
+Unlike standard Prolog, the scope of the formal arguments of the lambda
+expression (\texttt{X} in the example above) is limited to that expression.
+This ensures the correct operation of goals such as:\\
+\centerline{\texttt{:- Y = lambda([X],X+1) @ [6], Z = lambda([X],X*2) @ [7].}}
+
+Lambda terms can be defined to take \textbf{no} arguments, providing a
+mechanism to delay the evaluation of the expression given as the second
+argument.  For example:\\
+\texttt{Z = lambda([],f(100))}\\
+The expression \texttt{f(100)} will not be evaluated until a subsequent application
+\texttt{Z @ []}.  This use of \textit{nil} arguments is discussed further in
+Section \ref{unit}.
+
+\subsection{Currying}
+%%%%%%%%%%%
+
+The support for currying in PrologPF ensures that the following equivalence holds
+true:\\
+\texttt{foo @ [a] @ [b] @ [c]} $\equiv$ \texttt{foo @ [a,b,c]}
+
+The arity of a defined function is fixed in the \texttt{fun} relation
+(section \ref{definition}). Any alternate definition using the same function
+name but with a differing number of formal parameters is flagged by PrologPF
+as an error.
+
+This means the PrologPF compiler can generate appropriate code to return a lambda
+expression where a function is called with fewer arguments than appear in the
+\texttt{fun} definition. The earlier definition of the operator \texttt{@} was shown to be
+left-associative (the 'yfx' in \texttt{op(600,yfx,@}).
+
+These capabilities combine to provide the flexible support for
+higher-order abstraction through the partial application of functions, known as currying.
+For example, if a function \texttt{foo} is defined
+with 3 arguments as in \texttt{fun foo(X,Y,Z) = X+Y+Z.}, then
+(using symbol $\leadsto$ to represent 'evaluates to')
+
+\texttt{foo @ [a]} $\leadsto$ \texttt{lambda([Y,Z],foo(a,Y,Z))}\\
+$\Longrightarrow$\\
+\begin{tabular}{l l l}
+\texttt{foo @ [a] @ [b] @ [c]}
+ & $\equiv$   & \texttt{((foo @ [a]) @ [b]) @ [c]}\\
+ & $\leadsto$ & \texttt{(lambda([Y,Z],foo(a,Y,Z)) @ [b]) @ [c]}\\
+ & $\leadsto$ & \texttt{lambda([Z],foo(a,b,Z)) @ [c]}\\
+ & $\leadsto$ & \texttt{foo(a,b,c)}\\
+ & $\equiv$   & \texttt{foo @ [a,b,c]}\\
+\end{tabular}
+
+The explicit use of the \texttt{@} operator and the use of currying permit the
+straightforward definition and application of functions such a \texttt{map}:
+\begin{verbatim}
+fun map(F,[]) = [];                        % map definition
+    map(F,[X|Xs]) = [F @ [X]|map(F,Xs)].
+
+:- Z = map(+1,[10,20,30]).                 % curried +
+
+:- Inc = map(+1), Z = Inc @ [[10,20,30]].  % curried map, +
+\end{verbatim}
+Each query succeeds with the single solution for \texttt{Z = [11,21,31]}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Special Treatment of \texttt{if-then-else}} %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\label{if-then-else}
+
+PrologPF includes a predefined function \texttt{if} to provide conditional
+evaluation of alternative expressions.  The systematic eager evaluation in
+PrologPF precludes the definition of \texttt{if} as a normal PrologPF function
+with three arguments:
+\begin{verbatim}
+fun if(true, A,B) = A;
+    if(false,A,B) = B.
+\end{verbatim}
+As the argument evaluation semantics of PrologPF are eager,
+in an expression such as \texttt{if(Z=0, 1, 100/Z)} all three arguments
+would be evaluated before the application of \texttt{if}, producing a
+possible
+run-time arithmetic error during the attempted evaluation of \texttt{100/Z}.
+
+To provide more useful behaviour, \texttt{if} is treated as a predefined
+function with exceptional semantics.  The special treatment is unique
+to \texttt{if}:
+\begin{enumerate}
+\item{The evaluation of the alternative expressions is delayed until
+      \textbf{after} the condition has determined which of the
+      two alternatives should be evaluated.  Only \textbf{one} of the
+      two alternatives will then be evaluated.}
+\item{The condition term is treated as a Prolog \textbf{goal}, rather
+      than a boolean-valued reducible expression}
+\end{enumerate}
+
+\subsection{Syntax}
+%%%%%%%%%%%
+
+The syntax for the conditional \texttt{if} expression is given in
+table \ref{syntax:if}.
+
+\begin{table}
+{\small
+\begin{tabular}{| l r l |}
+\hline
+ & & \\
+If\_{}Expression & ::= & \texttt{\textbf{if(}}PrologPF\_{}Term$_1$\texttt{\textbf{,}}
+                                              PrologPF\_{}Term$_2$\texttt{\textbf{,}}
+                                              PrologPF\_{}Term$_3$\texttt{\textbf{)}}\\
+ & $|$ &  \texttt{\textbf{if}} PrologPF\_{}Term$_1$ \texttt{\textbf{then}}
+                               PrologPF\_{}Term$_2$ \texttt{\textbf{else}}
+                               PrologPF\_{}Term$_3$\\
+ & $|$ &  \texttt{\textbf{if}} PrologPF\_{}Term$_1$ \texttt{\textbf{then}}
+                               PrologPF\_{}Term$_2$\\[4mm]
+\hline
+\end{tabular}
+}
+\caption{Syntax: \texttt{if}}
+\label{syntax:if}
+\end{table}
+
+The use of the predefined operators \texttt{if}, \texttt{then} and \texttt{else}
+is permitted to reduce the use of brackets and allow a syntax similar to that
+of languages such as Standard ML.  Where the \texttt{if-then-else} form is used,
+the resultant expression is equivalent to the term\\
+\texttt{if(Term$_1$,Term$_2$,Term$_3$)}.
+
+To allow a convenient syntax without modifying the precedence of the standard
+Prolog operators, the following precedences are used for \texttt{if},
+\texttt{then} and \texttt{else}:
+\begin{verbatim}
+:- op(675,fx,if).     % 'if' is prefix
+:- op(650,xfx,then).  % 'then' is infix
+:- op(625,xfx,else).  % 'else' is infix
+\end{verbatim}
+The precedence of the predefined \texttt{if}, \texttt{then} and \texttt{else}
+operators in PrologPF implies that:\\\
+\texttt{if} Term$_1$ \texttt{then} Term$_2$ \texttt{else} Term$_3$\\
+$\equiv$ \texttt{if (}Term$_1$ \texttt{then (}Term$_2$ \texttt{else} Term$_3$ \texttt{))}\\
+$\equiv$ \texttt{if(}\texttt{then(}Term$_1$,\texttt{else(}Term$_2$,Term$_3$\texttt{)))}
+
+The \texttt{else}-expression can be omitted, such that:\\
+\texttt{if} Term$_1$ \texttt{then} Term$_2$ \texttt{~~}$\equiv$
+\texttt{~~if} Term$_1$ \texttt{then} Term$_2$ \texttt{else fail}\\
+
+The precedence of the \texttt{if-then-else} compound term has been set
+higher than that of the Prolog's \texttt{=} and \texttt{;} operators
+to minimise the need
+for brackets in function definitions, and in goals of the form
+\texttt{Z = if-expression}.  The compromise means that conditional
+operators used in \texttt{if} conditions (i.e. Term$_1$) must
+be bracketed, as must be nested \texttt{if} expressions. For example:
+\begin{verbatim}
+if (A < 20) then (if (A > 12)
+                  then middle
+                  else lower
+                 )
+            else upper
+\end{verbatim}
+
+\subsection{Evaluation}
+%%%%%%%%%%%
+
+Special code is generated in the call to \texttt{if} in the evaluation of
+if-expressions.
+
+\subsubsection{Defined evaluation ordering with \texttt{if}}
+
+For any other arity/3 function call such as
+\mbox{\texttt{foo(}Term$_1$\texttt{,}Term$_2$\texttt{,}Term$_3$\texttt{)}}
+for defined function \texttt{foo}, code
+of the following form would be generated:
+
+[code to evaluate Term$_1$ with result as term X$_1$] \\[1mm]
+[code to evaluate Term$_2$ with result as term X$_2$] \\[1mm]
+[code to evaluate Term$_3$ with result as term X$_3$] \\[1mm]
+functional evaluation of \texttt{foo(}X$_1$,X$_2$,X$_3$\texttt{)}\\
+
+In the case of the special function \texttt{if} the eager evaluation of both
+alternative expressions in terms such as 
+\texttt{if (Z = 0) then 1 else 100/Z} would
+not execute as intended for \texttt{Z = 0}, so consequently
+code of the following form will be generated:
+
+[code to find first solution of call(Term$_1$)
+as relational goal (section \ref{if:cond})] \\[1mm]
+$<$on success:$>$ [code to return result of evaluation of Term$_2$] \\[1mm]
+$<$on failure:$>$ [code to return result of evaluation of Term$_3$] \\
+
+PrologPF ensures that:
+\begin{enumerate}
+\item{The condition goal completes \textbf{before} the evaluation of the
+  alternate expressions of the \texttt{if}-expression.}
+\item{The condition goal succeeds with one solution or fails.}
+\item{Only one of the alternate expressions will be evaluated, the \texttt{then}
+  expression if the condition goal succeeds, or the \texttt{else} expression
+  if it fails.}
+\end{enumerate}
+
+\subsubsection{\texttt{if} condition as relational goal}
+\label{if:cond}
+
+There is considerable advantage in giving functions within the combined
+functional logic system access to the relations in the program and those in
+the Prolog libraries.  The implementation chosen for the Delphi Machine
+requires that the function evaluation be deterministic.  A successful
+compromise has been achieved with:
+\begin{enumerate}
+\item{The \textbf{only} place a function in PrologPF can call a Prolog
+  relation is in the condition of an \texttt{if}-expression}
+\item{The call uses Prolog's normal search, but determinism is maintained with
+  first-solution semantics}
+\item{The acceptance of boolean functions as relational goals reintroduces
+  functional terms as conditions (section \ref{bool})}
+\end{enumerate}
+
+An example showing how the Prolog library \texttt{append} relation can
+be used to produce a similar (but deterministic) function would be:
+\begin{verbatim}
+fun append(X,Y) = if append(X,Y,Z) then Z.
+\end{verbatim}
+This example relies upon the following:
+\begin{enumerate}
+\item{The \texttt{if} semantics ensure the goal \texttt{append} produces a
+  value for \texttt{Z} before the evaluation of the sub-expressions
+  \texttt{Z} and \texttt{fail}.}
+\item{The \texttt{if} semantics ensure that
+  only one of the sub-expressions is
+  evaluated, after the
+  solution of the conditional goal.}
+\item{The relation \texttt{append/3} and the function \texttt{append/2} are recognized
+  as having different names (see section \ref{bool})}
+\item{The missing \texttt{else}-expression is equivalent to \texttt{else fail}, so the
+  definition is an abbreviation for:\\
+  \centerline{\texttt{fun append(X,Y) = if append(X,Y,Z) then Z else fail.}}
+  }
+\item{The predefined function \texttt{fail} is available to produce
+  function failure (section \ref{fail})}
+\end{enumerate}
+
+The use of relational goals as conditions, combined with Prolog's left-to-right
+search rule,
+leads to a Prolog syntax with semantics similar to the special operators in languages
+such as Standard ML for \texttt{andalso} and \texttt{orelse}:
+
+\begin{tabular}{l l l l}
+Conjunction: & \texttt{(P,Q,R)} & $\equiv$ & \texttt{P andalso Q andalso R}\\
+Disjunction: & \texttt{(P;Q;R)} & $\equiv$ & \texttt{P orelse Q orelse R}
+\end{tabular}
+
+For example, using the standard Prolog library relations $>$ and $<$:
+\begin{verbatim}
+fun account_status(Bal) = if (Bal > 0, Bal < 100)
+                          then normal
+                          else needs_attention.
+\end{verbatim}
+
+\todo{provides similarity with conditional guards while enforcing
+determinism}
+\todo{Prolog's A -$>$ B,C has similar deterministic condition A}
+
+\subsection{Value declarations}
+%%%%%%%%%%%
+\label{val}
+
+A value declaration gives an expression a \textit{name} within a
+particular \textit{scope}.
+
+The PrologPF support for \texttt{if} if ensures that the relational
+condition is executed before the alternate expressions.  The
+unifier of the free variables in the condition is thus valid for
+the evaluation of the \texttt{then}-expression, which is only
+evaluated if the condition has succeeded.  Thus the use of the
+\texttt{=} relation in the condition of an
+\texttt{if-then-else} expression can give a value a name, which will
+be valid in the scope of the \texttt{then} sub-expression.
+
+The use of the unification of the condition to support naming in this
+way is convenient if a sub-expression is to be repeated within an
+expression, as often occurs within an \texttt{if-then-else}.  An
+example is in a definition of a \texttt{max} function to find
+the highest integer in a list:
+\begin{verbatim}
+fun max([X])    = X;
+    max([X|Xs]) = if (M = max(Xs))
+                  then (if (X > M)
+                        then X
+                        else M
+                       ).
+\end{verbatim}
+In the recursive case,  the condition goal \texttt{M = max(Xs)} results
+in the evaluation of \texttt{max(Xs)} being unified with a new free
+variable \texttt{M}, with the unifier \texttt{M/n} (where n is the
+largest integer in \texttt{Xs}) being valid for the subsequent
+evaluation of \texttt{if (X > M) then X else M}.
+
+The use of \texttt{M} as a \textit{name} to represent the value
+\texttt{max(Xs)} is equivalent to the repeated appearance of
+the value in the \texttt{then} expression.  The \texttt{max} function
+could equally be written:
+\begin{verbatim}
+fun max([X])    = X;
+    max([X|Xs]) = if (X > max(Xs))
+                  then X
+                  else max(Xs).
+\end{verbatim}
+As these value declarations are using the standard \texttt{=}
+relation in the condition, the method supports a convenient
+technique for using functions that multiple results as
+tuples.  This can be seen with the second of the
+complementary functions
+\texttt{zip} and \texttt{unzip}.  The function \texttt{zip}
+takes two lists of equal length as arguments, and returns a
+list of pairs \cite{HAK+97}:
+\begin{verbatim}
+fun zip([],[])         = [];
+    zip([X|Xs],[Y|Ys]) = [(X,Y)|zip(Xs,Ys)].
+\end{verbatim}
+The complementary function \texttt{unzip} has a convenient
+definition using a value declaration \cite{Pau91}:
+\begin{verbatim}
+fun unzip([])            = ([],[]);
+    unzip([(X,Y)|Pairs]) = if ((Xs,Ys) = unzip(Pairs))
+                           then ([X|Xs],[Y|Ys]).
+\end{verbatim}
+A version of \texttt{unzip} that did not use a value
+declaration could be written using of auxiliary functions to
+extract the elements of the tuple and repeating the \texttt{unzip(Pairs)}
+sub-expression.  Alternatively, an auxiliary function could be
+defined to add a pair of elements to pair of lists, as in:
+\begin{verbatim}
+fun addpair((X,Y),(Xs,Ys)) = ([X|Xs],[Y|Ys]).
+
+fun unzip([])           = ([],[]);
+    unzip([Pair|Pairs]) = addpair(Pair, unzip(Pairs)).
+\end{verbatim}
+However, the use of value declarations in \texttt{unzip} avoids the
+use of auxiliary functions.
+
+In the absence of common-expression elimination optimisations in the
+PrologPF compiler, the use of value declarations results in a more efficient
+object program.  In general, the use of names to represent expressions
+that are complex or repeated can result in programs that are more
+comprehensible.
+
+\subsection{Alternate function definitions $\equiv$ \texttt{if}}
+%%%%%%%%%%%
+\label{alt_if}
+
+In PrologPF, the function definition style using alternate argument patterns can
+be shown to be equivalent to a single functional equality using the
+predefined \texttt{if} function.
+
+The following characteristics of the \texttt{if} function are
+important in the equivalence:
+\begin{itemize}
+\item{The defined lazy conditional evaluation of the arguments to \texttt{if}}
+\item{The call to the condition
+  goal is defined to \textit{precede} the evaluation of one of the functional terms.
+  Value declarations from unification of terms in the condition goal with local
+  variables are therefore guaranteed to be bound in the scope of the subsequently
+  evaluated dependent expression.}
+\end{itemize}
+
+With the example of the factorial function:
+\begin{verbatim}
+fun fact(1) = 1;
+    fact(N) = N * fact(N-1).
+\end{verbatim}
+The equivalent if-then-else form is:
+\begin{verbatim}
+fun fact(Z) = if (Z=1)
+              then 1
+              else (if (Z=N)
+                    then N * fact(N-1)
+                   ).
+\end{verbatim}
+The general form of the translation is:
+\begin{verbatim}
+fun Function_name(Arg_pattern1, Arg_pattern2...) = Expression_1;
+    Function_name(Arg_pattern3, Arg_pattern4...) = Expression_2...
+\end{verbatim}
+goes to:
+\begin{verbatim}
+fun Function_name(Var1,Var2...)
+          = if (Var1 = Arg_pattern1, Var2 = Arg_pattern2...)
+            then Expression_1
+            else (if (Var1 = Arg_pattern3, Var2 = Arg_pattern4...)
+                  then Expression_2
+                  else ...
+                 ).
+\end{verbatim}
+Value declarations in the relational goal of the \texttt{if} condition can be seen more
+clearly with the transformation of the \texttt{append} function:
+\begin{verbatim}
+fun append(    [],Y) = Y;
+    append([X|Xs],Y) = [X|append(Xs,Y)].
+\end{verbatim}
+goes to:
+\begin{verbatim}
+fun append(L,Y) = if (L=[])
+                  then Y
+                  else (if (L=[X|Xs])
+                        then [X|append(Xs,Y)]
+                       ).
+\end{verbatim}
+
+\subsection{Summary of PrologPF \texttt{if} semantics}
+%%%%%%%%%%%%
+
+The goal of the \texttt{if-then-else} implementation in PrologPF is to
+provide useful conditional evaluation semantics, while supporting
+deterministic access to relations.
+
+With the expression 
+\texttt{if} Term$_1$ \texttt{then} Term$_2$ \texttt{else} Term$_3$:
+\begin{itemize}
+\item{The conditional expression Term$_1$ is treated as a relational goal, either
+  succeeding with a variable binding, or failing.}
+\item{The depth-first, left-to-right search of standard Prolog is used to find
+  a solution to Term$_1$, and the search is limited to finding the first solution.}
+\item{The call to the conditional expression Term$_1$ completes before the evaluation
+  of either Term$_2$ or Term$_3$.}
+\item{If Term$_1$ succeeds then Term$_2$ is evaluated in the context of any bindings
+  resulting from the solution of Term$_1$, and the result returned as the value of the
+  \texttt{if}-expression.}
+\item{If Term$_1$ fails then Term$_3$ is evaluated and returned as the result of the
+  \texttt{if}-expression.}
+\item{If the \texttt{else}-expression (\texttt{else} Term$_3$) is omitted, the semantics are
+  the same as if an \texttt{else}-expression (\texttt{else fail}) were added.}
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Boolean functions as relations} %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\label{bool}
+
+In summary, the following equivalence holds for functions used in
+the position of relational goals:\\
+ \texttt{?- foo(a).~~~} $\equiv$ \texttt{~~~?- foo(a) = true},
+iff \texttt{foo} is a defined function of arity/1.
+
+A function application term is permitted to appear in the position of
+a relational goal, where it is treated as a call to the Prolog \texttt{=}
+relation to unify the result of the function application with \texttt{true}.
+This applies to the body of each rule and the condition of each \texttt{if}
+expression.
+
+For example, with a boolean function \texttt{prime(X)} returning true for
+a prime argument and false otherwise, the goal:\\
+\centerline{\texttt{?- p(X), prime(X), write(X).~~} $\equiv$
+\texttt{~~?- p(X), prime(X) = true, write(X).}}
+
+The explicit treatment of boolean functions as relations
+in this way can be seen in the prototype
+produced by Paulson and Smith \cite{PS91}.
+The language Escher \cite{Llo94}
+has \textbf{all} relations declared as boolean functions in this way.
+
+Either the explicit \texttt{@} operator can be used to
+denote the function application, or the Prolog compound term syntax can
+be used.  In the latter syntax, the outermost functor of the goal will
+only be recognized as a defined function if the number of actual parameters
+matches the arity of the defined function of the same name.  The specification
+of a reduced number of arguments in a curried application is not useful where
+a boolean result is required.  A partial (i.e. curried) function application
+would always return a higher-order result, such that:\\
+\centerline{\texttt{<curried\_{}application> = true~~} $\equiv$ \texttt{~~fail}}
+
+The requirement for the arities of the defined function and the actual use within
+a goal
+facilitates the conversion of library relations (such as \texttt{append}) into
+functions and vice versa.  I.e. the functional definition of \texttt{append/2}
+does not conflict with the relational definition \texttt{append/3}, and the
+library relation can be used in the function definition:
+\begin{verbatim}
+fun append(X,Y) = if append(X,Y,Z) then Z.
+\end{verbatim}
+Equally, the deterministic functional version of append
+given in section \ref{alt_if} could have been used for a
+version of the library relation limited to deterministic modes:
+\begin{verbatim}
+append(X,Y,Z) :- Z = append(X,Y).
+\end{verbatim}
+
+To summarise the naming/arity issues arising from both currying and the
+acceptance of boolean functions as relations:
+\begin{enumerate}
+\item{Each alternate equality statement in the definition of a function must
+  have the same number of formal parameters, and this number is the arity of
+  the function}
+\item{A function can have the same name as a relation, but must not have
+  the same arity}
+\end{enumerate}
+The first rule is to allow currying, the second to allow boolean functions as
+goals.  The functional logic language Mercury has a similar rule to 2 above,
+but in Mercury a function must not have an arity that is \textbf{one less} that a
+relation of the same name.  The Mercury name/arity constraints are inconvenient,
+as it is natural to define a function (such as \texttt{append/2}) to have an
+arity one less that an equivalent relation (i.e. \texttt{append/3}).  PrologPF
+exploits this capability to define functions representing deterministic modes
+of many frequently-used
+library relations such as \texttt{append} and \texttt{=..}.
+
+In the design of PrologPF, a choice was made to introduce rule 2, rather than
+the alternative that boolean functions as goals should require explicit use of 
+the \texttt{@} operator.  The body of Prolog code converted for execution on
+the PrologPF system has not yet included enough examples of relations with
+multiple arities to confirm this design decision.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Failure of functions} %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\label{fail}
+
+The functional support in PrologPF is embedded within an environment of
+relations which are expected to \texttt{succeed} (with an associated
+variable binding) or \textit{fail}.  The treatment of function applications as
+relation argument terms associates every application with an underlying relation,
+for example in:\\
+\centerline{\texttt{?- Z = fact(5).}}\\
+the function application of \texttt{fact} is as an argument of the
+relation \texttt{=}.
+
+\subsection{Functional failure $\Rightarrow$ Relation failure}
+%%%%%%%%%%%%
+\label{func_fail}
+
+In PrologPF, function failure is supported through the provision of a
+special term \texttt{fail}.
+This mirrors the standard Prolog relation \texttt{fail}, which
+always fails.
+\begin{enumerate}
+\item{The evaluation of the term \texttt{fail} within an expression
+  produces no value but always fails.}
+\item{A function application fails if evaluation of a subexpression
+  in the right-hand-side of the associated definition fails.}
+\item{A relation fails if the evaluation of a functional argument
+  fails.}
+\end{enumerate}
+The use of \texttt{fail} within a function definition can be seen
+in the \texttt{lookup} function, which returns a value associated
+with a key in a list of paired key-value terms:
+\begin{verbatim}
+fun lookup(_,[])                = fail;
+    lookup(Key,[(Key,Value)|_]) = Value;
+    lookup(Key,[_|T])           = lookup(Key,T).
+\end{verbatim}
+The function might be used in a program such as:
+\begin{verbatim}
+a(a).
+a(b).
+a(c).
+
+?- a(X), write(lookup(X,[(a,1),(c,3),(e,5)])).
+\end{verbatim}
+The subgoal \texttt{a(X)} produces values \texttt{a},
+\texttt{b} and \texttt{c} for \texttt{X}, calling \texttt{write}
+with the value of the \texttt{lookup} application.  As the
+key-value list argument contains no entry for \texttt{b}, the
+application will fail for that argument value.  Backtracking will
+take place as in standard Prolog, such that \texttt{write} will
+display the values \texttt{1} and \texttt{3} from the successful
+application of \texttt{lookup} with \texttt{a} and \texttt{c}.
+
+\subsection{Function \texttt{fail} as an exception}
+%%%%%%%%%%%%
+
+Within the function evaluation, the semantics of \texttt{fail} are
+those of an uncaught \textit{exception} \todo{cite exceptions}.
+The exception can be considered to be caught at the point
+immediately preceding the unification of the term with the
+corresponding argument of the relation, where it causes that relation
+to fail.
+
+The general support for exceptions would be consistent with the rest of the
+functional support in PrologPF as
+\begin{enumerate}
+\item{Function evaluation in PrologPF is \textit{eager}, so 
+  the evaluation of the expression term to be raised as an
+  exception can occur \textbf{before} the exception is raised
+  and the \textbf{value} of the expression returned as the
+  exception value.  A lazy functional language with 
+  \textit{call-by-need} argument evaluation semantics would require
+  special treatment of the expressions given to the \texttt{throw}
+  function.}
+\item{PrologPF permits partially defined functions (where some
+  legal actual argument patterns have no matching left-hand-side in
+  the function definition) and function failure.
+  A more general support for exceptions can be provided for
+  which these are special cases.
+  }
+\end{enumerate}
+
+If, as in Standard ML \cite{MTH90}, a general support for
+exceptions were provided though the use of \texttt{raise} and
+\texttt{handle} operators, then the use of \texttt{fail} within
+PrologPF could be shown to be equivalent to the limited use of 
+those exceptions:\\
+\begin{tabular}{l l l}
+\texttt{fail} in PrologPF      &$\equiv$ &\texttt{raise Fail}\\
+                               &         &with declared \texttt{exception Fail}\\[4mm]
+With relation $R$, argument    &         &\\
+expressions $e_1,...,e_n$, and &         & \\
+goal $R(e_1,\ldots,e_n)$       &$\equiv$ &$e_i$ \texttt{handle Fail} $\Rightarrow$\\
+                               &         &~~~~ensure \textit{failure} of $R$\\
+                               &         &at each argument $e_i, i=1\ldots n$\\
+\end{tabular}
+
+\subsubsection{A proposal for more general exception support in PrologPF}
+%%%%%%%%%%%%%%%
+
+Standard Prolog \cite{DEC96} has support for exceptions at the
+level of relations with the predefined \texttt{catch} and \texttt{throw}
+metalogical operators.  An exception is generally referred to as a 
+\texttt{Ball}.
+
+The format for the use of \texttt{throw} is:\\
+\centerline{\texttt{throw(Ball)}}\\
+where \texttt{Ball} is any Prolog term to be propagated as an exception.
+Similarly the format for the use of \texttt{catch} is:\\
+\centerline{\texttt{catch(Goal,Ball,Handler)}}\\
+where:\\
+\texttt{Goal} is a Prolog relational goal potentially containing
+\texttt{throw} subgoals,\\
+\texttt{Ball} is a term to be unified with the actual argument of any
+\texttt{throw} operators encountered during execution of \texttt{Goal}, and\\
+\texttt{Handler} is a subgoal to be called when an exception is
+caught, i.e. successfully unified with \texttt{Ball}.\\
+Often, \texttt{Ball} and \texttt{Handler} will contain common free
+variables, as a means of propagating values from the \texttt{throw}.
+The goal:\\
+\centerline{\texttt{catch(throw(foo),X,write(X))}}\\
+will have the effect of writing ''foo`` to the output, with the
+execution proceeding as follows:
+\begin{enumerate}
+\item{\texttt{catch} calls the subgoal given as its first argument,
+  namely \texttt{throw(foo)}.}
+\item{The subgoal \texttt{throw(foo)} throws (raises) the ball (exception)
+  \texttt{foo}.}
+\item{The ball \texttt{foo} 
+  propagates to the level of the surrounding \texttt{catch}
+  where it is unified with the second argument of the \texttt{catch}
+  relation (\texttt{X}).  If this unification had failed, then the ball
+  continues to propagate to any higher enclosing \texttt{catch} relation.}
+\item{With the successful unification of \texttt{foo} with \texttt{X},
+  the subgoal \texttt{write(X)}
+  given as the third argument to \texttt{catch} is called.}
+\item{\texttt{foo} is written to the ouput.}
+\end{enumerate}
+In the context of standard Prolog's \texttt{catch} and \texttt{throw},
+the use of \texttt{fail} within defined functions in PrologPF can be 
+treated as:\\
+
+\begin{tabular}{l l l}
+\texttt{fail} in PrologPF       &$\equiv$ &\texttt{if throw(fail) then \_{} else \_{}}\\[4mm]
+A goal containing relation $R$, &         &\\
+as in $\ldots,R,\ldots$         &$\equiv$ &$\ldots,$\texttt{catch(}$R$\texttt{,fail,fail)}$,\ldots$\\
+\end{tabular}
+
+Note the use of \texttt{if-then-else} to map the relational call to
+\texttt{throw} into an expression.  The implicit \texttt{catch} which can
+be considered to be wrapped around each relation call containing functional
+arguments is shown to only handle one value of exception (\texttt{fail}).
+The \texttt{catch} goal will then fail if this type of exception is
+caught.
+
+With this definition we arrive at the semantics for our use of
+\texttt{fail} within functions as uncaught exceptions, leading to
+failure of the associated relation.
+
+The definition using \texttt{catch} and \texttt{throw}
+could lead to the more flexible use of exceptions within
+the functional component of PrologPF,  although the implementation to
+date only permits the support for \texttt{fail}.
+
+An improved support would:
+\begin{itemize}
+\item{Allow any term to be raised as an exception value within a
+  defined function, for example \texttt{throw(foo)}.}
+\item{Allow exceptions to be caught within the functions rather than
+  propagating to the relational level.}
+\item{Treat any uncaught exception from a functional evaluation as
+  \texttt{fail}.}
+\end{itemize}
+The implementation would require the following:
+\begin{itemize}
+\item{The meta-relation \texttt{throw} should be mapped to a
+  similar function \texttt{throw/1}, 
+  where an expression \texttt{throw(X)}
+  would have the same meaning as\\
+  \centerline{\texttt{if throw(exception(X)) then \_{} else \_{}}.}\\
+  The
+  definition would use the support in PrologPF for relations
+  as if-conditions.  The use of anonymous variables as
+  the alternate expressions is arbitrary, as the function
+  \texttt{throw} would never return any value.
+  Function could then use \texttt{throw}
+  within any expression.}
+\item{As with the metarelation \texttt{catch}, a functional
+  equivalent would allow the handling of exceptions at any
+  level of a nested functional expression, as in Standard
+  ML.  The ML syntax is\\
+  \centerline{$E$ \texttt{handle} $P_1 => E_1 | \ldots | P_n => E_n$}\\
+  where $E$ is the expression which may possibly raise an
+  exception, $P_i$ is an expression matching the exception and
+  $E_i$ is the corresponding
+  value to be returned instead of $E$.  The equivalent support
+  in PrologPF would be by nested applications of a
+  \texttt{catch} function, which would have the same capabilities as
+  \texttt{catch(}$E$\texttt{,exception(}$P_i$\texttt{),}$E_i$\texttt{)} for
+  each pattern $P_i$ for unification with the exception term thrown.
+  }
+\item{The implicit \texttt{catch} wrapper around each relation $R$
+  would be\\
+  \centerline{\texttt{catch(}$R$\texttt{,exception(X),fail)}.}\\
+  This can
+  be contrasted with the more limited form supporting \texttt{fail}
+  given above.
+  }
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%
+\section{Unit} %
+%%%%%%%%%%%%%%%%
+\label{unit}
+
+ML has a built-in type '\texttt{unit}' with only one member, namely
+ '\texttt{()}'.
+A function of intended arity zero will be defined of type
+'\texttt{unit $\rightarrow \alpha$}', and 
+the value of that function will be returned by the explicit application
+of that function to '\texttt{()}'.
+
+An example ML function definition of this type is:
+\begin{verbatim}
+>fun foo () = 22;
+foo: unit -> int
+>val a = foo ();
+a = 22 : int
+\end{verbatim}
+In PrologPF, all functions are explicitly applied to a \textbf{list} of
+actual arguments, using Prolog syntax for lists, and the application of
+a function to \textbf{no} arguments can be explicit by using an empty
+list (i.e. nil: '\texttt{[]}').  The application of a function to no
+arguments simply returns that function, i.e.\\
+\texttt{foo @ []} for defined function \texttt{foo} with arity 0 $\equiv$ evaluated \texttt{foo}\\
+\texttt{bah @ []} for arity \texttt{bah} $>$ 0 is $\equiv$ \texttt{bah}\\
+$\Rightarrow$ \texttt{bah @ [] @ [] @ []} $\equiv$ \texttt{bah}\\
+$\Rightarrow$ \texttt{bah @ [] @ [] @ [X]} $\equiv$ \texttt{bah @ [X]}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{The Interaction of Functions and Relations} %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In the combined functional and logic programming paradigm of PrologPF, most
+effort has been placed in the design of the overlap between the use of
+defined functions and realtional rules.  The resultant system allows the
+exploitation of defined functions within rules and access to relations from
+within functions in a straightforward way with clear semantics.
+
+The interaction between the functional and logic elements of a PrologPF
+program is limited to:
+\begin{description}
+\item[Function definition.]{The relation \texttt{fun} is given special meaning as
+  declaring the ordered equational rewrite rules defining a named function.}
+\item[Function application.]{The semantics of the actual argument
+  terms of predicates has been extended to
+  include the application of defined functions
+  with the special operator \texttt{@}.  The functional reduction
+  is defined to occur as a step preceding the unification of the resultant term
+  with the predicate formal arguments.}
+\item[Function failure.]{Function failure is defined, such that a goal with a failing
+  function as an argument term is defined to fail.}
+\item[Relation call from within functions.]{The condition term of the built-in
+  PrologPF function \texttt{if} is defined to be a relational goal, with determinism
+  ensured by one-solution call semantics.}
+\item[Functions as goals.]{The non-curried application of a defined function as a goal is
+  defined to be equivalent to the \texttt{=} goal with that application term and
+  \texttt{true}.}
+\item[Functions as first-class data items.]{A function abstraction returned as the
+  result of a higher-order function or the user definition of a lambda-term can be
+  unified with a logical variable for application within subsequent goals or sub-goals.}
+\end{description}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Some PrologPF examples} %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+A comprehensive review of the application of PrologPF to both logic and functional
+problems is given in Chapters \ref{case_fcs} and \ref{case_pttp}.
+
+PrologPF examples of functions for factorial, append, map, and max 
+have been given in
+the preceding sections, and are repeated here for clarity:
+\begin{verbatim}
+fun fact(1) = 1;
+    fact(N) = N * fact(N-1).
+
+fun append(    [],Y) = Y;
+    append([X|Xs],Y) = [X|append(Xs,Y)].
+
+fun map(F,[]) = [];
+    map(F,[X|Xs]) = [F @ [X]|map(F,Xs).
+
+fun max([X])    = X;
+    max([X|Xs]) = if (M = max(Xs))
+                  then (if (X > M)
+                        then X
+                        else M
+                       ).
+\end{verbatim}
+
+\subsection{Undergraduate Prolog exam question attempt}
+%%%%%%%%%%%%
+
+An interesting example of functional logic syntax could be seen in an
+attempt by an undergraduate\footnote{Prolog Programming for AI, Part 1B,
+Cambridge University 1997} to write a relation \texttt{remhigh/2} in which
+the first argument is a list of integers, and the second is the same list
+excluding the highest element.  The undergraduate wrote:
+\begin{verbatim}
+%%%% remhigh:    L2 is list L1 excluding highest member of L1
+
+remhigh(L1,L2) :- remove( max(L1), L1, L2).
+
+%%%% remove(Element, List, Remainder_list) :
+%%%%     Remainder_list is List excluding Element
+
+remove(N, [N|T], T).
+remove(N, [H|T], [H|T1]) :- N \== H, remove(N, T, T1).
+\end{verbatim}
+From the definition of \texttt{remhigh} it can be seen that the student
+expected a functional support that is not present in Prolog.  The student
+is also suggesting a natural syntax.
+
+The above attempt would be correct in PrologPF with the
+definition of \texttt{max} given above in section \ref{if-then-else}.
+
+\subsection{Lazy lists}
+%%%%%%%%%%%%
+
+This example is extended and reviewed in more detail in
+chapter \ref{case_fcs}, where infinite streams of primes are
+created.  Here we will show the use of the higher-order features of 
+PrologPF to represent infinite lists.
+
+Infinite lists in this program will be represented by constructor
+terms of the form:\\
+\centerline{\texttt{item(Head,Tail)}}\\
+where \texttt{Head} is the value at the head of the list and \texttt{Tail}
+is a \textbf{function} of arity zero which returns the tail of the list.  The empty
+list can be represented by a constructor such as \texttt{empty}.
+The functions to extract the components of a list are:
+\begin{verbatim}
+fun head(empty)     = fail;
+    head(item(X,_)) = X.
+
+fun tail(empty)     = fail;
+    tail(item(_,F)) = F@[].
+\end{verbatim}
+A function to create the infinite list of natural numbers is:\\
+\centerline{\texttt{fun make\_{}nats(N) = item(N,lambda([],make\_{}nats(N+1))).}}
+
+The application \texttt{make\_{}nats(N)} can now be used to represent an
+infinite list the natural numbers starting from N.
+
+A goal such as \texttt{?- Z = head(tail(tail(make\_{}nats(1)))).} will
+return the expected solution \texttt{Z = 3}.
+
+With this representation of infinite lists, a version of the
+higher-order function \texttt{map} can be defined in PrologPF:
+\begin{verbatim}
+fun imap(F,empty)     = empty;
+    imap(F,item(X,T)) = item(F@[X], lambda([],imap(F,T@[]))).
+\end{verbatim}
+The function can be demonstrated in a goal such as\\
+\centerline{\texttt{?- Z = head(tail(tail(imap(*2,make\_{}nats(1))))).}}\\
+giving the solution \texttt{Z = 6}.
+
+The \texttt{imap} function illustrates the combined use of
+\textit{constructors} (\texttt{empty},\texttt{item}), \textit{higher-order
+variables} (\texttt{F}), explicit application with \texttt{@}, implicit
+application of \texttt{imap}, use of \texttt{lambda} expressions, and the
+use of \textit{nil} to denote evaluation of an arity/0 function.
+The example shows that the syntax facilitates the use of these capabilities
+without obscure programming constructs.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Comparison of PrologPF with \texttt{call/N, apply/3}} %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The semantics of the support for functions in PrologPF has most in
+common with Naish's \texttt{apply/3} \cite{Nai96}, although he retains the
+definition of functions as Prolog relations, and permits non-deterministic
+evaluation.  Naish's definition of \texttt{apply/3} is designed as a more
+capable replacement for the \texttt{call/N} extralogical predicate provided
+in some Prologs and used as the basis for the higher-order functional
+support in Mercury \cite{SHC95}.
+
+Table \ref{call_apply} compares PrologPF with \texttt{call/N} and \texttt{apply/3}
+using the examples from \cite{Nai96}.
+
+\begin{table}[htbp]
+{\footnotesize
+\tt
+\begin{tabular}{| l | l | l |}
+\hline
+\texttt{~~~~~~~call/N}     & \texttt{~~~~~~~apply/3}   &\texttt{~~~~~~~PrologPF}\\
+\hline
+& & \\
+map(F,[],[]).              &map(F,[],[]).              &fun map(F,[])~~~~~= [];\\
+map(F,[X|Xs],[Y|Ys]) :-    &map(F,[X|Xs],[Y|Ys]) :-    &~~~~map(F,[X|Xs]) = [F @ [X]|map(F,Xs)]\\
+~~~~call(F,X,Y),           &~~~~apply(F,X,Y),          &\\
+~~~~map(F,Xs,Ys).          &~~~~map(F,Xs,Ys).          &\\
+%\hline
+& & \\
+filter(P,[],[]).           &filter(P,[],[]).           &fun filter(P,[])~~~~~= [];\\
+filter(P,[X|Xs],Ys) :-     &filter(P,[X|Xs],Ys) :-     &~~~~filter(P,[X|Xs]) =\\ 
+~~~~(call(P,X) ->          &~~~~(apply(P,X,true) ->    &~~~~~~~~if (P @ [X])\\
+~~~~~~~Ys = [X|Z]          &~~~~~~~Ys = [X|Z]          &~~~~~~~~then [X|filter(P,Xs)]\\
+~~~~;                      &~~~~;                      &~~~~~~~~else filter(P,Xs).\\
+~~~~~~~Ys = Z              &~~~~~~~Ys = Z              & \\
+~~~~),                     &~~~~)                      & \\
+~~~~filter(P,Xs,Z).        &~~~~filter(P,Xs,Z).        & \\
+%\hline
+& & \\
+foldr(F,B,[],B).           &foldr(F,B,[],B).           &fun foldr(F,B,[])~~~~~= B; \\
+foldr(F,B,[X|Xs],R) :-     &foldr(F,B,[X|Xs],R) :-     &~~~~foldr(F,B,[X|Xs]) =\\
+~~~~foldr(F,B,Xs,R1),      &~~~~foldr(F,B,Xs,R1),      &~~~~~~~~F @ [X,foldr(F,B,Xs)].\\
+~~~~call(F,A,R1,R).        &~~~~apply(F,X,FA),         & \\
+                           &~~~~apply(FA,R1,R).        & \\
+%\hline
+& & \\
+compose(F,G,X,FGX) :-      &compose(F,G,X,FGX) :-      &fun compose(F,G,X) = F @ [G @ [X]]. \\
+~~~~call(G,X,GX),          &~~~~apply(G,X,GX),         & \\
+~~~~call(F,GX,FGX).        &~~~~apply(F,GX,FGX).       & \\
+%\hline
+& & \\
+converse(F,X,Y,FYX) :-     &converse(F,X,Y,FYX) :-     &fun converse(F,X,Y) = F @ [Y,X]. \\
+~~~~call(F,Y,X,FYX).       &~~~~apply(F,Y,FY),         &\\
+                           &~~~~apply(FY,X,FYX).       &\\
+\hline
+\end{tabular}
+}
+\caption{Comparison of \texttt{call/N}, \texttt{apply/3} and PrologPF}
+\label{call_apply}
+\end{table}
+
+The above relations and functions are then tested against the following
+queries in Table \ref{call_apply_queries} \cite{Nai96}:
+
+\begin{table}[htbp]
+{\footnotesize
+\tt
+\begin{tabular}{| l | l | l |}
+\hline
+   &~~~~call/N, apply/3          &~~~~~~~PrologPF \\
+\hline
+& & \\
+1. &filter(>(5),[3,4,5,6,7],As)  &As = filter(>(5),[3,4,5,6,7])\\
+2. &map(plus(1),[2,3,4],As)      &As = map(+1,[2,3,4])\\
+3. &map(between(1),[2,3],As)     &$\Rightarrow$ non-deterministic function\\
+4. &map(plus(1),As,[3,4,5])      &$\Rightarrow$ reversible map, plus\\
+5. &map(plus(X),[2,3,4],[3,4,5]) &$\Rightarrow$ reversible plus\\
+6. &map(plus(X),[2,A,4],[3,4,B]) &$\Rightarrow$ reversible plus\\
+7. &map(plus(X),[A,3,4],[3,4,B]) &$\Rightarrow$ reversible plus\\
+8. &foldr(append,[],[[2],[3,4],[5]],As) &As = foldr(append,[],[[2],[3,4],[5]]) \\
+9. &foldr(converse(append),      &As = foldr(converse(append),\\
+   &~~~~~~[],                    &~~~~~~~~~~~[],\\
+   &~~~~~~[[2],[3,4],[5]],       &~~~~~~~~~~~[[2],[3,4],[5]]\\
+   &~~~~~~As                     &~~~~~~~~~~).\\
+   &~~~~~).                      & \\
+10. &compose(map(plus(1)),       &As = map(+1) @ [foldr(append,[]) @\\
+    &~~~~~~~~foldr(append,[]),   &~~~~~~~~~~~~~~~~~~[[2],[3,4],[5]]\\
+    &~~~~~~~~[[2],[3,4],[5]],    &~~~~~~~~~~~~~~~].\\
+    &~~~~~~~~As                  & \\
+    &~~~~~~~).                   & \\
+11. &foldr(compose(append,map(plus(1))), &As = foldr(compose(append, map(+1)),\\
+    &~~~~~~[],                           &~~~~~~~~~~~[],\\
+    &~~~~~~[[2],[3,4],[5]],              &~~~~~~~~~~~[[2],[3,4],[5]]\\
+    &~~~~~~As                            &~~~~~~~~~~). \\
+    &~~~~~).                             & \\
+12. &map(plus,[2,3,4],As).       & As = map(+,[2,3,4]).\\
+\hline
+\end{tabular}
+}
+\label{call_apply_queries}
+\caption{Queries from \cite{Nai96} for \texttt{call/N}, \texttt{apply/3}, PrologPF}
+\end{table}
+
+With the syntax shown in the right-hand column, PrologPF can support the 
+functional examples given in \cite{Nai96} with the exception of those requiring
+multiple answers (3) or reversible functions (4-7).  \texttt{Call/N} does not
+provide reversible functions (4-7) or permit general higher-order programming
+as in (11-12).  \texttt{Apply/3} does not provide reversible functions (4-7).
+A discussion of the significant features of each example is given below
+(and in [Nai96]), followed here
+by some more examples highlighting the capabilities of PrologPF.
+
+\begin{enumerate}
+\item{\texttt{filter($>$(5),[3,4,5,6,7],As)}\\
+  The function $>$ passed to \texttt{filter} is curried, representing the 
+  boolean function $\lambda x \rightarrow (5 > x)$.  The higher-order function
+  \texttt{filter} applies this argument to \texttt{[3,4,5,6,7]}, returning
+  \texttt{[3,4]}.  The example exercises the definition of higher-order functions
+  and currying.}
+\item{\texttt{map(plus(1),[2,3,4],As)}\\
+  In a similar fashion to example 1, the curried function \texttt{plus(1)} is
+  passed to the higher-order function \texttt{map}.  In PrologPF the function and
+  predicate namespaces are different (see section \ref{bool}), so the plus function
+  can be given the name \texttt{+} rather than a special relation being needed.  The
+  PrologPF library includes the definitions of all the arithmetic functions, e.g.
+  \mbox{\texttt{fun +(X,Y) = if (Z is X+Y) then Z else fail.}}.  The \texttt{is}
+  relation is redundant in PrologPF.}
+\item{\texttt{map(between(1),[2,3],As)}\\
+  The relation \texttt{between(I,J,X)} has multiple solutions, and its call
+  from within a functional expression in PrologPF (such as 
+  \mbox{\texttt{if between(1,9,N) then N else 0}}) would ensure deterministic execution of
+  the predicate.  This would enforce a single solution or failure.  Example 3 has no
+  equivalent in the functional component of PrologPF, as that would conflict with
+  the implementation on the Delphi Machine.}
+\item{\texttt{map(plus(1),As,[3,4,5])}\\
+  Examples 4 through 7 require the functions \texttt{map} or \texttt{plus}
+  to be reversible.  None of \texttt{call/N}, \texttt{apply/3} or PrologPF
+  provides support for reversible functions.}
+\item{\texttt{map(plus(X),[2,3,4],[3,4,5])}\\
+  See 4 above.}
+\item{\texttt{map(plus(X),[2,A,4],[3,4,B])}\\
+  See 4 above.}
+\item{\texttt{map(plus(X),[A,3,4],[3,4,B])}\\
+  See 4 above.}
+\item{\texttt{foldr(append,[],[[2],[3,4],[5]],As)}\\
+  The higher-order function \texttt{foldr} accepts a function abstraction
+  (in this case the function \texttt{append}) and recursively applies it to
+  the argument list, treating the argument \texttt{[]} and the final element.
+  With \texttt{call/N} and \texttt{apply/3},
+  the first call to \texttt{append} is with the last element of the list of lists 
+  and \texttt{[]}, e.g. \texttt{append([5],[],R)}, where \texttt{R} is an intermediate
+  result. Similarly, PrologPF stacks the intermediate result of
+  \texttt{append([5],[])}.  Each call to \texttt{append} is with both required
+  arguments ground, and \texttt{call/N}, \texttt{apply/3} and PrologPF provide the
+  flattened solution \mbox{\texttt{[2,3,4,5]}}.}
+\item{\texttt{foldr(converse(append),[],[[2],[3,4],[5]],As)}\\
+  The example proceeds in a similar manner to example 8, with the function
+  abstraction provided by \texttt{converse(append)}.  When called by
+  \texttt{foldr}, the abstraction is passed both required arguments which are
+  appended in reverse, resulting in the solution \texttt{[5,3,4,2]}.}
+\item{\texttt{compose(map(plus(1)),foldr(append,[]),[[2],[3,4],[5]],As)}\\
+  This is a more complex combination of currying and higher-order
+  functions, but with similar system requirements to examples 8 and 9.
+  \texttt{map(plus(1))} increments each member of a list, while 
+  \texttt{foldr(append,[])} flattens a list of lists, so the term represents
+  \mbox{\textit{increment\_{}list(flatten\_{}list([[2],[3,4],[5]]))}}.  This can be represented
+  more naturally in PrologPF than in the flat syntax with \texttt{call/N} and
+  \texttt{apply/3}.}
+\item{\texttt{foldr(compose(append,map(plus(1))),[],[[2],[3,4],[5]],As)}\\
+  This example is evaluated successfully with \texttt{apply/3} and in PrologPF,
+  but \textbf{not} with \texttt{call/N}.  The composition of \texttt{append} and
+  \texttt{map(plus(1))} results in a function which increments the elements of an
+  argument list, and returns a function which prepends that result onto its
+  argument (i.e. \texttt{compose(append,map(+1)) @ [[1,2,3]]} \\
+  \mbox{$\leadsto \lambda x \rightarrow$ \texttt{append([1,2,3],$x$)}}).  This abstraction
+  can be passed to \texttt{foldr} to be recursively applied to the argument list
+  \texttt{[[2],[3,4],[5]]} and \texttt{[]} producing \texttt{[3,4,5,6]}.
+  The problem that \texttt{call/N} has with this example stems from the fact that
+  an intermediate result is produced which is a function abstraction.
+  \texttt{Call/N} requires that the right number of arguments must be given for the
+  call to work correctly.  For example, \texttt{call(plus(1),2,Z)} works correctly
+  giving \texttt{Z = 3}, but \texttt{call(plus,1,X)} results in an error or fails.
+  This limitation of \texttt{call/N} provides the motivation for Naish \cite{Nai96}
+  to recommend \texttt{apply/3} in which every application is to one argument and
+  a closure is returned if the function is defined with more.}
+\item{\texttt{map(plus,[2,3,4],As)}\\
+  In this case, the application of \texttt{map} must return an array of
+  function abstractions, highlighting the weakness of \texttt{call/N} as in example
+  11.  PrologPF and \texttt{apply/3} both produce the expected result, which can be tested 
+  in a query such as\\
+  \mbox{\texttt{?- map(plus,[2,3,4],[Fa,Fb,Fc]), apply(Fb,5,Z).}}\\ or for PrologPF\\
+  \mbox{\texttt{?- [Fa,Fb,Fc] = map(plus,[2,3,4]), Z = Fb @ [5].}}\\ giving the
+  solution \mbox{\texttt{Z = 8}}.}
+\end{enumerate}
+
+The examples above illustrate the limitations of \texttt{call/N} and show the similarities
+of \texttt{apply/3} and PrologPF for non-deterministic functions.  Other examples will highlight
+the syntactic advantages of PrologPF over \texttt{apply/3}, in
+table \ref{prologpf_syntax_advantages}.
+
+\begin{table}[htbp]
+{\footnotesize
+\tt
+\begin{tabular}{| l | l | l |}
+\hline
+   &~~~~~~~apply/3                &~~~~~~~~PrologPF \\
+\hline
+& & \\
+1. &inc(X,Y) :- Y is X+1.            &fun inc(X) = X+1.\\
+2. &fact(1,1).                       &fun fact(1) = 1;\\
+   &fact(X,Y) :- X $\backslash$== 1, &~~~~fact(N) = N * fact(N-1).\\
+   &~~~~~~~~~~~~~X1 is X-1,       &\\
+   &~~~~~~~~~~~~~fact(X1,Y1),     &\\
+   &~~~~~~~~~~~~~Y is X * Y1.     &\\
+3. &apply4(F,A1,A2,R) :-          &F = plus, Z = F @ [1,2].\\
+   &~~~~apply(F,A1,F1),           &\\
+   &~~~~apply(F1,A2,R).           &\\
+   &F = plus, apply4(plus,1,2,Z). &\\
+4. &divby2(X,Y) :- Y is X / 2.    &map(lambda([X],X/2),[2,4,6]).\\
+   &map(div\_{}by\_{}2,[2,4,6]).  &\\
+5. &                              &fun div\_{}by\_{}n(N) = lambda([X],X/N).\\
+   &                              &Z = div\_{}by\_{}n(2) @ [10].\\
+6. &fib(0,0).                     &fun fib(0) = 0;\\
+   &fib(1,1).                     &~~~~fib(1) = 1;\\
+   &fib(N,M) :- N > 1,            &~~~~fib(N) = fib(N-2) + fib(N-1).\\
+   &~~~~~~~~~~~~N2 is N-2,        &\\
+   &~~~~~~~~~~~~fib(N2,M2),       &\\
+   &~~~~~~~~~~~~N1 is N-1,        &\\
+   &~~~~~~~~~~~~fib(N1,M1),       &\\
+   &~~~~~~~~~~~~M is M2 + M1.     &\\
+7. &ffib(F,0,M) :- apply(F,0,M).  &fun ffib(F,0) = F @ [0].\\
+   &ffib(F,1,M) :- apply(F,1,M).  &~~~~ffib(F,1) = F @ [1].\\
+   &ffib(F,N,M) :- N > 1,         &~~~~ffib(F,N) = F @ [ffib(F,N-2) + ffib(F,N-1)].\\
+   &~~~~~~~~~~~~~~~N2 is N-2,     &\\
+   &~~~~~~~~~~~~~~~ffib(F,N2,M2), &\\
+   &~~~~~~~~~~~~~~~N1 is N-1,     &\\
+   &~~~~~~~~~~~~~~~ffib(F,N1,M1), &\\
+   &~~~~~~~~~~~~~~~MM is M2 + M1, &\\
+   &~~~~~~~~~~~~~~~apply(F,MM,M). &\\
+\hline
+\end{tabular}
+}
+\label{prologpf_syntax_advantages}
+\caption{Further programming examples showing PrologPF capabilities}
+\end{table}
+
+\begin{enumerate}
+\item{\texttt{Apply/3} consistently treats all functions as relations, such
+  that the flat form of arithmetic expressions is retained with the \texttt{is}
+  relation, as in the example with the definition of \texttt{inc}.  The functional
+  support in PrologPF allows direct use of nested arithmetic expressions, so the
+  \texttt{is} relation is redundant.  In fact, if \texttt{is} appears in a
+  PrologPF goal with an arithmetic argument, the argument will be evaluated before
+  unification with the corresponding \texttt{is} formal parameter.  This means that
+  \texttt{Z is 1 + 2} $\equiv$ \texttt{R = 1 + 2, Z is R}.  \texttt{is}
+  has quite asymmetric functionality
+  in which the first argument must be a number or a variable while
+  the second argument can also be an arithmetic expression.
+  \texttt{(1 + 2) is Z} is not permitted in standard Prolog both for
+  \texttt{Z} a variable or with \texttt{Z} instantiated to a number.  In PrologPF the
+  use of \texttt{=} with library functions provides more consistent support for
+  arithmetic,  allowing both \texttt{Z = 1 + 2} and \texttt{(1 + 2) = Z}.  The
+  bracketed terms are for clarity, and \texttt{1 + 2 = Z} is equally acceptable.}
+\item{The example of the factorial function \texttt{fact} shows that deterministic
+  functions in the relational style must have guard conditions in subsequent clauses
+  (i.e. \texttt{X $\backslash$\== 1}) to prevent erroneous non-deterministic execution.
+  For more complex functions the conditions can obscure the meaning of the code, and
+  Prolog's \textit{cut} is used to provide an efficient solution.  \texttt{apply/3}
+  does not attempt to address the presence on \texttt{cut} to ensure determinism
+  in functions, while PrologPF has consistent deterministic functional evaluation.}
+\item{The use of \texttt{apply/3} provides consistent support for higher-order
+  functional programming, but suffers from the implicit treatment of all function
+  applications as nested applications to one argument and the flat representation of
+  application terms.  The example shows the application of an arity/2 function to
+  two arguments, and Naish \cite{Nai96} suggests the definition of an auxilliary
+  relation \texttt{apply4} to mitigate this difficulty.  PrologPF allows the
+  application of functions to an arbitrary number of arguments in a single term.}
+\item{Without nameless functions, the use of \texttt{apply/3} requires that defined
+  functions are created for each requirement, and the chosen name used in the place
+  of the lambda expression in PrologPF.  The example shows the specification of
+  a function which divides-by-two.  The issue with \texttt{apply/3} is mitigated by
+  the use of currying, such that if the required function were times-by-two, then
+  a curried application (e.g. \texttt{times(2)}) could by used.  In general, however,
+  an auxilliary fact will be needed, as the example shows.}
+\item{The use of defined functions as an alternative to lambda-expressions with
+  \texttt{apply/3} is unsatisfactory where the lambda-expression contains free
+  logical
+  variables.  The example shows such an expression in the definition of
+  \texttt{div\_{}by\_{}n}, and the issue would similarly arise within a goal
+  such as \texttt{?- N = @, Z = lambda([X],X/Z) @ [10].}  The implementation with
+  \texttt{apply/3} would require the use of the Prolog extra-logical relation
+  \texttt{assert} or the accumulation of free variables as additional arguments to
+  the auxilliary functions.}
+\item{The eager argument evaluation semantics of PrologPF is equivalent to
+  the flattened form of Prolog relations used with \texttt{apply/3}.  The
+  example of the fibonacci function show the syntax of PrologPF to be a better
+  match to the requirement.}
+\item{The awkwardness of the flattened form with \texttt{apply/3} is exacerbated
+  when nested expressions and higher-order applications appear in the
+  function definition.  The example gives a modified fibonacci function where an
+  additional parameter specifies a function (\texttt{F}) to be applied to the
+  sub-terms before summation in the recursive case.  The \texttt{apply/3} example
+  of \texttt{ffib} illustrates the following differences with PrologPF:
+  \begin{enumerate}
+  \item{The condition \texttt{N>1} is required as \texttt{apply/3} has no
+    special consideration for deterministic execution, and assumes use of 
+    additional conditions or \textit{cut}.}
+  \item{All expressions with \texttt{apply/3} retain their flat Prolog form,
+    leading to an unwieldy syntax for expressions which would naturally be
+    nested.}
+  \item{Arithmetic with \texttt{apply/3} relies upon the use of the special
+    Prolog relation \texttt{is}.  In PrologPF arithmetic expressions can appear
+    anywhere as a valid argument term, and will be reduced before the term
+    is unified with the corresponding formal argument.}
+  \item{Function application in PrologPF can be either explicit with the
+    \texttt{@} operator, or implicit by using a defined function name in
+    a compound argument term.  The latter case is defined to be syntactic
+    sugaring for the former.  The definition of \texttt{ffib} using 
+    \texttt{apply/3} differentiates between the application of a higher-order
+    term represented by the variable \texttt{F} in \texttt{apply(F,MM,M)} and
+    the recursive call to the function \texttt{ffib} in \texttt{ffib(F,N2,M2)}.
+    For consistent use of \texttt{apply/3}, the recursive call would be
+    replaced by \texttt{apply(ffib(F,N2),M2)} which would be converted by
+    \texttt{apply/3} to the call \texttt{ffib(F,N2,M2)}.  It is unclear whether
+    it is better to make consistent use of \texttt{apply/3} in higher-order
+    functions and render the non-curried calls more obscure, or whether a mix
+    of \texttt{apply/3} and normal relation calls should be used.}
+  \end{enumerate}}
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conclusions} %
+%%%%%%%%%%%%%%%%%%%%%%%
+
+Higher-order functions can be neatly integrated with Prolog's relations
+with a deterministic evaluation semantics compatible with the requirements
+of a Delphi implementation.
+
+Examples given in this and the following two chapters show the capabilities
+chosen for implementation in PrologPF to be sufficient to express a wide range
+of programs without resorting to artificial or obscure coding devices.
+
+The capabilities of PrologPF, including the definition and application of
+functions, the call-once semantics of the \texttt{if} condition, and the
+use of boolean functions as relations, have proved sufficient to preclude the
+need for \textit{cut} in all the test programs reviewed to date.
+
+%%%%%%%%%%%%%%%%%%%
+\section{Summary} %
+%%%%%%%%%%%%%%%%%%%
+
+The functional component of PrologPF extends
+the Prolog language in the following ways:
+\begin{itemize}
+\item{The definition of functions through the \texttt{fun} relation}
+\item{The application of functions through the \texttt{@} operator}
+\item{Support for higher-order functional programming through the
+  use of lambda-expressions and currying}
+\item{A general strict functional evaluation semantics with
+  the single exception of
+  a pre-defined \texttt{if} function}
+\item{Use of relations within functions is limited to the condition
+  argument of the \texttt{if} function, where deterministic search for
+  the first solution is enforced}
+\item{Support for boolean functions to be treated as relations}
+\end{itemize}
+
+These features have proved consistent in use and sufficient to implement
+a wide range of sample programs without resorting to \textit{cut}.
+
+The defined semantics permit
+an efficient implementation on an extended Delphi Machine, 
+where function applications
+embedded within a Prolog program are compiled to direct machine-code
+calls.  Such an implementation has been produced in PrologPF.

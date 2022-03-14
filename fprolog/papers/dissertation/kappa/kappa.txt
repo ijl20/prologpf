@@ -1,0 +1,236 @@
+
+This chapter gives an analysis of the implementation of the
+breadth-first partitioning scheduling strategy without using
+oracles.  The oracle-based strategy used in PrologPF is compared with a
+simplified technique using a special proposition \texttt{kappa}.
+
+This chapter describes a novel parallel processing primitive \texttt{kappa}
+suitable for use
+with any standard Prolog.  The technique is similar to the breadth-first
+partitioning strategy of PrologPF but can be implemented without the
+use of oracles \cite{CA86}.  The limitations of the new primitive
+are compared with the strategy improvements available to PrologPF through
+the improved exploitation of oracles.
+
+%%%%%%%%%%%%%%%%%%%%%%
+\section{Background} %
+%%%%%%%%%%%%%%%%%%%%%%
+
+Chapter \ref{bfp_depth} reviews in detail the breadth-first
+partitioning strategy using oracles to define the root of each
+subtree to be allocated to an available path processor.
+
+In the first phase of execution, the search is bounded by a
+selected depth limit $L$.  The open branches found at this limit
+are recorded as a number $S$ of \textit{oracles}, each representing the
+sequence of clauses used to arrive at the point in the search where
+the depth limit was reached.  An \textit{oracle stack} is used to
+accumulate the open oracles during this first oracle discovery phase.
+While the search in the initial phase is bounded by $L$,
+the standard Prolog depth-first left-to-right search is used, and
+the $S$ oracle stack forms an ordered list corresponding to the order
+of discovery.  Figure \ref{bfp_phase1} shows an example subtree traversed
+during the depth-limited initial phase, while the resultant oracle
+stack is a data structure representing the paths in the reduced tree
+of Figure \ref{phase1_orcs}.
+
+\todo{insert bfp phase 1 figure here}
+\label{bfp_phase1}
+
+\todo{insert oracle tree here}
+\label{phase1_orcs}
+
+The oracles in the oracle stack can be allocated to a number of
+\textit{path processors} whose role is to follow each assigned oracle
+to recreate the environment required at the root of the associated
+subtree, and then to continue the search of that subtree.
+
+The \textit{breadth-first partitioning strategy} used by PrologPF proceeds
+in the two phases of oracle discovery and subsequent subtree search.
+While the model supports the use of a single control processor for
+the execution of the first phase and then the allocation 
+and communication of the oracles,
+a distributed model is used in PrologPF in which all the path
+processors execute the first phase and create a local copy of the
+oracle stack.  The path processors then use the parameters $G$ and
+$N$ representing the processor group size and the unique processor
+number respectively to select oracles from the oracle stack.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Breadth-first partitioning without oracles} %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\label{no_orcs}
+
+If the two phases of the breadth-first partitioning algorithm are
+interleaved, it is possible to create a similar scheduling strategy
+without the use of oracles.  PrologPF completes the first oracle
+discovery phase before assigning the open oracles to the available
+path processors.  In practice the oracle assignment function is fixed
+before the start of execution, such that the assignment can be
+performed independently on each path processor.  However, with 
+reference to Figure \ref{bfp_phase1}, on discovery of the first open
+oracle at the depth limit L the Prolog stacks and heap contain the environment
+necessary for the continued search of the subtree labelled A in the
+figure.  This is the environment recreated when the oracle is followed
+during the second phase of BFP.  With a suitable filtering function
+applied at the depth limit L, the subtrees can be selected and searched
+by the path processors \textit{as the open branches at L are discovered}.
+The principles of this strategy without oracles are as follows:
+\begin{itemize}
+\item{The phases equivalent to the initial oracle discovery and 
+  subsequent subtree search in PrologPF are interleaved.}
+\item{Execution proceeds without maintenance of the current oracle,
+  instead exploiting the environment constructed during the
+  search beneath the depth limit.}
+\item{Each path processor executes the search from the root of the
+  search tree, with the following assigned parameters:
+  \begin{description}
+  \item[$G$: ]{The number of path processors in the group.}
+  \item[$N$: ]{The unique processor number of the given path processor.}
+  \item[$L$: ]{The selected depth limit.}
+  \end{description}}
+\item{The search is generally limited to the depth set by $L$, with a count
+  accumulating the number of times this depth limit is reached during
+  the depth-first left-to-right search.  This count is equivalent to the
+  oracle number in the ordered stack resulting from the first phase of
+  BFP.  The point in the search tree at which an open branch is discovered at
+  the depth limit $L$ is called a \textit{port}.
+  Each time the count is incremented, the selection function is
+  applied to determine whether the search should continue with the subtree
+  beneath the port, or whether the port should be skipped.}
+\item{A suitable selection function will ensure that all ports are selected
+  by the combined group of path processors, and no port is selected 
+  more than once.  As with the BFP algorithm in PrologPF, a good selection
+  function would allocate the work beneath the ports evenly.  In the
+  absence of a work estimation function, an equal number of
+  ports can be allocated to
+  each path processor.}
+\end{itemize}
+
+Figure \ref{port_tree} shows a search tree during the execution of
+a scheduling strategy similar to BFP without using oracles.  The ports
+are identified at the depth limit L,  and the selection function at a
+given path processor is illustrated.
+
+\todo{insert figure port_tree}
+\label{port_tree}
+
+The path processor executes the search bounded by the depth limit until
+a port is accepted by the selection function, at which point the search
+continues with the subtree beneath that port.  On completion of that
+subtree,  the search continues bounded by the depth limit and the
+selection function.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{The gate proposition \texttt{k\_{}gate}} %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The selection function described in Section \ref{no_orcs} 
+can be represented by a proposition tested each time
+a subgoal is called or executed.  If the current depth is not that of the
+depth limit, then the proposition succeeds.  If the depth limit has been
+reached, then the proposition fails unless the current port is assigned
+to the given path processor.
+
+One suitable function which will evenly allocate the ports to the
+available path processors is:
+\centerline{$((\mbox{port\_{}number}-N) \mbox{ mod } G) = 0$}
+
+The selection of the ports \textit{modulo G} means that the path
+processors search the subtree beneath every $G$th port, beginning
+with the $N$th.  Thus with $G$ path processors, allocated values of
+$N$ from 0 to $G-1$, all ports will be uniquely allocated.
+
+A pseudo-Prolog proposition providing the port
+selection behaviour using this function is \texttt{k\_{}gate}, given
+below:
+\begin{verbatim}
+k_gate :- current_depth <> L.
+k_gate :- current_depth = L, 
+          increment port_number, 
+          (port_number - N) mod G = 0.
+\end{verbatim}
+
+The proposition accesses global values for the current depth, the
+assigned depth limit $L$, and \texttt{port\_{}number},
+the number of ports found so far.  \texttt{k_gate} has the side-effect
+of incrementing \texttt{port\_{}number} each time the depth limit is reached.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{\texttt{kappa}} %
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\texttt{kappa} is the proposition representing the parallel partitioning
+primitive inserted into the user program.  In the absence of an existing
+global system value representing the search depth, \texttt{kappa} can
+accumulate the depth value and call \texttt{k\_{}gate} to determine
+success or failure.
+\begin{verbatim}
+kappa :- increment depth, k_gate.
+kappa :- decrement depth, fail.
+\end{verbatim}
+In the example of the \texttt{member/factorial} program given in Section\\
+\todo{ref mem/fact}\\
+the user code can be modified to use \texttt{kappa} as follows:
+\begin{verbatim}
+member(X,[X|_]).
+member(X,[_|Y]) :- kappa, member(X,Y).
+
+fact(1,1).
+fact(N,F) :- kappa, N > 1,
+             kappa, N1 is N - 1,
+             kappa, fact(N1,F1),
+             kappa, F is N * F1.
+             
+:- kappa, member(X,[4,3,2,1]), kappa, fact(X, F).
+\end{verbatim}
+Preceding every goal with a call to the proposition \texttt{kappa} can
+be achieved automatically through the use of the utility relation
+\texttt{term\_{}expansion/2} provided with many Prolog implementations
+\cite{BBP+94}.  If \texttt{kappa} is only used at selected positions
+in the program, then similar behaviour is achieved with a new
+meaning for the \textit{depth} value used in the selection 
+algorithm.  In this case, the depth value is taken to mean the depth
+of the calls to \texttt{kappa}, which is no longer equal to the
+current depth in the and-or search tree.
+
+Most implemenations of Prolog provide a mechanism to incorporate C
+code into procedure definitions.  This capability permits efficient
+implementation of the \texttt{kappa} primitive, integrating the
+function of \texttt{k\_{}gate}:
+\begin{verbatim}
+kappa :- if ((++depth == L) && ((++port_number - N) mod G == 0))
+         then succeed
+         else fail.
+kappa :- --depth, fail.
+\end{verbatim}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Kappa at every subgoal versus selective use} %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Efficiency considerations} %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Recursive partitioning} %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+\section{Conclusions} %
+%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%%%%
+\section{Summary} %
+%%%%%%%%%%%%%%%%%%%
+
+

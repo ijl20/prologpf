@@ -1,0 +1,7 @@
+WORDS=`cat */*.tex | wc -w`
+cp words.hist words.hist~
+echo `date` $WORDS >>words.hist~
+FINISH=`cat words.hist~ | awk -f words.awk >/dev/null 2>/tmp/fdate ; cat /tmp/fdate`
+echo `date` $WORDS $FINISH >>words.hist
+echo $WORDS $FINISH
+

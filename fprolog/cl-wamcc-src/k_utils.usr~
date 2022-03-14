@@ -1,0 +1,188 @@
+/****************************************************************************
+Prolog to Wam Compiler                     INRIA Rocquencourt - ChLoE Project
+Version 0.02                                               Daniel Diaz - 1994
+
+file : k_utils.usr
+****************************************************************************/
+
+#define MAXORC  10000               /* maximum length of oracle            */
+
+static int build;                   /* boolean flag for BUILD mode         */
+
+static int orc[MAXORC];             /* array to hold orc as it is built    */
+
+static long width[MAXORC];          /* array for accumulated width of tree */
+
+static int b_depth,                 /* current BUILD or-depth              */
+           f_depth;                 /* current FOLLOW or-depth             */
+
+static int orc_l = MAXORC;          /* depth limit L                       */
+static int orc_g = 1;               /* group count G                       */
+static int orc_n = 0;               /* unique processor number N           */
+static int orc_s;                   /* count of ports S                    */
+static int orc_p = 0;               /* port number threshold P             */
+static int orc_length = 0;          /* length of oracle to follow          */
+
+#define o_kbuild1                                                       \
+    { ++b_depth;                                                        \
+      /* width[b_depth]++; */                                           \
+      if (build)                                                        \
+        { Deref(A(0),word,tag,adr)                                      \
+          orc[b_depth] = UnTag_INT(word);                               \
+          if (b_depth == orc_l)                                         \
+            { orc_s++;    /* increment the number of ports found */     \
+              if ((orc_s <= orc_p) ||(orc_s % orc_g != orc_n)) fail;    \
+            }                                                           \
+        }                                                               \
+    }
+
+#define o_kbuild2                                                       \
+    {                                                                   \
+      b_depth--;                                                        \
+      fail                                                              \
+    }
+
+#define o_kfollow                                                       \
+    {                                                                   \
+      if (!build)                                                       \
+        { if (orc_length==f_depth)                                      \
+            {build = 1;}                                                \
+          else                                                          \
+            {f_depth++; get_integer(orc[f_depth],0)}      \
+        }                                                               \
+    }
+
+#define o_kset_build                                                    \
+    {                                                                   \
+      build = 1;                                                        \
+    }
+
+#define o_kset_follow                                                   \
+    {                                                                   \
+      build = 0;                                                        \
+    }
+
+#define o_kset_l                                                        \
+    {                                                                   \
+      Deref(A(0),word,tag,adr)                                          \
+      orc_l = UnTag_INT(word);                                          \
+    }
+
+#define o_kread_l                                                       \
+    {                                                                   \
+      get_integer(orc_l,0)                                              \
+    }
+
+
+#define o_kset_g                                                        \
+    {                                                                   \
+      Deref(A(0),word,tag,adr)                                          \
+      orc_g = UnTag_INT(word);                                          \
+    }
+
+#define o_kread_g                                                       \
+    {                                                                   \
+      get_integer(orc_g,0)                                              \
+    }
+
+#define o_kset_n                                                        \
+    {                                                                   \
+      Deref(A(0),word,tag,adr)                                          \
+      orc_n = UnTag_INT(word);                                          \
+    }
+
+#define o_kread_n                                                       \
+    {                                                                   \
+      get_integer(orc_n,0)                                              \
+    }
+
+#define o_kset_p                                                        \
+    {                                                                   \
+      Deref(A(0),word,tag,adr)                                          \
+      orc_p = UnTag_INT(word);                                          \
+    }
+
+#define o_kread_p                                                       \
+    {                                                                   \
+      get_integer(orc_p,0)                                              \
+    }
+
+#define o_kread_s                                                       \
+    {                                                                   \
+      get_integer(orc_s,0)                                              \
+    }
+
+#define o_kread_build                                                   \
+    {                                                                   \
+      get_integer(build,0)                                              \
+    }
+
+#define o_kread_b_depth                                                 \
+    {                                                                   \
+      get_integer(b_depth,0)                                            \
+    }
+
+#define o_kread_f_depth                                                 \
+    {                                                                   \
+      get_integer(f_depth,0)                                            \
+    }
+
+#define o_kset_orc_length                                               \
+    {                                                                   \
+      Deref(A(0),word,tag,adr)                                          \
+      orc_length = UnTag_INT(word);                                     \
+    }
+
+#define o_kset_orc_index                                                \
+    {                                                                   \
+      int i;                                                            \
+      Deref(A(0),word,tag,adr)                                          \
+      i = UnTag_INT(word);                                              \
+      Deref(A(1),word,tag,adr)                                          \
+      orc[i] = UnTag_INT(word);                                         \
+    }
+
+
+#define o_kread_orc_index                                               \
+    {                                                                   \
+      int i;                                                            \
+      Deref(A(0),word,tag,adr)                                          \
+      i = UnTag_INT(word);                                              \
+      get_integer(orc[i],1)                                             \
+    }
+
+#define o_kread_width_index                                             \
+    {                                                                   \
+      int i;                                                            \
+      Deref(A(0),word,tag,adr)                                          \
+      i = UnTag_INT(word);                                              \
+      get_integer(width[i],1)                                           \
+    }
+
+#define o_kinit                                                         \
+    {                                                                   \
+      /* int i; */                                                      \
+      /* for (i=1;i<MAXORC;i++) width[1] = 0; */                        \
+      build = 0;                                                        \
+      b_depth = 0;                                                      \
+      f_depth = 0;                                                      \
+      orc_s = 0;                                                        \
+    }
+
+/* Above this line, put your first macros (these included by pragma_c) */
+
+#undef  fail
+#define fail Fail_Like_Bool
+
+/* Below this line, put your others macros and your functions */
+
+
+static void Initialize_Usr(void)
+{
+  o_kinit
+}
+
+/* end of user file */
+
+#undef  fail
+#define fail Fail_Like_Wam

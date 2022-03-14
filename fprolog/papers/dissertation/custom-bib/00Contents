@@ -1,0 +1,19 @@
+total 368
+-rw-rw-r--   1 ctan     TeX         1197 Jun 11 06:13 00Contents
+-rw-rw-r--   1 ctan     TeX        16452 Jun  9 07:18 README.v383
+-rw-rw-r--   1 ctan     TeX         7984 Nov  1  1995 english.mbs
+-rw-rw-r--   1 ctan     TeX         7169 Nov  1  1995 esperant.mbs
+-rw-rw-r--   1 ctan     TeX         7421 Nov  1  1995 finnish.mbs
+-rw-rw-r--   1 ctan     TeX         7370 Nov  1  1995 french.mbs
+-rw-rw-r--   1 ctan     TeX        14303 Jun  9 08:07 geojour.mbs
+-rw-rw-r--   1 ctan     TeX         8191 Jan 30  1996 german.mbs
+-rw-rw-r--   1 ctan     TeX         7360 Nov  1  1995 italian.mbs
+-rw-rw-r--   1 ctan     TeX        41400 Jun  9 08:07 makebst.dtx
+-rw-rw-r--   1 ctan     TeX         2032 Jun  9 08:07 makebst.ins
+-rw-rw-r--   1 ctan     TeX       194544 Jun  9 08:07 merlin.mbs
+-rw-rw-r--   1 ctan     TeX         7463 Nov  1  1995 norsk.mbs
+-rw-rw-r--   1 ctan     TeX         8101 Sep 17  1996 photjour.mbs
+-rw-rw-r--   1 ctan     TeX        13559 Dec 20  1996 physjour.mbs
+-rw-rw-r--   1 ctan     TeX         7759 Feb 25 06:38 portuges.mbs
+-rw-rw-r--   1 ctan     TeX         5168 Sep 17  1996 shorthnd.ins
+-rw-rw-r--   1 ctan     TeX         7688 Nov  1  1995 spanish.mbs

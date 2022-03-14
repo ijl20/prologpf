@@ -1,0 +1,29 @@
+(*  ML ASSESSED EXERCISES. TICK 3 SUBMISSION *)
+
+(* PROBLEM 1 - A function to return the last element of a list *)
+(* Time complexity O(n) - moves along list linearly *)
+(*   hd(rev xs) requires O(n) also *)
+(* Space complexity O(1) - list is not copied *)
+(*   hd(rev xs) requires O(n) for rev *)
+
+fun last(x::[])=x
+  | last(x::xs)=last(xs);
+
+(* PROBLEM 2 - A function to remove the last element of a list *)
+(* Time complexity O(n) - moves along list linearly *)
+(*   rev(tl(rev xs)) requires O(n) also *)
+(* Space complexity O(n) - n conses performed *)
+(*   rev(tl(rev xs)) requires O(n) for rev *)
+
+fun butLast(x::[])=[]
+  | butLast(x::xs)=x::butLast(xs);
+
+(* PROBLEM 3 - A function to return the nth element of a list *)
+(* Time complexity O(n) - moves along list linearly *)
+(* Space complexity O(1) - list is not copied *)
+
+fun nth(x::xs,n)=
+  if n=0 then
+    x
+  else
+    nth(xs,n-1);

@@ -1,0 +1,38 @@
+PrologPF is a parallelising compiler targeting a distributed system of
+general purpose workstations connected by a relatively low performance
+network.  The source language extends standard Prolog with the
+integration of higher-order functions.
+
+The execution of a compiled PrologPF program proceeds in a similar
+manner to standard Prolog, but uses \textit{oracles} in one of two
+modes.  An oracle represents the sequence of clauses used to reach a
+given point in the problem search tree, and the same PrologPF executable
+can be used to \textit{build} oracles, or \textit{follow} oracles
+previously generated.
+
+The parallelisation strategy used by PrologPF proceeds in two phases,
+which this research shows can be interleaved.
+An initial phase searches the problem tree to a limited depth,
+recording the discovered incomplete paths.
+In the second phase these paths are allocated with the complete
+program, to the available processors in the network.  Each processor
+follows its assigned paths and fully searches the referenced subtree,
+sending solutions back to a control processor.  This research
+investigates the use of the technique with a one-time partitioning
+of the problem and no further scheduling communication, and with the
+recursive application of the partitioning technique to effect
+dynamic work reassignment.
+
+For a problem requiring \textit{all} solutions to be found, execution
+completes when all the distributed processors have completed the
+search of their assigned subtrees.  If \textit{one} solution is
+required, the execution of all the path processors is terminated when
+the control processor receives the first solution.
+
+The presence of the extra-logical Prolog predicate \textit{cut} in the
+user program conflicts with the use of oracles to represent valid open
+subtrees.  PrologPF promotes the use of higher-order functional
+programming as an alternative to the use of \textit{cut}.  The
+combined language shows that functional support can be added as a
+consistent extension to standard Prolog.
+

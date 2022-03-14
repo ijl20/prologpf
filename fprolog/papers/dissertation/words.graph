@@ -1,0 +1,5 @@
+#!/bin/ksh
+
+cat words.hist | awk -f words.awk >words.data
+
+gnuplot words.gnuplot

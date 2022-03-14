@@ -1,0 +1,15 @@
+(*  ML ASSESSED EXERCISES. TICK 2 SUBMISSION *)
+
+(* PROBLEM 1.  A recursive factorial function  facr(n) ...  *)
+
+fun facr(n) = if n=0 then 1 else n*facr(n-1);
+
+
+(* PROBLEM 2.  An iterative factorial function  faci(n) ...  *)
+
+fun faci(n) =
+    let
+        fun f(i,a) = if i=0 then a else f(i-1, i*a)
+    in
+        f(n,1)
+    end;

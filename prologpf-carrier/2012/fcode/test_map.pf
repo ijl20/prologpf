@@ -1,0 +1,7 @@
+
+fun f(X) = envelope(X).
+
+fun map(F,[]) = [];
+    map(F,[Head|Tail]) = [F @ [Head] | map(F,Tail)].
+    
+map_goal :- Answer = map(f,[a,b,c]), write(Answer).

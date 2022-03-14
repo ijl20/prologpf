@@ -1,0 +1,151 @@
+\chapter{Conclusions}
+\label{conclusions}
+
+Programs compiled with the PrologPF compiler can exploit the processing
+power available in a LAN or WAN of general purpose workstations, without
+requiring programmer annotations to the code to guide the parallelisation.
+
+The breadth-first partitioning strategy minimises the communication
+necessary for distributed execution, such that the technique is
+optimised for systems with many processors but great communications
+delay, such as the Internet.  The use of oracles provides an efficient
+means of recovery from path processor failure, supporting the use of
+the technique in a widely distributed system.  The single systems
+image provided by the combination of the PrologPF compiler and the
+skynet control system transform a generally idle network of
+workstations into a usable super-computer.
+
+PrologPF provides effective speedup for large\footnote{In this context, \textit{large}
+implies a single-cpu runtime greater than a few seconds.}
+problems containing sufficient or-parallelism.  For smaller problems, the runtime
+taken to generate sufficent oracles for distribution to the available path processors
+will dominate the overall runtime.
+
+Given a large problem, the speedup achieved by PrologPF is determined by the
+evenness of the balance of the workload assigned to the path processors.  The optimal
+depth limit at which partitioning will take place will generate a set of oracles large
+enough to assign many open oracles to each path processor.
+
+The implementation of the oracle support in PrologPF imposes a 9 to 16 per cent
+overhead on the execution of the compiled program on a single cpu.  This overhead
+may be acceptable for the use of the compiled binaries in both a single-cpu and
+distributed environment.
+
+The initial phase of the breadth-first partitioning strategy produces
+a number of open oracles at the selected depth.  The distribution of
+work beneath these oracles can be quantified with the simulation of 
+a subsequent execution of the problem with the number of path processors
+$G$ set to the number of open oracles $S$ discovered at the depth limit
+$L$ in an earlier execution with $G=1$.
+An analysis of some commonly available Prolog benchmark programs shows
+that many of those oracles will refer to small subtrees, with
+a sparse distribution of oracles referring to large subtrees
+representing most of the available work.
+To achieve effective partitioning of the search tree, the depth limit
+at which open oracles are found must generate a sufficient number of
+oracles referring to large subtrees, such that all path processors can
+expect to receive a number of these sizeable oracles.  The general
+issue for oracle-based scheduling strategies such as the 
+breadth-first partitioning used in PrologPF is that of the
+\textit{poisoned oracle}.  For any strategy without subsequent work
+splitting, a poisoned oracle is likely to be an oracle which refers
+to a very large subtree, such that the uninterrupted sequential search of
+that subtree dominates the overall parallel runtime.  For other
+strategies used with oracles requiring communication, 
+such as the automatic partitioning strategy of DelphiKS, a poisoned oracle
+is that referring to a very small or nil subtree.
+
+An effective work estimation function could lead to better balancing of
+the work assignment to the path processors.  The generally sparse
+and random distribution of the large oracles means that work estimation
+based upon the arithmetic mean of the oracle neighbours will not
+succeed.  Partially searching the subtree but limiting the number of
+choicepoints traversed similarly relies upon a limited measure of
+workload beneath certain oracles being used as an estimate for others.
+
+The breadth-first partitioning strategy of PrologPF succeeds because
+a large number of oracles can be generated and allocated, and the
+process of following an assigned oracle within a path processor is
+very efficient.
+
+The metalogical predicate \textit{cut}\footnote{Written \texttt{!} in Prolog.}
+ used in sequential Prolog programs to
+prune the search tree does not have an efficient implementation in a
+distributed or-parallel environment.  The propagation of a \textit{cut} in the search
+tree of one path processor requires the communication to the other path
+processors searching affected subtrees.  A program containing a small procedure
+with \textit{cut} may encounter that predicate thousands of times each second.
+PrologPF provides a useful programming system for logic programs that in Prolog
+would contain \textit{cut} by supporting deterministic execution through the
+use of higher-order functional programming, explicit negation through the use
+of boolean functions, and permitting \textit{cut} in deterministic relational
+procedures.
+
+The implementation of higher-order functions in PrologPF has been achieved while
+maintaining upwards compatibility with standard Prolog.  A consistent syntax is
+possible for the combined styles, permitting reduction of functional terms as
+arguments to relations and requiring relational goals as conditions in functions.
+Allowing the definition of functions and relations of the same name but different arities
+within the same PrologPF program facilitates the straightforward mapping of existing
+deterministic library relations into new functions.  All function calls in PrologPF
+appear in arguments to relations. Function failure can be supported as an exception
+propagated to the outermost call in the argument term and
+treated as unification failure leading to the failure of the underlying relational
+subgoal.
+
+PrologPF produces efficient compiled code, with the compiler built upon the
+\texttt{wamcc} Prolog to C compiler \todo{cite wamcc}.  Efficient support for
+oracles can be provided though the use of two primitives, \texttt{o\_{}build}
+and \texttt{o\_{}follow}, embedded in the user program.  The definition of the
+primitives permits their inline implementation as C macros.
+
+For the specific, simple, breadth-first partitioning scheduling algorithm used by
+PrologPF, an equivalent behaviour can be achieved through the use of a novel primitive
+\texttt{kappa}.  The primitive, embedded as a proposition in the user program, performs
+dynamic pruning resulting in the same partitioning of the search as PrologPF but without
+the intermediate use of oracles.  The absence of oracles means that basic refinements
+to the technique available to a future development of PrologPF may not be feasible with
+\texttt{kappa}.  Implemented as a two-line C macro, \texttt{kappa} can be used with
+most standard Prolog compilers.
+
+%%%%%%%%%%%%%%%%%%%%%%%
+\section{Future work} %
+%%%%%%%%%%%%%%%%%%%%%%%
+
+PrologPF requires the user to select a suitable depth limit for the partitioning
+of a given problem.  Analysis is needed to determine whether an iterative first
+phase might arrive at a reasonable value for the depth limit automatically, or
+whether compile-time analysis is essential.
+
+The scheduling strategy used in PrologPF assumes the work beneath the
+discovered open oracles is randomly distributed, and no attempt is made to
+associate a work estimate with each oracle.  If an effective estimation technique
+could be found, then the effectiveness of the one-time allocation of work would be
+greatly improved.
+
+With the existing imbalance in the workloads assigned to the path processors, more
+effective exploitation of the available processing power could be achieved if
+the workload of busy processors were split between those that have become idle.
+If recomputation is to be minimised, this requires interruption of the busy
+path processor and communication of its current oracle back to a control processor.
+Suitable strategies must be devised to determine the interrupt criteria,
+and the re-partitioning technique.  As work splitting reduces the impact of poor
+initial partitioning, the requirements of the first phase may differ from those in
+PrologPF.
+
+In PrologPF, the parallelisation of the user program is limited to the 
+logical component.  Functional reduction within a specific subgoal is executed
+sequentially.  Further research may lead to an effective method for extending the
+use of oracles to parallelise functional execution.
+
+PrologPF supports the use of \textit{failure} as an uncatchable exception within
+a functional reduction, which is propagated to the top level function call and
+leads to failure of the underlying subgoal.  More flexible support might be
+provided through the general provision of exception support in the functions,
+unified with the exception support of standard Prolog.
+
+
+
+
+
+

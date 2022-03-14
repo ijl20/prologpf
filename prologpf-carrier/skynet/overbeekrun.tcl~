@@ -1,0 +1,41 @@
+#!/usr/bin/wish -f
+
+source skynet.tcl
+
+sky_connect [sky_hosts all closed]
+
+sky_bfp_one [sky_hosts 30] pentbook_cut 29
+sky_wait
+
+sky_bfp_one [sky_hosts 27] pentbook_cut 29
+sky_wait
+
+sky_bfp_one [sky_hosts 24] pentbook_cut 29
+sky_wait
+
+sky_bfp_one [sky_hosts 21] pentbook_cut 29
+sky_wait
+
+sky_bfp_one [sky_hosts 18] pentbook_cut 29
+sky_wait
+
+sky_bfp_one [sky_hosts 15] pentbook_cut 29
+sky_wait
+
+sky_bfp_one [sky_hosts 12] pentbook_cut 29
+sky_wait
+
+sky_bfp_one [sky_hosts 9] pentbook_cut 29
+sky_wait
+
+sky_bfp_one [sky_hosts 6] pentbook_cut 29
+sky_wait
+
+sky_bfp_one [sky_hosts 3] pentbook_cut 29
+sky_wait
+
+sky_bfp_one [sky_hosts 1] pentbook_cut 29
+sky_wait
+
+
+sky_disconnect [sky_hosts all]

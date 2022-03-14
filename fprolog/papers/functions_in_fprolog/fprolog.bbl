@@ -1,0 +1,172 @@
+\begin{thebibliography}{10}
+
+\bibitem{AdBR93}
+K.~R. Apt, J.~W. de~Bakker, and J.~J. M.~M. Rutten, editors.
+\newblock {\em Logic Programming Languages: Constraints, Functions, and
+  Objects}.
+\newblock MIT Press, 1993.
+
+\bibitem{Bon92}
+S.~Bonnier.
+\newblock A formal basis for {H}orn {C}lause logic with external polymorphic
+  functions.
+\newblock Technical Report 276, Dept. of Computer Science, Link\"oping
+  University, Sweden, 1992.
+
+\bibitem{BM88}
+S.~Bonnier and J.~Maluszy{\'{n}}sk.
+\newblock Towards a clean amalgamation of logic programs with external
+  procedures.
+\newblock In R.~Kowalski and K.~A. Bowen, editors, {\em Proceedings of the 5th
+  Intl. Conf. and Symposium on Logic Programming}, volume~1, pages 311--326.
+  MIT Press, 1988.
+\newblock re. S-Unification.
+
+\bibitem{CL91}
+M.~M.~T. Chakravarty and H.~C.~R. Lock.
+\newblock The implementation of lazy narrowing.
+\newblock In {\em Proc. 3rd Intl. Symposium Programming Language Implementation
+  and Logic Programming}, pages 123--134. Springer-Verlag, 1991.
+
+\bibitem{CF93}
+P.~H. Cheong and L.~Fribourg.
+\newblock Implementation of narrowing: The {P}rolog-based approach.
+\newblock In Apt et~al. \cite{AdBR93}.
+
+\bibitem{Clo87}
+W.~F. Clocksin.
+\newblock Principles of the {D}el{P}hi parallel inference machine.
+\newblock {\em Computer Journal}, 30(5):386--392, 1987.
+
+\bibitem{Clo97}
+W.~F. Clocksin.
+\newblock {\em Clause and Effect, {P}rolog for the Working Programmer}.
+\newblock Springer-Verlag, 1997.
+
+\bibitem{CA87}
+W.~F. Clocksin and H.~Alshawi.
+\newblock A method of efficiently executing {H}orn {C}lause using multiple
+  processors.
+\newblock Technical Report CCSC-3, SRI International (Cambridge Computer
+  Science Centre), 1987.
+
+\bibitem{Cur30}
+H.~B. Curry.
+\newblock Grundlagen der kombinatorischen {L}ogik.
+\newblock {\em American Journal of Mathematics}, 52:509--536, 789--834, 1930.
+
+\bibitem{DEDC96}
+P.~Deransart, A.~Ed-Dbali, and L.~Cervoni.
+\newblock {\em Prolog: {T}he {S}tandard}.
+\newblock Springer, 1996.
+
+\bibitem{Han94}
+M.~Hanus.
+\newblock The integration of functions into logic programming: from theory to
+  practice.
+\newblock {\em Journal of Logic Programming}, 19,20:583--628, 1994.
+
+\bibitem{HAK+97}
+M.~Hanus, S.~Antoy, H.~Kucken, and F.~L\'opez-Fraguas.
+\newblock Curry, an integrated functional logic language.
+\newblock Technical report, RWTH Aachen, Germany, 1997.
+
+\bibitem{HCSR95}
+F.~Henderon, T.~Conway, Z.~Somogyi, and P.~Ross.
+\newblock {\em The Mercury Language Reference Manual}.
+\newblock University of Melbourne, 1995.
+
+\bibitem{Kle91}
+C.~S. Klein.
+\newblock {\em Exploiting {OR}-Parallelism in {P}rolog using Multiple
+  Sequential Machines.}
+\newblock PhD thesis, Computer Laboratory, Cambridge University, England,
+  February 1991.
+\newblock Reprinted as Technical Report No. 216.
+
+\bibitem{Llo94}
+J.~W. Lloyd.
+\newblock Combining functional and logic programming languages.
+\newblock In {\em Proc. 1994 Intl. Logic Programming Symposium}, 1994.
+
+\bibitem{MBB+93}
+J.~Maluszy{\'{n}}ski, S.~Bonnier, J.~Boye, F.~Klu{\'{z}}niak, A.~K{\r{a}}gedal,
+  and U.~Nilsson.
+\newblock Logic programs with external procedures.
+\newblock In Apt et~al. \cite{AdBR93}.
+\newblock re. {S}-Unification.
+
+\bibitem{MTH90}
+R.~Milner, M.~Tofte, and R.~Harper.
+\newblock {\em The {D}efinition of {S}tandard {ML}}.
+\newblock MIT Press, 1990.
+
+\bibitem{MNRA92}
+J.~J. Moreno-Navarro and M.~Rodriguez-Artalejo.
+\newblock Logic programming with functions and predicates: The language
+  {B}abel.
+\newblock {\em Journal of Logic Programming}, 12:191--223, 1992.
+
+\bibitem{Nai91}
+L.~Naish.
+\newblock Adding equations to {NU}-{P}rolog.
+\newblock In J.~Maluszy\'{n}ski and M.~Wirsing, editors, {\em Proceedings of
+  the 3rd Intl. Symposium Programming Language Implementation and Logic
+  Programming}, pages 15--26. Springer-Verlag, August 1991.
+
+\bibitem{Nai96}
+L.~Naish.
+\newblock Higher-order logic programming in {P}rolog.
+\newblock Technical Report 96/2, Dept. of Computer Science, University of
+  Melbourne, Australia, 1996.
+
+\bibitem{Pau88}
+L.~C. Paulson.
+\newblock {ML Exercise Sheets, Part 1A CST and Mathematics with Computer
+  Science}.
+\newblock Technical report, Computer Laboratory, Cambridge University, England,
+  1988.
+
+\bibitem{Pau91}
+L.~C. Paulson.
+\newblock {\em ML for the Working Programmer}.
+\newblock Cambridge University Press, 1991.
+
+\bibitem{PS91}
+Lawrence~C. Paulson and Andrew~W. Smith.
+\newblock Logic programming, functional programming, and inductive definitions.
+\newblock In P.~Schroeder-Heister, editor, {\em Extensions of Logic
+  Programming}, LNAI 475, pages 283--310. Springer, 1991.
+
+\bibitem{Sar95}
+S.~Saraswat.
+\newblock {\em Performance Evaluation of the Delphi Machine}.
+\newblock PhD thesis, Computer Laboratory, Cambridge University, England,
+  December 1995.
+\newblock Reprinted as Technical Report No. 385.
+
+\bibitem{Sch24}
+M.~Sch\"onfinkel.
+\newblock \"{U}ber die {B}austeine der mathematischen {L}ogik.
+\newblock {\em Mathematische Annalen}, 92:305--316, 1924.
+
+\bibitem{SHC95}
+Z.~Somogyi, F.~J. Henderson, and T.~C. Conway.
+\newblock Mercury, an efficient purely declarative logic programming language.
+\newblock Technical report, Dept. of Computer Science, University of Melbourne,
+  Australia, 1995.
+
+\bibitem{Sti88}
+M.~Stickel.
+\newblock A {P}rolog technology theorem prover: {I}mplementation by an extended
+  {P}rolog compiler.
+\newblock {\em J. Auto. Reas.}, 4(4):353--380, 1988.
+
+\bibitem{Wre90}
+K.~L. Wrench.
+\newblock {\em A Distributed {AND-OR} Parallel {P}rolog Network}.
+\newblock PhD thesis, Computer Laboratory, University of Cambridge, December
+  1990.
+\newblock Available in summary form as Technical Report No. 212.
+
+\end{thebibliography}

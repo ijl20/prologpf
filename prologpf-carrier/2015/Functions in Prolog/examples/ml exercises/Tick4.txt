@@ -1,0 +1,97 @@
+(*  ML ASSESSED EXERCISES. TICK 4 AND TICK 4* SUBMISSION *)
+
+(* PROBLEM 1. startpoints(pairs,z), yielding all x such that (x,z) in the list of pairs *)
+(* This uses O(n) time as:                                                              *)
+(*   1) The number of matches is proportional to the length of the list pairs           *)
+(*   2) The number of conses performed is equal to the number of matches                *)
+(* This uses O(n) space as:                                                             *)
+(*   1) The number of matches is proportional to the length of the list pairs           *)
+(*   2) The size of results is proportional to the number of matches                    *)
+
+fun startpoints(pairs,z)=
+  let
+    fun f([],_,results)=results
+      | f((x,y)::pairs,z,results)=
+          if y=z then
+            f(pairs,z,x::results)
+          else
+            f(pairs,z,results)
+  in
+    f(pairs,z,[])
+  end;
+
+(* PROBLEM 2. endpoints(z,pairs), yielding all y such that (z,y) in the list of pairs *)
+(* This uses O(n) time as:                                                            *)
+(*   1) The number of matches is proportional to the length of the list pairs         *)
+(*   2) The number of conses performed is equal to the number of matches              *)
+(* This uses O(n) space as:                                                           *)
+(*   1) The number of matches is proportional to the length of the list pairs         *)
+(*   2) The size of results is proportional to the number of matches                  *)
+
+fun endpoints(z,pairs)=
+  let
+    fun f([],_,results)=results
+      | f((x,y)::pairs,z,results)=
+          if x=z then
+            f(pairs,z,y::results)
+          else
+            f(pairs,z,results)
+  in
+    f(pairs,z,[])
+  end;
+
+(* PROBLEM 3. allpairs(xs,ys), yielding all (x,y) such that x in xs and y in ys   *)
+(* f uses O(n) time and O(n) space, where n is the length of the second parameter *)
+(* g makes m calls to f, where m is the length of the first parameter             *)
+(*   this takes O(mn) time and O(n) space                                         *)
+(*   it also performs m appends with a n-long list                                *)
+(*   this takes O(mn) time and O(mn) space                                        *)
+(* allpairs therfore takes O(mn) time and O(mn) space                             *)
+
+fun allpairs(xs,ys)=
+  let
+    fun f(_,[],results)=results
+      | f(v,w::ws,results)=f(v,ws,(v,w)::results)
+    fun g([],_)=[]
+      | g(v::vs,ws)=f(v,ws,[]) @ g(vs,ws)
+  in
+    g(xs,ys)
+  end;
+
+(* PROBLEM 4. addnew((x,y),pairs) inserts (x,y) into pairs, and makes it complete   *)
+(* To calculate ts, O(n) time and O(n) space are used                               *)
+(* To calculate us, O(n) time and O(n) space are used                               *)
+(* To calculate new, O(n^2) time and O(n^2) space are used                          *)
+(*   (as m=length(ts), n=length(us) in allpairs both proportional to n)             *)
+(* combine uses O(m) time and O(m) space, where m is the length of second parameter *)
+(* blend makes p calls to combine, where p is the length of the first paramater     *)
+(*   on each call to combine, the length of the second parameter increases          *)
+(*   the average length of the second parameter is proportional to p+m              *)
+(*   it therefore uses O(p(p+m)) time and O(p+m) space                              *)
+(*   but p is proportional to n^2, and m is proportional to n                       *)
+(*   it therefore uses O(n^4) time and O(n^2) space                                 *)
+(* addnew therefore uses O(n^4) time and O(n^2) space                               *)
+
+fun addnew((x,y),pairs)=
+  let
+    val ts=startpoints(pairs,x)
+    val us=endpoints(y,pairs)
+    val new=allpairs(x::ts,y::us)
+    fun combine(v,[])=[v]
+      | combine(v,w::ws)=if v=w then
+                           w::ws
+                         else
+                           w::combine(v,ws)
+    fun blend([],ws)=ws
+      | blend(v::vs,ws)=blend(vs,combine(v,ws))
+  in
+    blend(new,pairs)
+  end;
+
+(* PROBLEM 5. routes(pairs) yields a list of all (x,y) such that there is a route from x to y *)
+(* This calls addnew n times                                                                  *)
+(*   the average length of the second parameter is proportional to n                          *)
+(* routes therefore uses O(n^5) time and O(n^2) space                                         *)
+
+fun routes([])=[]
+  | routes((x,y)::pairs)=addnew((x,y),routes(pairs));

@@ -1,0 +1,35 @@
+(*  ML ASSESSED EXERCISES. TICK 5* SUBMISSION *)
+
+(* PROBLEM 1. datatype declaration *)
+
+datatype  univ=Int of int
+              |Real of real
+              |Bool of bool
+              |String of string
+              |Pair of univ*univ
+              |Named of string*univ;
+
+(* PROBLEM 2. a function lofu such that lofu(uofl(l))=l *)
+
+fun uofl[]=String "nil"
+  | uofl(u::us)=Pair(u,uofl us);
+
+fun lofu(String"nil")=[]
+  | lofu(Pair(u,v))=u::lofu(v);
+
+(* PROBLEM 3. a function sumreals to sum all the reals in a univ *)
+(* ints returns a list of all the integers in a univ             *)
+
+fun ints(Int n)=[n]
+  | ints(Pair(u,v))=ints u @ ints v
+  | ints(Named(s,u))=ints u
+  | ints u=[];
+
+fun sumreals(u)=
+  let fun f(Real r,total)=total+r
+        | f(Pair(u,v),total)=f(u,f(v,total))
+        | f(Named(s,u),total)=f(u,total)
+        | f(u,total)=total;
+  in
+    f(u,0.0)
+  end;

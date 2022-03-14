@@ -1,0 +1,21 @@
+$fun_wrap([_154],container(_154)) :-
+    !.
+
+$fun_wrap(_298,lambda(_293,$fun_wrap([_154],container(_154)),container(_154))) :-
+    append(_298,_293,[_154]),
+    !.
+
+query :-
+    $fun_wrap([1],_332),
+    _179=_332,
+    o_send_soln(_179).
+
+$exe_1 :-
+    top_level(true,true).
+
+$orc_0_query(1,_448,[1|_450],_450) :-
+    $fun_wrap([1],_332),
+    _179=_332,
+    o_send_soln(_179).
+
+

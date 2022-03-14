@@ -1,0 +1,172 @@
+%!
+%%BoundingBox: 33 679 269 776
+%%Title: fun_tree3.tgif
+%%CreationDate: Tue Mar 26 14:16:11 1996
+%%Creator: Tgif-2.16-p9 by William Chia-Wei Cheng (william@cs.UCLA.edu)
+
+/tgifdict 4 dict def
+tgifdict begin
+
+/tgifarcdict 8 dict def
+tgifarcdict /mtrx matrix put
+
+/tgifarcn
+ { tgifarcdict begin
+      /endangle exch def
+      /startangle exch def
+      /yrad exch def
+      /xrad exch def
+      /y exch def
+      /x exch def
+      /savematrix mtrx currentmatrix def
+      x y translate
+      xrad yrad scale
+      0 0 1 startangle endangle arc
+      savematrix setmatrix
+   end
+ } def
+
+/tgifarc
+ { tgifarcdict begin
+      /endangle exch def
+      /startangle exch def
+      /yrad exch def
+      /xrad exch def
+      /y exch def
+      /x exch def
+      /savematrix mtrx currentmatrix def
+      x y translate
+      xrad yrad scale
+      0 0 1 startangle endangle arcn
+      savematrix setmatrix
+   end
+ } def
+
+end
+
+%%PageBoundingBox: 33 679 269 776
+tgifdict begin
+/tgifsavedpage save def
+
+1 setmiterlimit
+1 setlinewidth
+
+0 setgray
+
+72 0 mul 72 11.00 mul translate
+72 128 div 100 mul 100 div dup neg scale
+
+gsave
+
+% TEXT
+0 setgray
+/Times-Roman findfont [17 0 0 -17 0 0] makefont setfont
+   gsave
+      64 47 moveto (g\(U\) :- p\(U\), q\(r\(U\)\).) show
+      64 66 moveto (p\(1\).) show
+      64 85 moveto (p\(2\).) show
+      64 104 moveto (q\(1\).) show
+      64 123 moveto (q\(2\).) show
+      64 142 moveto (fun r\(X\) :- if \(X=1\) then 10 else 2.) show
+   grestore
+
+% TEXT
+0 setgray
+/Times-Roman findfont [12 0 0 -12 0 0] makefont setfont
+   gsave
+      304 44 moveto (                       g\(U\)) show
+      304 59 moveto () show
+      304 74 moveto (            p\(U\)                  _V=r\(U\)) show
+      304 89 moveto () show
+      304 104 moveto (       p\(1\)      p\(2\)         if\(X=1,10,2\)) show
+      304 119 moveto () show
+      304 134 moveto (                                          =\(X,1\)) show
+      304 149 moveto () show
+      304 164 moveto (                                          q\(_V\)) show
+      304 179 moveto () show
+      304 194 moveto (                                    q\(1\)      q\(2\)) show
+   grestore
+
+% POLY/OPEN-SPLINE
+gsave
+   newpath
+      384 48 moveto
+      356 64 lineto
+   stroke
+grestore
+
+% POLY/OPEN-SPLINE
+gsave
+   newpath
+      384 48 moveto
+      436 64 lineto
+   stroke
+grestore
+
+% POLY/OPEN-SPLINE
+gsave
+   newpath
+      356 76 moveto
+      336 92 lineto
+   stroke
+grestore
+
+% POLY/OPEN-SPLINE
+gsave
+   newpath
+      356 76 moveto
+      372 92 lineto
+   stroke
+grestore
+
+% POLY/OPEN-SPLINE
+gsave
+   newpath
+      444 76 moveto
+      444 92 lineto
+   stroke
+grestore
+
+% POLY/OPEN-SPLINE
+gsave
+   newpath
+      444 108 moveto
+      444 124 lineto
+   stroke
+grestore
+
+% POLY/OPEN-SPLINE
+gsave
+   newpath
+      444 136 moveto
+      444 152 lineto
+   stroke
+grestore
+
+% POLY/OPEN-SPLINE
+gsave
+   newpath
+      444 168 moveto
+      428 184 lineto
+   stroke
+grestore
+
+% POLY/OPEN-SPLINE
+gsave
+   newpath
+      444 168 moveto
+      456 184 lineto
+   stroke
+grestore
+
+% ARC
+gsave
+   newpath
+      384 48 9 9 153 26 tgifarc
+   stroke
+grestore
+
+grestore
+tgifsavedpage restore
+end
+%MatchingCreationDate: Tue Mar 26 14:16:11 1996

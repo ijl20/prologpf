@@ -1,0 +1,92 @@
+\chapter{Source code for parallelisation primitive}
+\label{kappa_macro}
+
+This appendix gives the source code for the simple parallelisation primitive
+supporting oracles and kappa.
+
+To embed the parallelisation support, each user clause is modified to include
+a special goal \texttt{o\_{}kbuild(N)} where \texttt{N} is the index of the clause in
+the current procedure.  This example program is transformed as
+follows:
+\begin{verbatim}
+a(X) :- b(X), c(X).
+a(X) :- d(X).
+a(z).
+
+b(X) :- c(X).
+b(b).
+
+c(z).
+\end{verbatim}
+This program becomes:
+\begin{verbatim}
+a(X) :- o_kbuild(1),b(X), c(X).
+a(X) :- o_kbuild(2),d(X).
+a(z) :- o_kbuild(3).
+
+b(X) :- o_kbuild(1),c(X).
+b(b) :- o_kbuild(2).
+
+c(z) :- o_kbuild(1).
+\end{verbatim}
+
+The primitive \texttt{o\_{}kbuild} is implemented as a 'C' macro and treated as
+a goal by a stub Prolog procedure:
+\begin{verbatim}
+o_kbuild(N) :- pragma_c(o_kbuild1).
+o_kbuild(_) :- pragma_c(o_kbuild2).
+\end{verbatim}
+
+The 'C' macros defining \texttt{o\_{}kbuild1} and \texttt{o\_{}kbuild2} are
+as follows:
+\begin{verbatim}
+#define MAXORC  10000     /* maximum length of oracle            */
+
+static int defer = 0;     /* flag to defer interrupt handling    */
+static int skip = 0;      /* flag to skip prev port on interrupt */
+
+static int orc[MAXORC];   /* array to hold orc as it is built    */
+
+static int b_depth;       /* current BUILD or-depth              */
+
+static int orc_l0;        /* depth limit L0                      */
+static int orc_l;         /* depth limit L                       */
+static int orc_g;         /* group count G                       */
+static int orc_n;         /* unique processor number N           */
+static int orc_s;         /* count of ports S                    */
+static int orc_length;    /* length of oracle to follow          */
+
+#define o_kbuild1      
+    { int index;       
+      ++b_depth;       
+      Deref(A(0),word,tag,adr) 
+      index = UnTag_INT(word);  /* index := argument to o_kbuild */
+      if (b_depth <= orc_l0) { if (index != orc[b_depth]) fail;}
+      else { if (b_depth <= orc_length) 
+               { if (index < orc[b_depth]) fail;
+                 if (index > orc[b_depth]) orc_length = 0;
+               }                               
+             orc[b_depth] = index;             
+             if (b_depth == orc_l) /* if at partitioning depth...*/
+               { if (skip) { skip = 0; fail; } 
+                 orc_s++;                      
+                 if (orc_s % orc_g != orc_n) fail;
+                 if (defer) { defer = 0; send_oracle(); fail; }  
+               }                      
+           }                          
+    }
+
+#define o_kbuild2     /* called on backtracking through o_kbuild */
+    {                                 
+      b_depth--;                      
+      fail;                           
+    }
+\end{verbatim}
+
+Similar parallelisation primitives which exploit more complex transformations of the
+user program are possible (for example see Chapter \ref{bfp_depth}).  Also the
+primitive described above could equally be implemented wholly as a 'C' macro without
+the use of the stub Prolog procedure.  The most efficient implementation might use
+a modified abstract machine. However, the implementation described above
+is portable to any Prolog compiler supporting embedded 'C' code, and the simple
+definition seems to produce an acceptable overhead of approximately 10\%.

@@ -1,0 +1,26 @@
+%%
+%% This is file `makebst.drv',
+%% generated with the docstrip utility.
+%%
+%% The original source files were:
+%%
+%% makebst.dtx  (with options: `driver')
+%% 
+%% This is the driver file to produce the LaTeX documentation from the
+%% source file makebst.dtx.
+%% Make changes to it as needed.
+\NeedsTeXFormat{LaTeX2e}
+\documentclass{ltxdoc}
+%\EnableCrossrefs %Comment out when .ind file ready
+  \DisableCrossrefs %May stay; zapped by \EnableCrossrefs
+%\RecordChanges %Comment out when .gls file ready
+%\CodelineIndex %Comment out when .ind file ready
+  \CodelineNumbered %May stay
+%\OnlyDescription
+\begin{document}
+   \DocInput{makebst.dtx}
+\end{document}
+%% 
+%% End of documentation driver file makebst.drv.
+%%
+%% End of file `makebst.drv'.

@@ -1,0 +1,14 @@
+
+:- main([o_utils]).
+
+a(X) :- b(X); c(X).
+
+b(b).
+
+c(c).
+
+cuttest(X) :- !.
+
+query :- a(X), o_send_soln(X).
+
+:- o_bfp.

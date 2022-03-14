@@ -1,0 +1,6 @@
+
+fun a(X) = e(X).
+
+fun b(X) = f(a(X)).
+
+c(X) :- X = g(b(1)).

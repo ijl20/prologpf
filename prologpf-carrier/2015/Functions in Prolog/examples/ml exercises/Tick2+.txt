@@ -1,0 +1,54 @@
+(*  ML ASSESSED EXERCISES. TICK 2* SUBMISSION *)
+
+(* PROBLEM 1.1 - A recursive function to sum 1+1/2+1/8... *)
+
+fun sumtr(n)=
+  let
+    (* this is the recursive function *)
+    fun f(term,m)=
+      if m=0 then
+        0.0
+      else
+        term+f(term/2.0,m-1)
+  in
+    f(1.0,n)
+  end;
+
+(* PROBLEM 1.2 - An iterative function to sum 1+1/2+1/4... *)
+
+fun sumti(n)=
+  let
+    fun f(total:real,term:real,m)=
+      if m=0 then
+        total
+      else
+        f(total+term,term/2.0,m-1)
+  in
+    f(0.0,1.0,n)
+  end;
+
+(* PROBLEM 2 - An iterative function to approximate e *)
+
+fun eapproxi(n)=
+  let
+    fun f(total:real,term:real,m,mup:real)=
+      if m=0 then
+        total
+      else
+        f(total+term,term/mup,m-1,mup+1.0)
+  in
+    f(0.0,1.0,n,1.0)
+  end;
+
+(* PROBLEM 3 - An iterative function to compute exponentials *)
+
+fun expi(z:real,n)=
+  let
+    fun f(total:real,term:real,m,mup:real,y:real)=
+      if m=0 then
+        total
+      else
+        f(total+term,term*y/mup,m-1,mup+1.0,y)
+  in
+    f(0.0,1.0,n,1.0,z)
+  end;

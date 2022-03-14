@@ -1,0 +1,20 @@
+cpu(0) started
+cpu(0) BFtime=4ms for limit=5 for 3 oracles.
+cpu(0) completed. Ftime=476ms Total_time=480ms
+cpu(0) solution count:       4
+cpu(1) started
+cpu(1) BFtime=4ms for limit=5 for 3 oracles.
+cpu(1) completed. Ftime=555ms Total_time=559ms
+cpu(1) solution count:       8
+cpu(2) started
+cpu(2) BFtime=4ms for limit=5 for 3 oracles.
+cpu(2) completed. Ftime=3309ms Total_time=3313ms
+cpu(2) solution count:      80
+cpu(3) started
+cpu(3) BFtime=0ms for limit=5 for 3 oracles.
+cpu(3) completed. Ftime=0ms Total_time=0ms
+cpu(3) solution count:       0
+cpu(4) started
+cpu(4) BFtime=0ms for limit=5 for 3 oracles.
+cpu(4) completed. Ftime=0ms Total_time=0ms
+cpu(4) solution count:       0

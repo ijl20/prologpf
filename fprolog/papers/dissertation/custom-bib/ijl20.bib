@@ -1,0 +1,2203 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	                                                   %	  
+%		  Ian Lewis: Bibliography Database         %
+%         		                                   %
+%		  Logic, Functions, Parellelism            %
+%                                                          %		  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%
+% Skeletons         %
+%%%%%%%%%%%%%%%%%%%%%
+%		  
+% TechReport{,
+%		  author=
+%		  title=
+%		  institution=
+%		  year=
+%		  }
+%		  
+% book{,
+% 		  author=
+%		  title=
+%		  publisher=
+%		  year=
+%		  }
+%
+% InProceedings{,
+%                  author =
+%                  title = 
+%                  editor =
+%                  booktitle = 
+%                  year =
+%                  publisher =
+%                  pages =
+%                  note =
+%                  }
+%
+% Article{,
+%                  author =
+%                  title =
+%                  journal =
+%                  year =
+%                  volume =
+%                  number =
+%                  pages =
+%                  }
+%
+% PhdThesis{,
+%                  author =
+%                  title =
+%                  school =
+%                  year =
+%                  month =
+%                  note ="Reprinted as Technical Report No.  XXX"
+%                  }
+
+%%%%%%%%%%%%%%%%%%%%%
+% Abbreviations     %
+%%%%%%%%%%%%%%%%%%%%%
+
+% PUBLISHERS
+		  
+@string{PSV  = {Springer-Verlag}}
+@string{PMK  = {Morgan Kaufman}}
+@string{PAW  = {Addison Wesley}}
+@string{PCUP = {Cambridge University Press}}
+@string{PMIT = {MIT Press}}		  
+@string{PW   = {Wiley}}
+@string{PIEEE= {IEEE Computer Soc. Press}}
+@string{PAP  = {Academic Press}}
+@string{PPH  = {Prentice Hall}}
+		  
+% JOURNALS
+
+@string{JLP  = {Journal of Logic Programming}}
+@string{CJ   = {Computer Journal}}
+
+		  
+%%%%%%%%%%%%%%%%%%%%%
+% LOGIC PROGRAMMING %
+%%%%%%%%%%%%%%%%%%%%%
+
+@book{CM87,
+		  author={W. F. Clocksin and C. S. Mellish},
+		  title={Programming in {P}rolog, 3rd {E}dition},
+		  publisher=PSV,
+		  year={1987}
+		  }
+		  
+
+@book{GN86,
+		  author={M. R. Genesereth and N. J. Nilsson},
+		  title={Logical Foundations of Artifical
+		  Intelligence},
+		  publisher=PMK,
+		  year={1986}
+		  }
+
+
+@book{RC90,
+		  author={S. Reeves and M. Clark},
+		  title={Logic for Computer Science},
+		  publisher=PAW,
+		  year={1990}
+		  }
+		  
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FUNCTIONAL PROGRAMMING %
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+@book{Pau91,
+		  author={L. C. Paulson},
+		  title={ML for the Working Programmer},
+		  publisher=PCUP,
+		  year={1991}
+		  }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PARALLEL {P}rolog        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+		  
+@InProceedings{AM88,
+  author =       "Alshawi, H.  and Moran, D. B.",
+  title =        "The {D}elphi Model and some preliminary Experiments",
+  editor =       "Kowalski, R. A. and Bowen, K. A.",
+   booktitle = "Proceedings of the Fifth intl. conf. and symposium 
+		  Logic Programming",
+   year =        "1988",
+   publisher = PMIT,
+   pages =       "1578-1589"
+}
+		  
+@Article{Clo87,
+  author =       "Clocksin, W.  F. ",
+  title =        "Principles of the {D}el{P}hi Parallel Inference Machine",
+  journal =      CJ,
+  year =         "1987",
+   volume =      "30",
+   number =      "5",
+   pages =       "386-392"
+ }
+	  
+@TechReport{CA87,
+  author =       "Clocksin, W.  F.  and Alshawi, H. ",
+  title =        "A Method of Efficiently Executing {H}orn {C}lause Using
+                  Multiple Processors",
+  institution =  "SRI International (Cambridge Computer Science Centre)",
+  year =         "1987",
+   number =      "CCSC-3"
+ } 
+		  
+@PhdThesis{Kle91,
+  author =       "Klein, C.  S. ",
+  title =        "Exploiting {OR}-Parallelism in {P}rolog using Multiple
+                  Sequential Machines. ",
+  school =       "Computer Laboratory, Cambridge University, England",
+  year =         "1991",
+   month =       "February",
+   note =       "Reprinted as Technical Report No.  216"
+}
+		  
+@PhdThesis{Sar95,
+  author =       "Saraswat, S. ",
+  title =        "Performance Evaluation of the Delphi Machine",
+  school =       "Computer Laboratory, Cambridge University, England",
+  year =         "1995",
+   month =       dec,
+   note =       "Reprinted as Technical Report No.  385"
+}
+		  
+@book{Tic91,
+		  author="Tick, E.",
+		  title="Parallel Logic Programming",
+		  publisher=PMIT,
+		  year="1991"
+		  }
+		  
+@PhdThesis{Wre90,
+  author =       "Wrench, K. L. ",
+  title =        "A Distributed {AND-OR} Parallel {P}rolog Network",
+  school =       "Computer Laboratory, Cambridge University, England",
+  year =         "1990",
+   month =       dec,
+  note =         "Available in summary form as Technical Report No. 212"
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+% FUNCTIONAL LOGIC      %
+%%%%%%%%%%%%%%%%%%%%%%%%%
+		  
+@Article{BL86,
+  author =       "M. Bellia and G. Levi",
+  title =        "The relationship between Logic and Functional
+		  languages: a survey",
+   journal =     JLP,
+   year =        "1986",
+   volume =      "3",
+   pages =       "217-236",
+ }
+		  
+@Article{Han94,
+  author =       "M. Hanus",
+  title =        "The integration of functions into logic
+		  programming: from theory to practice",
+   journal =     JLP,
+   year =        "1994",
+   volume =      "19,20",
+   pages =       "583-628"
+ }
+		  
+@TechReport{Lew96,
+  author =       "I. J. Lewis",
+  title =        "{PhD} Thesis Proposal",
+  institution =  "Computer Laboratory, Cambridge University, England",
+  year =         "1996"
+ } 
+	  
+@InProceedings{Llo94,
+		  author="J. W. Lloyd",
+		  title="Combining functional and logic programming
+		  languages",
+		  booktitle="Proc. 1994 Intl. Logic Programming
+		  Symposium",
+		  year=1994
+		  }
+		  
+		  
+@InProceedings{CL91,
+		  author="M. M. T. Chakravarty and H. C. R. Lock",
+		  title="The Implementation of Lazy Narrowing",
+		  booktitle="Proc. 3rd Intl. Symposium Programming
+		  Language Implementation and Logic Programming",
+		  year="1991",
+		  pages="123-134",
+		  publisher = PSV
+		  }
+		  
+@InProceedings{ CF91,
+		  author="P. H. Cheong and L. Fribourg",
+		  title="Efficient Integration of Simplification into {P}rolog",
+		  booktitle="Proc. 3rd Intl. Symposium Programming
+		  Language Implementation and Logic Programming",
+		  year="1991",
+		  pages="359-370",
+		  publisher = PSV
+		  }
+		  
+@InProceedings{Ant91,
+		  author="S. Antoy",
+		  title="Lazy Evaluation in Logic",
+		  booktitle="Proc. 3rd Intl. Symposium Programming
+		  Language Implementation and Logic Programming",
+		  year="1991",
+		  pages="371-382",
+		  publisher = PSV
+		  }
+		  		  
+@InProceedings{AP89,
+		  author="J. Andreoli and R. Pareschi",
+		  title="Logic Programming with Sequent Systems: a
+		  linear logic approach",
+		  booktitle="Proc. Intl. Workshop Extensions of Logic
+		  Programming, {T\"{u}}bingen, FRG",
+		  year="1989",
+		  month=dec
+		  }
+		  
+@InProceedings{Mil89,
+		  author="D. Miller",
+		  title="A Logic Programming Language with
+		  Lambda-Abstraction, Function Variables, and Simple Unification",
+		  booktitle="Proc. Intl. Workshop Extensions of Logic
+ 		  Programming, {T\"{u}}bingen, FRG",
+		  year="1989",
+		  month=dec,
+		  pages = "253-281"
+		  }
+
+@InProceedings{PS89,
+		  author="L. C. Paulson and A. W. Smith",
+		  title="Logic Programming, Functional Programming,
+		  and Inductive Definitions",
+		  booktitle="Proc. Intl. Workshop Extensions of Logic
+		  Programming, {T\"{u}}bingen, FRG",
+		  year="1989",
+		  month=dec,
+		  pages = "283-310"
+		  }
+		  
+@Article{DvH87,
+		  author="M. Dincbas and P. van Hentenryk",
+		  title="Extended Unification Algorithms for the
+		  integration of Functional Programming into Logic
+		  Programming",
+		  journal=JLP,
+		  volume="4",
+		  year="1987",
+		  pages="199-227"
+		  }
+		  
+@Article{GR89,
+		  author="J. H. Gallier and S. Raatz",
+		  title= "Extending {SLD} Resolution to Equational {H}orn
+		  Clauses using \textit{E}-Unification",
+		  journal=JLP,
+		  year="1989",
+		  pages="3-43"
+		  }
+		  
+@TechReport{GSC92,
+		  author="G. Gupta and Santos Costa, V\'{i}tor",
+		  title="Cuts and Side-Effects in And-Or Parallel
+		  {P}rolog",
+		  institution="Lab. for Logic and Databases, Dept. of
+		  Computer Science, New Mexico State University, USA",
+		  year="1992"
+		  }
+		  
+@InProceedings{Han92,
+		  author="M. Hanus",
+		  title="Improving Control of Logic Programs by Using
+		  Functional Logic Languages",
+		  booktitle="Proc. 4th Intl. Symposium on Programming
+		  Language Implementation and Logic Programming",
+		  year="1992",
+		  publisher=PSV,
+		  pages="1-23"
+		  }
+		  
+@InProceedings{HKMN95,		  
+		  author="M. Hanus and H. Kuchen and Moreno-Navarro,
+		  Juan Jos\'{e}",
+		  title="Curry: A Truly Functional Logic Language",
+		  booktitle="Proc. ILPS Workshop on Visions for the
+		  Future of Logic Programming, Portland (USA)",
+		  year="1995",
+		  month=dec
+		  }
+		  
+@TechReport{ JMMCMN92,
+		  author="Jim\'{e}nez-Martin, J. A. and
+		  Mari{\~{n}}o-Carballo, J. and Moreno-Navarro, J. J.",
+		  title="Efficient Compilation of Lazy Narrowing into {P}rolog",
+		  institution="LSIIS, Facultad de Inform\'{a}tica,
+		  Universidad Polit\'{e}cnica de Madrid, Spain",
+		  year="1992"
+		  }
+		  
+@Article{ MNRA92,
+		  author="Moreno-Navarro, J. J. and
+		  Rodriguez-Artalejo, M.",
+		  title="Logic Programming with Functions and
+		  Predicates: The Language {B}abel",
+		  journal=JLP,
+		  year="1992",
+		  pages="191-223",
+		  volume="12"
+		  }
+			  
+@Article{JD89,
+                  author = "A. Josephson and N. Dershowitz",
+                  title = "An Implementation of Narrowing",
+                  journal = JLP,
+                  year = "1989",
+                  pages = "57-77"
+                  }
+
+@InProceedings{ Mil91,
+                  author = "D. Miller",
+                  title = "Unification of Simply Typed Lambda-Terms as
+		  Logic Programming",
+                  editor = "K. Furukawa",
+                  booktitle = "Proceedings of the 1991 Intl. Conf. on
+		  Logic Programming",
+                  year = "1991"
+                  }
+		  
+@InProceedings{Nai91,
+                  author = "L. Naish",
+                  title = "Adding Equations to {NU}-{P}rolog",
+                  editor = "J. Maluszy\'{n}ski and M. Wirsing",
+                  booktitle = "Proceedings of the 3rd Intl. Symposium
+		  Programming Language Implementation and Logic Programming",
+                  year = "1991",
+		  month = aug,
+                  publisher = PSV,
+                  pages = "15-26"
+                  }
+
+@Article{ vEY87,
+                  author = "M. van Emden and K. Yukawa",
+                  title = "Logic Programming with Equations",
+                  journal = JLP,
+                  year = "1987",
+                  volume = "4",
+                  pages = "265-288"
+                  }
+
+@InProceedings{ BCM88,
+                  author = "P. G. Bosco and C. Cecchi and C. Moiso",
+                  title = "Exploiting the full power of logic plus
+		  functional programming",
+                  editor = "R. Kowalski and K. A. Bowen",
+                  booktitle = "Proceedings of the 5th Intl. Conf. and
+		  Symposium on Logic Programming",
+                  year = "1988",
+                  publisher = PMIT,
+                  pages = "3-17",
+		  volume = "1",
+                  note = {re. K-LEAF and IDEAL}
+                  }
+		  
+@InProceedings{ BM88,
+                  author = "S. Bonnier and J. Maluszy{\'{n}}sk",
+                  title = "Towards a Clean Amalgamation of Logic
+		  Programs with External Procedures",
+                  editor = "R. Kowalski and K. A. Bowen",
+                  booktitle = "Proceedings of the 5th Intl. Conf. and
+		  Symposium on Logic Programming",
+                  year = "1988",
+                  publisher = PMIT,
+		  volume="1",
+                  pages = "311-326",
+                  note = {re. S-Unification}
+                  }
+		  
+@InProceedings{ NM88,
+                  author = "G. Nadathur and D. Miller",
+                  title = "An Overview of {$\lambda$}{P}rolog",
+                  editor = "R. Kowalski and K. A. Bowen",
+                  booktitle = "Proceedings of the 5th Intl. Conf. and
+		  Symposium on Logic Programming",
+                  year = "1988",
+		  volume = "1",
+                  publisher = PMIT,
+                  pages = "810-827"
+                  }
+		  
+@InProceedings{ CSA87,
+                  author = "C. Cecchi and D. Sartini and L. Aiello",
+                  title = "Evaluating Logic Programs via Set-Valued Functions",
+                  editor = "J. Lassez",
+                  booktitle = "Proceedings of the 4th Intl. Conf.
+		  on Logic Programming",
+                  year = "1987",
+		  volume = "1",
+                  publisher = PMIT,
+                  pages = "428-455"
+                  }
+		  
+@InProceedings{ Yam87,
+                  author = "A. Yamamoto",
+                  title = "A Theoretical Combination of {SLD}-Resolution
+		  and Narrowing",
+                  editor = "J. Lassez",
+                  booktitle = "Proceedings of the 4th Intl. Conf.
+		  on Logic Programming",
+                  year = "1987",
+		  volume = "1",
+                  publisher = PMIT,
+                  pages = "470-487"
+                  }
+	  		  
+@InProceedings{ BH92,
+                  author = "A. Bowers and P. M. Hill",
+                  title = {An Introduction to {G}\"{o}del},
+                  editor = "K. Broda",
+                  booktitle = "Proceedings of the 4th UK Conf.
+		  on Logic Programming",
+                  year = "1992",
+                  publisher = PSV,
+                  pages = "299-343"
+                  }
+
+@InCollection{ CF93,
+		  crossref = {AdBR93},
+		  author = "P. H. Cheong and L. Fribourg",
+		  title = "Implementation of Narrowing: The
+		  {P}rolog-Based Approach"
+		  }
+		  
+@InCollection{ MBB+93,
+		  crossref = {AdBR93},
+		  author = "J. Maluszy{\'{n}}ski and S. Bonnier and
+		  J. Boye and F. Klu{\'{z}}niak and A. K{\r{a}}gedal
+		  and U. Nilsson",
+		  title = "Logic Programs with External Procedures",
+		  note = "re. {S}-Unification"
+		  }
+@book{ AdBR93,
+		  editor = "K. R. Apt and J. W. de Bakker and
+		  J. J. M. M. Rutten",
+		  title = "Logic Programming Languages: Constraints,
+		  Functions, and Objects",
+		  booktitle = "Logic Programming Languages: Constraints,
+		  Functions, and Objects",
+		  publisher = PMIT,
+		  year = "1993"
+		  }
+		  
+@InProceedings{Boy91,
+		  author="J. Boye",
+		  title="{S-SLD}-resolution: An Operational Semantics
+		  for Logic Programs with External Procedures",
+		  booktitle="Proc. 3rd Intl. Symposium Programming
+		  Language Implementation and Logic Programming",
+		  year="1991",
+		  pages="383-393",
+		  publisher = PSV
+		  }
+
+@TechReport{ MN94,
+		  author="Moreno-Navarro, J. J.",
+		  title="Expressivity of Functional-logic Languages
+		  and their Implementation",
+		  institution="LSIIS, Facultad de Inform\'{a}tica,
+		  Universidad Polit\'{e}cnica de Madrid, Spain",
+		  year="1994"
+		  }
+		  
+@InProceedings{ Fri85,
+		  author="L. Fribourg",
+		  title="{SLOG}: A Logic Programming Language
+		  Interpreter Based on Clausal Superposition and Rewriting",
+		  booktitle="Proc. IEEE Intl. Symposium on Logic Programming",
+		  year="1985",
+		  pages="172-184",
+		  publisher=PIEEE
+		  }
+		  
+@InProceedings{ LW91,
+		  author="R. Loogen and S. Winkler",
+		  title="Dynamic Detection of Determinism in
+		  Functional Logic Languages",
+		  booktitle="Proc. 3rd Intl. Symposium Programming
+		  Language Implementation and Logic Programming",
+		  year="1991",
+		  pages="335-346",
+		  publisher = PSV
+		  }
+		  
+@InCollection{ RS82,
+                  author = "J. S. Robinson and E. E. Silbert",
+                  title = "{LOGLISP}: an alternative to {P}rolog",
+                  booktitle = "Machine Intelligence",
+                  year = "1982",
+                  volume = "10",
+                  pages = "399-498",
+                  publisher = PW,
+		  editor = "J. E. Hays and D. Michie and Y. H. Yao"
+                  }
+		  
+		  
+@book{ O'K90,
+ 		  author = "R. A. O'Keefe",
+		  title = "The Craft of {P}rolog",
+	          publisher = PMIT,
+		  year = "1990"
+		  }
+
+@TechReport{ Pau88,
+		  author = "L. C. Paulson",
+		  title = "{ML Exercise Sheets, Part 1A CST and
+		  Mathematics with Computer Science}",
+	          institution= "Computer Laboratory, Cambridge
+		  University, England",
+		  year = "1988"
+		  }
+		  
+@Article{ AJ89,
+                  author = "L. Augustsson and T. Johnsson",
+                  title = "The {C}halmers {L}azy-{ML} compiler",
+                  journal = "Computer Journal",
+                  year = "1989",
+                  pages = "127-141",
+		  volume = "32"
+                  }
+		  
+@InProceedings{ RKKL85,
+		  author="P. R\'{e}ty and C. Kirchner and H. Kirchner
+		  and P. Lescanne",
+		  title="{NARROWER}: a new algorithm for unification
+		  and its application to {L}ogic {P}rogramming",
+		  booktitle="Proc. 1st Conference on Rewriting
+		  Techniques and Applications",
+		  year="1985",
+		  pages="141-157",
+		  publisher = PSV,
+		  volume = "202"
+		  }
+		  
+@InProceedings{ Red85,
+		  author = "U. S. Reddy",
+		  title = "Narrowing as the operational semantics of
+		  functional languages",
+		  booktitle = "Proc. IEEE Intl. Symposium on 
+		  Logic Programming, Boston",
+		  year = "1985",
+		  pages = "138-151"
+		  }
+			  
+@InProceedings{ AKLN87,
+		  author = {H. A\"{\i}t-Kaci and P. Lincoln and R. Nasr},
+		  title = "{L}e {F}un: Logic, equations and functions",
+		  booktitle = "Proc. IEEE Intl. Symposium on 
+		  Logic Programming, San Francisco",
+		  year = "1987",
+		  pages = "17-23"
+		  }
+		  
+@InProceedings{ Red86,
+		  author = "U. S. Reddy",
+		  title = "Functional Logic Languages Part I",
+		  booktitle = "Proc. Workshop on Graph Reduction,
+		  Santa F\'{e}",
+		  editor = "J. H. Fasel and R. M. Keller",
+		  year = "1986",
+		  pages = "401-425",
+		  publisher = PSV,
+		  volume = "279",
+		  month = "September/October"
+		  }
+			  
+@Article{ GM84,		  
+		  author = "J. A. Goguen and J. Meseguer",
+  		  title = "Equality, Types, Modules, and (why not?)
+		  Generics for Logic Programming",
+		  journal = JLP,
+		  volume = "1",
+		  number = "2",
+		  year = "1984",
+		  pages = "179-210",
+		  note = "re. Eqlog"
+		  }
+		  
+@Article{ Fri84,		  
+		  author = "L. Fribourg",
+  		  title = "Oriented Equational Clauses as a
+		  Programming Language",
+		  journal = JLP,
+		  volume = "1",
+		  number = "2",
+		  year = "1984",
+		  pages = "165-178"
+		  }
+			  
+@InProceedings{ Red84,
+		  author = "U. S. Reddy",
+		  title = "Transformation of Logic Programs into
+		  Functional Programs",
+		  booktitle = "Proc. IEEE Intl. Symposium on 
+		  Logic Programming",
+		  year = "1984",
+		  pages = "187-196"
+		  }
+		  
+@TechReport{ Llo95,
+		  author = "J. W. Lloyd",
+		  title = "Declarative Programming in {E}scher",
+	          institution= "Dept. of Computer Science, University
+		  of Bristol, England",
+		  year = "1995",
+		  number = "CSTR-95-013"
+		  }
+		  
+@InProceedings{ Hul80,
+		  author = "J. M. Hullot",
+		  title = "Canonical Forms and Unification",
+		  booktitle = "Proc. of the Fifth Conference on
+		  Automated Deduction, Les Arcs, France",
+		  year = "1980",
+		  pages = "318-334",
+		  publisher = PSV,
+		  volume = "87",
+		  month = jul
+		  }
+		  
+@Article{ BGM88,
+		  author = "P. G. Bosco and E. Giovannetti and C. Moiso",
+		  title = "Narrowing vs. {SLD-R}esolution",
+                  journal = "Theoretical Computer Science",
+		  volume = "59",
+		  year = "1988",
+		  pages = "3-23"
+		  }
+		  
+@Article{ DW89,
+		  author="S. K. Debray and D. S. Warren",
+		  title="Functional Computations in Logic Programs",
+		  journal="ACM Transactions on Programming Languages
+		  and Systems",
+		  volume="11",
+		  number="3",
+		  year="1989",
+		  month=jul,
+		  pages="451-481"
+		  }
+		  
+@manual{ BBP+94,
+		  author="D. L. Bowen and L. Byrd and F. C. N. Pereira
+		          and L. M. Pereira and D. H. D. Warren",
+		  title="SICStus Prolog User's manual",
+		  organization="Swedish Institute of Computer
+		  Science",
+		  year="1994",
+		  month=apr
+		  }
+		  
+@TechReport{ SHC95,
+		  author = "Z. Somogyi and F. J. Henderson and
+		            T. C. Conway",
+		  title = "Mercury, an efficient purely declarative
+		  logic programming language",
+	          institution= "Dept. of Computer Science, University
+		  of Melbourne, Australia",
+		  year = "1995"
+		  }
+
+@book{ HL94,
+		  author="P. Hill and J. Lloyd",
+		  title={The G\"{o}del Programming Language},
+		  publisher=PMIT,
+		  year="1994"
+		  }
+
+@TechReport{ AK90,
+		  author={H. A\"{\i}t-Kaci},
+		  title="The {WAM}: A (Real) Tutorial",
+		  year="1990",
+		  month=jan,
+		  institution="Digital Paris Research Laboratory"
+		  }
+
+
+
+@book{CL73,
+                  author={C. Chang and R. Lee},
+                  title={Symbolic logic and mechanical theorem
+	                 proving},
+		  year="1973",
+                  publisher=PAP
+		  }
+
+
+@TECHREPORT{AKHMN94,
+    AUTHOR = {A\"{\i}t-Kaci, Hassan and Hanus, Michael and Moreno Navarro, Juan Jos\'e},
+    BOOKTITLE = {Integration of Declarative Paradigms -- Proceedings of the ICLP'94 Post-Conference Workshop},
+    TITLE = {Integration of Declarative Paradigms -- Proceedings of the ICLP'94 Post-Conference Workshop},
+    INSTITUTION = {Max-Planck-Institut f{\"u}r Informatik},
+    ADDRESS = {Saarbr{\"u}cken, Germany},
+    YEAR = {1994},
+    NUMBER = {MPI-I-94-224},
+   PAGES = {154},
+    TYPE = {Technical Report},
+    ABSTRACT = {Since the initial efforts in reconciling the styles of
+functional programming and logic programming, there has been
+significant work done regarding efficient implementation. Also,
+new declarative paradigms, such as constraint-based or
+object-based, have now emerged, asking naturally to be
+conjugated and exploited along with other such programming
+techniques. As a result, interest in the integration of
+declarative paradigms has been spurred anew. This workshop aims
+at bringing together researchers from different communities as
+well as giving the logic programming audience an idea of recent
+advances. Topics are: language features, semantics, execution
+principles, implementation issues, constraints, types,
+functions, and concurrency.},
+}
+
+@InProceedings{ CL94,
+		  crossref = {AKHMN94},
+		  author = {M. T. T. Chakravarty and H. C. R. Lock},
+		  title = {The JUMP-machine: a Generic Basis for the 
+                           Integration of Declarative Paradigms}
+		  }
+
+@InProceedings{ Gri94,
+		  crossref = {AKHMN94},
+		  author = {G. Grivas},
+		  title = {Efficient Integration of Declarative Paradigms
+                           into Symbolic Computation Systems}
+		  }
+
+@TechReport{ CD95,
+		  author={P. Codognet and D. Diaz},
+		  title="{wamcc}: Compiling Prolog to C",
+		  year="1995",
+		  institution="INRIA-Rocquencourt, France"
+		  }
+
+@TechReport{ Bon92,
+		  author={S. Bonnier},
+		  title="A Formal Basis for Horn Clause Logic with
+                         External Polymorphic Functions",
+		  year="1992",
+		  institution={Dept. of Computer Science, Link\"oping
+                         University, Sweden},
+                  number="276"
+		  }
+
+@manual{ HCSR95,
+		  author={F. Henderon and T.Conway and Z. Somogyi and
+                          P. Ross},
+		  title={The Mercury Language Reference Manual},
+		  organization={University of Melbourne},
+		  year="1995"
+		  }
+
+		  
+@Article{ Sti88,
+		  author="M. Stickel",
+		  title={A {P}rolog technology theorem prover:
+                          {I}mplementation by an extended {P}rolog
+                          compiler},
+		  journal="J. Auto. Reas.",
+		  volume="4",
+		  number="4",
+		  year="1988",
+		  pages="353-380"
+		  }
+		  
+@TechReport{ Nai96,
+		  author={L. Naish},
+		  title="Higher-order logic programming in Prolog",
+		  year="1996",
+		  institution={Dept. of Computer Science,
+                         University of Melbourne, Australia},
+                  number="96/2"
+		  }
+
+@TechReport{ HAK+97,
+		  author={M. Hanus and S. Antoy and H. Kucken and
+                          F. L\'opez-Fraguas},
+		  title={Curry, An integrated Functional Logic Language},
+		  year="1997",
+		  institution={RWTH Aachen, Germany}
+		  }
+
+		  
+@book{ DEDC96,
+		  author={P. Deransart and A. Ed-Dbali and L. Cervoni},
+		  title={Prolog: {T}he {S}tandard},
+		  publisher="Springer",
+		  year="1996"
+		  }
+
+
+@book{ MTH90,
+		  author={R. Milner and M. Tofte and R. Harper},
+		  title={The {D}efinition of {S}tandard {ML}},
+		  publisher=PMIT,
+		  year="1990"
+		  }
+
+
+@InProceedings{PS91,
+  author	= "Lawrence C. Paulson and Andrew W. Smith",
+  title		= "Logic Programming, Functional Programming, and Inductive
+		  Definitions",
+  crossref	= "extensions91",
+  pages		= "283-310"}
+
+@proceedings{extensions91,
+  editor	= {Peter Schroeder-Heister},
+  title		= {Extensions of Logic Programming},
+  booktitle	= {Extensions of Logic Programming},
+  year		= 1991,
+  series	= {LNAI 475}, 
+  publisher	= {Springer}}
+
+@Article{ Cur30,
+		  author="H. B. Curry",
+		  title={Grundlagen der Kombinatorischen Logik},
+		  journal="American Journal of Mathematics",
+		  volume="52",
+		  year="1930",
+		  pages="509-536, 789-834"
+		  }
+
+@Article{ Sch24,
+		  author={M. Sch\"onfinkel},
+		  title={\"Uber die Bausteine der mathematischen Logik},
+		  journal="Mathematische Annalen",
+		  volume="92",
+		  year="1924",
+		  pages="305-316"
+		  }
+
+@book{ App92,
+		  author={A. Appel},
+		  title={Compiling with Continuations},
+		  publisher=PCUP,
+		  year="1992"
+		  }
+
+@Article{ AEH97,
+		  author={S. Antoy and R. Echahed and M. Hanus},
+		  title={Parallel Evaluation Strategies for Functional Logic Languages},
+		  journal="Proc. of the Fourteenth International Conference on
+                         Logic Programming",
+		  year="1997"
+		  }
+
+@InProceedings{ Ali88,
+  author =       "K. Ali",
+  title =        {{OR}-parallel execution of {P}rolog on {BC}-machine},
+  editor =       "Kowalski, R. A. and Bowen, K. A.",
+   booktitle = "Proceedings of the Fifth intl. conf. and symposium 
+		  Logic Programming",
+   year =        "1988",
+   publisher = PMIT,
+   pages =       "1531-1545"
+}
+
+@InCollection{ DR92,
+                  crossref={KW92},
+		  author={S. A. Delgado-Rannauro},
+		  title={{OR}-Parallel Logic Computation Models}
+		  }
+
+@InCollection{ B+92,
+                  crossref={KW92},
+		  author={J. Briat and M. Favre and C. Geyer and J. Chassin de Kergommeaux},
+		  title={{OPERA}: {OR}-parallel {P}rolog System on Supernode}
+		  }
+
+@InCollection{ CMCP92,
+                  crossref={KW92},
+		  author={J. Cuhna and P. Medeiros and M. Carvalhosa and L. Pereira},
+		  title={{D}elta {P}rolog: a distributed logic programming language
+                    and its implementation on distributed memory multiprocessors}
+		  }
+
+@InProceedings{AKM91,
+  author =       "K. Ali and R. Karlsson and S. Mudambi",
+  title =        {Performance of {M}use on the {BBN} Butterfly {TC2000}},
+  editor =       "A. Beaumont and G. Gupta",
+   booktitle = {Parallel Execution of Logic Programs},
+   year =        "1991",
+   publisher = PSV,
+   pages =       "104-119"
+}
+
+@InProceedings{Bea91,
+  author =       "A. Beaumont",
+  title =        {Scheduling Strategies and Speculative Work},
+  editor =       "A. Beaumont and G. Gupta",
+   booktitle = {Parallel Execution of Logic Programs},
+   year =        "1991",
+   publisher = PSV,
+   pages =       "120-131"
+}
+
+@book{KW92,
+  		  editor="P. Kacsuk and M. Wise",
+		  booktitle="Implementations of Distributed {P}rolog",
+		  title="Implementations of Distributed {P}rolog",
+		  publisher=PW,
+		  year="1992"
+		  }
+		  
+@Article{ Ali87,
+		  author={K. Ali},
+		  title={{OR}-parallel execution of {P}rolog on a
+                          Multi-Sequential Machine},
+		  journal="Intl. J. of Parallel Programming",
+                  pages="189-214",
+                  volume=15,
+		  year="1987"
+		  }
+
+@Article{ LWH+90,
+		  author={E. Lusk and D. H. D. Warren and
+                          S. Haridi et al.}, 
+		  title={The {A}urora or-parallel {P}rolog system},
+		  journal="New Generation Computing",
+                  pages="243-271",
+                  volume=7,
+		  year="1990"
+		  }
+
+@InProceedings{War87,
+  author =       "D. H. D. Warren",
+  title =        {The {SRI} model for or-parellel execution of {P}rolog},
+  booktitle = {Proc. of the 1987 Symposium on Logic Programming},
+   year =        "1987",
+   pages =       "92-102"
+}
+
+@Article{ MKI+86,
+		  author={H. Masuzawa and K. Kumon and A. Itashiki and
+                          K. Satoh and Y. Sohma},
+		  title={Kabu Wake Parallel Inference Mechanism and its Evaluation},
+		  journal="Proc. Fifth Generation Computer Conference",
+                  pages="955-962",
+		  year="1986"
+		  }
+
+@InProceedings{BDLO+88,
+  author =       "R. Butler and T. Disz and E. Lusk and R. Olson and R. Overbeek and
+                 R. Stevens",
+  title =        "Scheduling {OR}-parallelism: an {A}rgonne perspective",
+  editor =       "Kowalski, R. A. and Bowen, K. A.",
+   booktitle = "Proceedings of the Fifth intl. conf. and symposium 
+		  Logic Programming",
+   year =        "1988",
+   publisher = PMIT,
+   pages =       "1590-1605"
+}
+	
+@InProceedings{ DLO87,
+                  author = "T. Disz and E. Lusk and R. Overbeek",
+                  title = "Experiments with {OR}-parallel logic programs",
+                  editor = "J. Lassez",
+                  booktitle = "Proceedings of the 4th Intl. Conf.
+           		  on Logic Programming",
+                  year = "1987",
+		  volume = "2",
+                  publisher = PMIT,
+                  pages = "576-600"
+                  }
+
+@InProceedings{ TL87,
+                  author = "P. Tinker and G. Lindstrom",
+                  title = "A performance-oriented design for 
+                          {OR}-parallel logic programming",
+                  editor = "J. Lassez",
+                  booktitle = "Proceedings of the 4th Intl. Conf.
+           		  on Logic Programming",
+                  year = "1987",
+		  volume = "2",
+                  publisher = PMIT,
+                  pages = "601-615"
+                  }
+	
+@book{Tak92,
+		  author={A. Takeuchi},
+		  title={Parallel Logic Programming},
+		  publisher=PW,
+		  year={1992}
+		  }
+		  
+@Article{ CK81,
+		  author={J. Conery and D. Kibler},
+		  title={Parallel interpretation of logic programs},
+		  journal="Proc. ACM Conference on Functional Programming 
+                    Languages and Computer Architecture",
+                  pages="163-170",
+		  year="1981"
+		  }
+
+@TechReport{ CG81,
+		  author={K. Clark and S. Gregory},
+		  title="A Relational Language for Parallel Programming",
+		  year="1981",
+		  institution={Dept. of Computer Science,
+                         Imperial College, London}
+		  }
+
+@TechReport{ CG84,
+		  author={K. Clark and S. Gregory},
+		  title={{PARLOG}: Parallel Programming in Logic},
+		  year="1984",
+                  number="84/4",
+		  institution={Dept. of Computer Science,
+                         Imperial College, London}
+		  }
+
+
+@InCollection{ Sha87a,
+                  crossref={Sha87},
+		  author={E. Shapiro},
+		  title={A subset of {C}oncurrent {P}rolog and its interpreter}
+		  }
+
+@book{Sha87,
+  		  editor={E. Shapiro},
+		  booktitle={Concurrent Prolog: Collected Papers},
+		  title={Concurrent Prolog: Collected Papers},
+		  publisher=PMIT,
+		  year="1987"
+		  }
+
+@book{ Wis86,
+                  author={M. Wise},
+                  title={Prolog Multiprocessors},
+                  publisher={Prentice Hall International},
+                  year={1986}
+     }
+
+@book{ Hoa85,
+                  author={C. A. R. Hoare},
+                  title={Communicating Sequential Processes},
+                  publisher={Prentice Hall},
+                  year={1985}
+     }
+
+@TechReport{ Barham92,
+		  author={P. Barham},
+		  title={Distributed {D}elphi Parallel Prolog},
+		  year="1992",
+		  institution={Dept. of Computer Science,
+                         University of Cambridge}
+		  }
+
+
+@Book{wfc:81,
+  author = 	 "Clocksin, W. F. and Mellish, C. S.",
+  title = 	 "Programming in {P}rolog",
+  publisher = 	 "Springer-Verlag",
+  year = 	 "1981",
+ }
+
+@Article{wfc:85,
+  author = 	 "Clocksin, W. F.",
+  title = 	 "Design and Simulation of a sequential {P}rolog Machine",
+   journal = 	 "New Generation Computing",
+   year = 	 "1985",
+   volume = 	 "3",
+   pages = 	 "101-120",
+ }
+
+@Article{robert:93,
+  author = 	 "Mueller-Thuns, R. B. and others",
+  title = 	 "Benchmarking Parallel Processing Platforms: an Applications Perspective",
+   journal = 	 "IEEE Transactions on Parallel and Distributed Systems",
+   year = 	 "1993",
+   volume = 	 "4",
+   number = 	 "8",
+   pages = 	 "947-954",
+   month = 	 "August",
+}
+
+@TechReport{wfc:86,
+  author = 	 "Clocksin, W.  F.  and Alshawi, H. ",
+  title = 	 "A Method of Efficiently Executing {H}orn {C}lause Using
+		  Multiple Processors",
+  institution =  "SRI International (Cambridge Computer Science Centre)",
+  year = 	 "1986",
+   number = 	 "CCSC-3",
+ } 
+
+@TechReport{butler:86,
+  author = 	 "Butler, R. and others",
+  title = 	 "{ANL-WAM}: A parallel implementation of the {W}arren {A}bstract {M}achine", 
+  institution =  "Argonne National Laboratories",
+  year = 	 "1986",
+ } 
+
+@Article{masuzawa:86,
+  author =       "Masuzawa, H. and others",
+  title =        "Kabu-{W}ake parallel inference mechanism and its evaluation",
+   journal =     "FJCC, IEEE",
+   year =        "1986",
+   pages =       "955-962",
+ }
+
+@Article{wfc:88,
+  author = 	 "Clocksin, W.  F. ",
+  title = 	 "A Method for Efficiently Executing {H}orn {C}lause Programs Using Multiple Processors",
+  journal = 	 "New Generation Computing",
+  year = 	 "1988",
+  volume = 	 "5",
+  pages = 	 "361-376",
+ }
+
+@Article{wfc:87,
+  author = 	 "Clocksin, W.  F. ",
+  title = 	 "Principles of the {D}el{P}hi Parallel Inference Machine",
+  journal = 	 "Computer Journal",
+  year = 	 "1987",
+   volume = 	 "30",
+   number = 	 "5",
+   pages = 	 "386-392",
+ }
+
+@InProceedings{wfc:93,
+  author = 	 "Clocksin, W.  F. ",
+  title = 	 "The {D}el{P}hi Multiprocessor Inference Machine",
+  editor = 	 "Boda, K.",
+    year = 	 "1993",
+   note = 	 "In the 4th U.  K.  Conference on Logic Programming, Springer-Verlag. ",
+}
+
+@InProceedings{westphal:87, 
+  author = 	 "Westphal, H. and Robert, P.",
+  title = 	 "The {PEPS}ys Model: Combining {B}acktracking, {AND}- and {OR}- parallelism", 
+    year = 	 "1987",
+   note = 	 "In IEEE International Symposium on Logic Programming",
+}
+
+@InProceedings{alshawi:88,
+  author = 	 "Alshawi, H.  and Moran, D. B.",
+  title = 	 "The {D}elphi Model and some preliminary Experiments",
+  editor = 	 "Kowalski, R. A. and Bowen, K. A.",
+   booktitle = "Logic Programming",
+   year = 	 "1988",
+   publisher = "MIT Press",
+   pages = 	 "1578-1589",
+   note =     "In the Proceedings of the Fifth international conference and symposium",
+}
+
+
+@PhdThesis{csk:91,
+  author = 	 "Klein, C.  S. ",
+  title = 	 "Exploiting {OR}-Parallelism in {P}rolog using Multiple
+		  Sequential Machine. ",
+  school =       "Computer Laboratory, University of Cambridge",
+  year = 	 "1991",
+   month = 	 "February",
+   note =       "Reprinted as Technical Report No.  216",
+}
+
+@InProceedings{csk:93,
+  author = 	 "Klein, C. S. ",
+  title = 	 "Automatic Exploitation of {OR}-parallelism in {P}rolog",
+   editor = 	 "Malyshkin, K.",
+    year = 	 "1993",
+   month = 	 "August",
+   note = 	 "Parallel Computing Technologies (PaCt-93), Obninsk, Russia",
+}
+
+@InProceedings{baron:88,
+  author = 	 "Baron, U. C. and others",
+  title = 	 "The parallel {ECRC} {P}rolog System {PEPS}ys: An overview and evaluation results", 
+    year = 	 "1988",
+   note = 	 "In the Proceedings of the International Conference on Fifth Generation 
+                  Computer Systems, edited by ICOT, Tokyo",
+}
+
+@InProceedings{mudambi:89,
+  author = 	"Mudambi, S.", 
+  title = 	"Performance of {A}urora on a Switch Based Multiprocessor",
+  editor = 	"Lusk, E. L. and Overbreek, R. A.",
+  booktitle =   "Logic Programming", 
+  pages = 	"697-712",
+  year = 	"1989",
+  volume =      "2",
+  note = 	"In the Proceedings of the North American Conference 1989",
+}
+
+@InProceedings{szeredi:89,
+  author = 	"Szeredi, P.", 
+  title = 	"Performance Analysis of the {A}urora {O}r-Parallel {P}rolog 
+                 System",
+  editor = 	"Lusk, E. L. and Overbreek, R. A.",
+  booktitle =   "Logic Programming", 
+  pages = 	"713-732",
+  year = 	"1989",
+  note = 	"In the Proceedings of the North American Conference 1989",
+}
+
+
+@InProceedings{szeredi:92,
+  author = 	 "Szeredi, P.",
+  title = 	 "Exploiting {O}r-parallelism in Optimisation Problems",
+   editor = 	 "Krzysztof, A. P. T.",
+   booktitle =   "Logic Programming", 
+   pages = 	 "703-716",
+    year = 	 "1992",
+   note = 	 "In the Proceedings of the Joint International Conference and 
+                 Symposium",
+}
+
+@Article{lusk:90,
+  author = 	 "Lusk, E. and others",
+  title = 	 "The {A}urora {O}r-Parallel {P}rolog System",
+  journal = 	 "New Generation Computing",
+  year = 	 "1990",
+  volume = 	 "7",
+  pages = 	 "243-271",
+ }
+
+@TechReport{calderwood:90,
+  author = 	 "Calderwood, A. and Szeredi, P.",
+  title = 	 "Scheduling {O}r-parallelism in {A}urora - the {M}anchester {S}cheduler",
+  institution =  "University of Bristol",
+  year =         "1990",
+  number =      "TR-90-08",
+  month =       "April",
+ } 
+
+@TechReport{beaumont:90,
+  author = 	 "Beaumont, A.  and others",
+  title = 	 "Scheduling {O}r-parallelism in {A}urora with the  {B}ristol 
+{S}cheduler",
+  institution =  "University of Bristol",
+  year =         "1990",
+  number =      "TR-90-04",
+  month =       "March",
+ } 
+
+
+@TechReport{beaumont:92,
+  author = 	 "Beaumont, A.  and Warren, D. H. D.",
+  title = 	 "Scheduling Speculative work in {O}r-parallel {P}rolog Systems",
+  institution =  "University of Bristol",
+  year =         "1992",
+  number =      "CSTR-92-38",
+  month =       "December",
+ } 
+
+@InProceedings{guptaG:91,
+  author = 	 "Gupta, G. and others ", 
+  title = 	 "{ACE:} {A}nd/{O}r-parallel copying-based execution of logic Programs",
+  year =         "1991",
+   note = 	 "In ICLP'91 Workshop on Parallel Execution of Logic Programs, Springer-Verlag, New York",
+}
+
+
+@TechReport{War83,
+  author = 	 "Warren, D. H. D.",
+  title = 	 "An Abstract {P}rolog Instruction Set",
+  institution =  "SRI International, Menlo Park, CA",
+  year =         "1983",
+  number =      "tn-309",
+ } 
+
+
+
+@InProceedings{warren:87,
+  author = 	 "Warren, D. H. D.",
+  title = 	 " The {SRI} model for {O}r-Parallel Execution of {P}rolog - Abstract design and implementation issues",
+    year = 	 "1987",
+   page =        "46-53",
+   note = 	 "In Proceedings of the 1987 Symposium on Logic Programming, IEEE Computer Society Press, Los Alamitos, California",
+}
+
+@InProceedings{yang:93,
+  author =       "Yang, R. and others",
+  title =        "Performance of the Compiler-based {A}ndorra-{I} System",
+   editor = 	 "Warren, D. H. D.",
+    year =       "1993",
+   note =        "In the Proceedings of the 10th International Conference on Logic Programming",
+   page =        "150-166",
+}
+
+@PhdThesis{wrench:90,
+  author = 	 "Wrench, K. L. ",
+  title = 	 "A Distributed {AND-OR} Parallel {P}rolog Network",
+  school =       "Computer Laboratory, University of Cambridge",
+  year = 	 "1990",
+   month = 	 "December",
+  note = 	 "Available in summary form as Technical Report No. 212",
+
+}
+
+@Unpublished{Bar92,
+  author = 	 "Barham, P. R. ",
+  title = 	 "Distributed {D}el{P}hi Parallel {P}rolog",
+    year = 	 "1992",
+   month = 	 "May",
+  note = 	 "Computer Science Tripos Part II Project, Computer Laboratory, University of Cambridge",
+ }
+
+@Unpublished{ali:86,
+  author = 	 "Ali, K. A. M. and others ",
+  title = 	 "The {BC}-Machine: {A} multiprocessor Architecture for fast {OR}-parallel 
+execution of Logic Programs",
+   year = 	 "1986",
+  note = 	 "Swedish Institute of Computer Science, Reproduced from a set of overhead slides", 
+ }
+
+@InProceedings{ali:88,
+  author = 	 "Ali, K. A. M.",
+  title = 	 "{OR} parallel execution of {P}rolog on {BC}-Machine",
+  editor = 	 "Kowalski, R. A. and Bowen, K. A.",
+  booktitle = 	 "Logic Programming",
+  year = 	 "1988",
+  publisher =	 "MIT Press",
+   pages = 	 "1531-1545",
+   note =	 "In the Proceedings of the Fifth international conference and symposium",
+ }
+
+@Unpublished{warren:93,
+  author = 	 "Warren, D. H. D.",
+  title = 	 "The extended {A}ndorra model with extended control",
+   year = 	 "1993",
+  note = 	 "Presentation slides in the ICLP 90 Workshop on Parallel Logic 
+                  Programming", 
+ }
+
+@Article{ali:87,
+  author = 	 "Ali, K. A. M. ",
+  title = 	 "{OR}-Parallel Execution of {P}rolog on a Multi-Sequential Machine",
+    journal = 	 "International Journal of Parallel Programming",
+   year = 	 "1987",
+   volume = 	 "15",
+   number = 	 "3",
+   pages = 	 "189-214",
+ }
+
+@Article{ali:91,
+  author = 	 "Ali, K. A. M.  and Karlsson, R. ",
+  title = 	 "Full {P}rolog and Scheduling {O}r-Parallelism in {M}use", 
+   journal = 	 "International Journal of Parallel Programming", 
+   year = 	 "1990",
+   volume = 	 "19",
+   number = 	 "6",
+   month = 	 "December",
+   pages = 	 "445-475",
+}
+
+@Article{ali:92,
+  author =	 "Ali, K. A. M.  and Karlsson, R. ",
+  title = 	 "Performance of {M}use on Switch-Based Multiprocessor Machines",
+   journal = 	 "New Generation Computing",
+   year = 	 "1992",
+   volume = 	 "11",
+   pages = 	 "81-103",
+ }
+
+@InProceedings{ali:90,
+  author = 	 "Ali, K. A. M.  and Karlsson, R. ",
+  title = 	 "The {M}use {O}r-Parallel {P}rolog Model and its Performance",
+   editor = 	 "Debray, S.   and Hermengildo, M. ",
+   booktitle =    "Logic Programming", 
+   pages = 	 "757-776",
+    year = 	 "1990",
+   month = 	 "October",
+   note = 	 "In the Proceedings of the 1990 North American Conference",
+}
+
+@InProceedings{gupta:90,
+  author = 	 "Gupta, G. and Jayaraman, B.",
+  title = 	 "On criteria for {O}r-Parallel Execution Models of Logic Programs",
+   editor = 	 "Debray, S.   and Hermengildo, M. ",
+  booktitle =    "Logic Programming", 
+   pages = 	 "737-756",
+    year = 	 "1990",
+   note = 	 "In the Proceedings of the 1990 North American Conference",
+}
+
+@InProceedings{gupta:91,
+  author = 	 "Gupta, G. and others",
+  title = 	 "{IDIOM}: {I}ntegrating {D}ependent and-, {I}ndependent and-, and {O}r-parallelism",
+  editor = 	"Saraswat, V. and Kazunori, U.",
+  booktitle =   "Logic Programming", 
+  pages = 	"152-166",
+  year = 	"1991",
+  note = 	"In the Proceedings of the 1991 International Symposium",
+}
+
+
+@Article{hermengildo:91,
+  author = 	 "Hermengildo, M. V.  and Greene, K. J. ",
+  title = 	 "The \&-{P}rolog System: Exploiting Independent {A}nd-Parallelism",
+   journal = 	 "New Generation Computing",
+   year = 	 "1991",
+   volume = 	 "9",
+   pages = 	 "233-256",
+ }
+
+
+@Article{conery:85,
+  author = 	 "Conery, J. S. and Kibler, D. F.",
+  title = 	 "{AND} {P}arallelism and Nondeterminism in Logic Programs",
+   journal = 	 "New Generation Computing",
+   year = 	 "1985",
+   volume = 	 "3",
+   pages = 	 "43-70",
+ }
+
+@InProceedings{conery:81,
+  author = 	 "Conery, J. S. and Kibler, D. F.",
+  title = 	 "Parallel Interpretation of Logic Programs",
+   pages = 	 "163-170",
+    year = 	 "1981",
+   month = 	 "October",
+   note = 	 "In the Proceedings of the Conference on Functional Programming Language and Computer Architecture",
+}
+
+@Article{karsloot:91,
+  author = 	 "Karsloot, M. and Mudler, H.",
+  title = 	 "Sequential Architecture Models for {P}rolog: A Performance 
+                  Comparison", 
+   journal = 	 "New Generation Computing",
+   year = 	 "1991",
+   volume = 	 "9",
+   pages = 	 "201-219",
+ }
+
+@InProceedings{hermengildo:90,
+  author = 	"Hermengildo, M. V. and  Greene, K. J.", 
+  title = 	"\&-{P}rolog and its Performance: Exploiting Independent {A}nd- Parallelism",
+  editor = 	"Warren, D. H. D. and Szeredi, P.",
+  booktitle =   "Logic Programming", 
+   pages = 	 "253-268",
+    year = 	 "1990",
+   month = 	 "August",
+   note = 	 "In the Proceedings of the Seventh International Conference",
+}
+
+@TechReport{bayerl:89,
+  author = 	 "Bayerl, S.  and others",
+  title = 	 "{PARTHEO}: A Parallel Inference Machine",
+  institution =  "Technische Universitat Munchen",
+  year =         "1989",
+  number =      "FKI-119-89",
+  month =       "December",
+ } 
+
+@Article{korf:85,
+  author =	 "Korf, R. E.",
+  title = 	 "Depth-first iterative-deepening",
+   journal = 	 "Artificial Intelligence",
+   year = 	 "1985",
+   volume = 	 "27",
+   pages = 	 "97-109",
+ }
+
+@TechReport{papadop:87,
+ author = 	 "Papadopoulos, A.  G. ", 
+ title = 	 "Parallel Execution of Logic Programs",
+ institution =  "School of Information Systems, University of East Anglia, Norwich",
+ year = 	 "1987",
+ number = 	 "SYS-C87-08",
+ } 
+
+
+
+@PhdThesis{shen:91,
+  author = 	 "Shen, K. ",
+  title = 	 "Studies of {AND/OR} Parallelism in {P}rolog",
+  school = 	 "Computer Laboratory, University of Cambridge",
+  year = 	 "1991",
+ }     
+
+
+
+
+@InProceedings{gorlic:87,
+  author = 	 "Gorlick, M. M.  and Kesselman, C. F. ",
+  title = 	 "A Workbench for the Performance Analysis of Logic Programs",
+    editor = 	 "Kowalski, R. A.  and Bowen, A. B. ",
+   volume = 	 "1",
+    pages = 	 "548-561",
+   booktitle = "Logic Programming",
+   year = 	 "1987",
+    note = 	 "In the Proceedings of the Fifth International Conference and
+		  Symposium ",
+ }                  
+
+@InProceedings{davis:91,
+  author = 	 "Davis, H.  and others ",
+  title = 	 "Multiprocessor Simulation and Tracing using Tango",
+   volume = 	 "II",
+   pages = 	 "99-107",
+    year = 	 "1991",
+   month = 	 "August",
+   note = 	 "In Proceedings of the International Conference on Parallel
+		  Processing ",
+}
+
+@PhdThesis{wilson:92,
+  author = 	 "Wilson, T. D. ",
+  title = 	 "Increasing the performance of storage services for local
+		  area network",
+  school = 	 "Computer Laboratory, University of Cambridge",
+  year = 	 "1992",
+}   
+
+@TechReport{haygood:89,
+  author = 	 "Haygood, R. ",
+  title = 	 "A {P}rolog Benchmark Suit for {A}quarius",
+  institution =  "Computer Science Division (EECS), University of
+		  California, Berkeley, California. ",
+  year = 	 "1989",
+   number = 	 "UCB/CSD 89/509",
+   month = 	 "April",
+ }  
+
+
+@Article{goldberg:93,
+  author = 	 "Goldberg, A. J.  and Hennesssy, J. L. ",
+  title = 	 "Mtool: An integrated System for Performance Debugging
+		  Shared Memory Multiprocessor Applications",
+   journal = 	 "IEEE Transactions on Parallel and Distributed Systems",
+   year = 	 "1993",
+   volume = 	 "4",
+   number = 	 "1",
+   pages = 	 "",
+   month = 	 "January",
+}
+
+		  
+@Article{tick:85,
+  author = 	 "Tick, E.  and Zhong, X. ",
+  title = 	 "A Compile-Time Granularity Analysis Algorithm and its Performance Evaluation",
+   journal = 	 "New Generation Computing",
+   year = 	 "1993",
+   volume = 	 "11",
+   pages = 	 "271-295",
+ }
+
+@Article{tick:90,
+  author = 	 "Tick, E. ",
+  title = 	 "Compile-Time Granularity Analysis for Parallel Logic Programming Languages",
+   journal = 	 "New Generation Computing",
+   year = 	 "1990",
+   volume = 	 "7",
+   month = 	 "January",
+   pages = 	 "325-337",
+ }
+
+@Article{numao:90,
+  author = 	 "Masayuki, N.  and others",
+  title = 	 "How Should {P}rolog Computation Be Represented for Practical Use",
+   journal = 	 "New Generation Computing",
+   year = 	 "1990",
+   volume = 	 "8",
+   pages = 	 "95-112",
+ }
+
+@Article{gupta:93,
+  author = 	 "Gupta, G. and others",
+  title = 	 "{A}nd-{O}r Parallel {P}rolog: a recomputation based approach",
+   journal = 	 "New Generation Computing",
+   year = 	 "1990",
+   volume = 	 "8",
+   pages = 	 "95-112",
+ }
+
+@Article{ammar:93,
+author = 	 "Ammar, A. R.  and Rosiene, C. P. ",
+title = 	 "Visualizing a Hierarchy of Performance Model for Software Systems",
+   journal = 	 "Software-Practice and Experience",
+   year = 	 "1993",
+   volume = 	 "23",
+   number = 	 "3",
+   pages = 	 "293-315",
+   month = 	 "March",
+}	  
+
+
+@Article{naganuma:94,
+  author = 	 "Naganuma, J. and Ogura, T.",
+  title = 	 "A highly {O}r-parallel inference machine ({M}ulti-{ASCA}) and its  Performance Evaluation: An architecture and its load balancing Algorithms",
+  journal =  "IEEE Transaction on Computers",
+  year = 	 "1994",
+  volume = 	 "43",
+  number = 	 "9",
+   pages = 	 "1062-1075",
+  month = 	 "September",
+ }
+
+@Article{kennaway:83,
+  author = 	 "Kennaway, J. R. and Sleep, M. R.",
+  title = 	 "Novel Architectures for declarative languages",
+  journal =  "Software and Microsystems",
+  year = 	 "1983",
+  volume = 	 "2",
+  number = 	 "3",
+   pages = 	 "59-70",
+  month = 	 "June",
+ }
+
+@Article{chen:91,
+  author = 	"Chen, A. C.  and Wu, C. ",
+  title = 	 "A Parallel Execution Model of Logic Programs",
+  journal =  "IEEE Transaction on Parallel and Distributed Systems",
+  year = 	 "1991",
+  volume = 	 "2",
+  number = 	 "1",
+   pages = 	 "79-92",
+  month = 	 "January",
+ }
+
+@Article{ramk:94,
+  author = 	"Ramkumar, B. and Kal\'{e}, L. V.",
+  title = 	 "Machine Independent {AND} and {OR} Parallel Execution of Logic Programs: Part {I} --- The Binding Environment",
+  journal =  "IEEE Transaction on Parallel and Distributed Systems",
+  year = 	 "1994",
+  volume = 	 "5",
+  number = 	 "2",
+  pages = 	 "170-180",
+  month = 	 "February",
+ }
+
+@Article{ramkumar:94,
+  author = 	"Ramkumar, B. and Kal\'{e}, L. V.",
+  title = 	 "Machine Independent {AND} and {OR} Parallel Execution of Logic Programs: Part {II} --- Compiled Execution",
+  journal =  "IEEE Transaction on Parallel and Distributed Systems",
+  year = 	 "1994",
+  volume = 	 "5",
+  number = 	 "2",
+   pages = 	 "181-192",
+  month = 	 "February",
+ }
+
+@Article{couch:93,
+  author = 	"Couch, A. L. ",
+  title = 	 "Locating Performance Problems in Massively Parallel Executions",
+  journal =  "Proceedings  of the IEEE",
+  year = 	 "1993",
+  volume = 	 "81",
+  number = 	 "8",
+  month = 	 "August",
+ }
+
+@TechReport{ciepielewsk:86,
+  author = 	 "Ciepielewski, A.  and Hausman, B. ",
+  title = 	 "Performance Evaluation of a Storage Model for {OR}-Parallel
+		  Execution of Logic Programs",
+  institution =  "Swedish Institute of Computer Science (SICS)",
+  year = 	 "1986",
+ 
+}
+
+
+
+@Article{victor:90,
+  author = 	 "Mak, V. W. and Lundstrom, S.  F.",
+  title = 	 "Predicting Performance of Parallel Computations",
+   journal = 	 "IEEE Transactions on Parallel and Distributed Systems",
+   year = 	 "1990",
+   volume = 	 "1",
+   number = 	 "3",
+   pages = 	 "257-270",
+   month = 	 "July",
+ }
+
+@TechReport{booth:78,
+  author = 	 "Booth, T. L.  and Whitby-Strevens, C. ",
+  title = 	 "Performance Modelling of Distributed System Using
+		  Probabilistic computation Structure",
+  institution =  "University of Connecticut",
+  year = 	 "1978",
+ }
+
+@Article{berry:92,
+  author = 	 "Berry, R. ",
+  title = 	 "Computer Benchmark Evaluation and Design of Experiments: 
+                  a Case Study",
+   journal = 	 "IEEE Transaction on Computers",
+   year = 	 "1992",
+   volume = 	 "41",
+   number = 	 "10",
+   pages = 	 "1279-1289",
+   month = 	 "October",
+}
+
+@Article{shap:89,
+  author = 	 "Shapiro, E. ",
+  title = 	 "O{R}-Parallel {P}rolog in {F}lat {C}oncurrent {P}rolog",
+   journal = 	 "The Journal of Logic Programming",
+   year = 	 "1989",
+   volume = 	 "6",
+   pages = 	 "243-267",
+}
+
+
+@Article{lange:92,
+  author = 	 "Lange, F.  and others",
+  title = 	 "JEWEL : Design and Implementation of a Distributed
+		  Measurement System",
+   journal = 	 "IEEE Transaction on Parallel and Distributed Systems",
+   year = 	 "1992",
+   volume = 	 "3",
+   number = 	 "6",
+   pages = 	 "657-671",
+   month = 	 "November",
+ }
+ 
+@Article{norman:93,
+  author = 	 "Norman, M.  G. ",
+  title = 	 "Models of Machines and Computation for Mapping in Multicomputers",
+   journal = 	 "ACM Computing Surveys",
+   year = 	 "1993",
+   volume = 	 "25",
+   number = 	 "3",
+   pages = 	 "263-302",
+   month = 	 "September",
+ }
+ 
+
+@Article{satya:90,
+  author = 	 "Stayanarayanan, M.  and Siegel E. H. ",
+  title = 	 "Parallel Communication in a Large Distributed Environment",
+  journal = 	 "IEEE Transaction on computers",
+  year = 	 "1990",
+  volume = 	 "39",
+  number = 	 "3",
+  pages = 	 "328-348",
+  month = 	 "March",
+ 
+}
+
+@Article{crammond:85, 
+  author = 	 "Crammond, J.",
+  title = 	 "Comparative Study of Unification Algorithms for {O}r-parallel execution of logic languages",
+   journal = 	 "IEEE Transactions on Computers",
+   year = 	 "1985",
+   volume = 	 "C-34",
+   number = 	 "10",
+   pages = 	 "911-917",
+   month = 	 "October",
+ }
+
+@InProceedings{lin:92,
+  author = 	 "Lin, Z. ",
+  title = 	 "Self-organised Task Scheduling for Parallel Execution of Logic Programs",
+    pages = 	 "859-868",
+   booktitle = "In the Proceedings of the International Conference of Fifth Generation Computer System, edited by ICOT",
+   year = 	 "1992",
+ 
+}
+
+
+
+@InProceedings{takeuch:87,
+  author = 	 "Takeuchi, A.  and Furukawa, K. ",
+  title = 	 "Parallel Logic Programming Languages",
+    pages = 	 "242-254",
+   year = 	 "1987",
+   month = 	 "July",
+    note = 	 "In the Proceedings of the Third International Conference on Logic 
+Programming, London",
+}
+ 
+@Article{carlton:88,
+  author = 	 "Carlton, M.  and Roy, P. V. ",
+  title = 	 "A Distributed {P}rolog System with {A}nd Parallelism",
+   journal = 	 "IEEE Software",
+   year = 	 "1988",
+   pages = 	 "43-51",
+   month = 	 "January",
+ }
+
+@Article{kruat:88,
+  author = 	 "Kruatrachue, B. and Lewis, T.",
+  title = 	 "Grain Size Determination for Parallel Processing",
+   journal = 	 "IEEE Software",
+   year = 	 "1988",
+   pages = 	 "23-32",
+   month = 	 "January",
+ }
+
+@Article{mcgreary:89,
+  author = 	 "McGreary, C. and Gill, H.", 
+  title = 	 "Automatic Determination of Grain Size for Efficient Parallel Processing",
+   journal = 	 "Communication of the ACM",
+  volume =       "32",
+   year = 	 "1989",
+   pages = 	 "1073-1078",
+   month = 	 "September",
+ }
+
+@Article{colmerauer:85,
+  author = 	 "Colmerauer, A.",
+  title = 	 "{P}rolog in 10 figures",
+   journal = 	 "Communication of the ACM",
+   year = 	 "1985",
+   pages = 	 "1296-1310",
+   month = 	 "December",
+ }
+
+
+
+
+
+@TechReport{tantawi:88,
+  author = 	 "Tantawi, A. N. ",
+  title = 	 "Performance Modelling and Analysis of a Hierarchical
+		  Interconnected Multiprocessor",
+  institution =  "IBM Research Division, Yorktown,N. Y. ",
+  year = 	 "1988",
+   number = 	 "60929",
+ 
+}
+
+
+@TechReport{shen:88,
+  author =       "Shen, K.",
+  title =        "An Investigation of the {A}rgonne Model of {O}r-Parallel {P}rolog",
+  institution =  "Department of Computer Science, University of Manchester",
+  year =         "1987",
+   number =      "UMCS-87-1-1",
+
+}
+
+@TechReport{McGeoch:86,
+  author = 	 "McGeoch, C.  C. ",
+  title = 	 "Experimental Analysis of Algorithms",
+  institution =  "Carnegie Mellon University",
+  year = 	 "1986",
+   number = 	 "CMU-CS-87-124",
+  
+}
+
+@TechReport{goldberg:92,
+  author = 	 "Goldberg, A. J. ",
+  title = 	 "Multiprocessor Performance Debugging and Memory Bottleneck",
+  institution =  "Department of Computer Science, Stanford University",
+  year = 	 "1992",
+   number = 	 "STAN-CS-92-1444",
+}
+
+
+@Book{hwang:84,
+  author = 	 "Hwang, K.  and Briggs, F. A. ",
+  title = 	 "Computer Architecture and Parallel Processing",
+  publisher = 	 "McGraw-Hill",
+  year = 	 "1984",
+}
+
+@Book{comer:91,
+  author = 	 "Comer, D. E. ",
+  title = 	 "Internetworking with TCP/IP Volume I and II",
+  publisher = 	 "Printice-Hall",
+  year = 	 "1991",
+}
+
+
+
+@Article{janki:88,
+  author =       "Jankiram,  V. K. and others",
+  title =        "A Randomized Parallel Backtracking Algorithm",
+    journal =    "IEEE Transactions on computers",
+   year =        "1988",
+   volume =      "37",
+   number =      "12",
+   month =       "December",
+   pages =       "1665-1676",
+ }
+
+
+@InProceedings{lin:89,
+  author =       "Lin, Z. ",
+  title =       "Expected Performance of the Randomized Parallel Backtracking Method",
+    editor =     "Lusk, E.  L.  and  Overbeek, R. A. ",
+   volume =      "2",
+    pages =      "677-696",
+   booktitle = "Logic Programming",
+   year =        "1989",
+    note =       "In the Proceedings of the North American Conference",
+ }
+
+@Article{nageshwara:87,
+  author =       "Rao,  V.  N.  and Kumar, V. ",
+  title =        "Parallel Depth First Search.  {P}art {I}.  Implementation",
+   journal =     "International Journal of Parallel Programming",
+   year =        "1987",
+   volume =      "16",
+   number =      "6",
+   pages =       "479-500",
+ }
+@Article{Rao:87,
+  author =       "Rao, V.  N.  and  Kumar, V. ",
+  title =        "On the Efficiency of Parallel Backtracking",
+   journal =     "IEEE Transactions on Parallel and Distributed Systems",
+   year =        "1993",
+   volume =      "4",
+   month =       "April",
+   number =      "4",
+   pages =       "427-437",
+ }
+
+@Article{smith:84,
+  author =       "Smith, D. R. ",
+  title =        "Random Trees and the Analysis of Branch and Bound
+		  Procedures",
+   journal =     "Journal of ACM",
+   year =        "1984",
+   volume =      "31",
+   pages =       "163-188",
+ }
+
+@Article{nk2,
+  author =       "Kumar, V. and Rao, V. N.",
+  title =        "Parallel Depth First Search.  {P}art {II}.  Analysis",
+   journal =     "International Journal of Parallel Programming",
+   year =        "1987",
+   volume =      "16",
+   number =      "6",
+   pages =       "501-519",
+ }
+
+
+@Book{kishore:82,
+  author =       "Trivedi, K.  S. ",
+  title =        "Probability and Statistics with Reliability,  Queuing and
+		  Computer Science Applications",
+  publisher =    "Prentice-Hall",
+  year =         "1982",
+}
+
+@TechReport{Ertel:89,
+  author =       "Ertel, W. ",
+  title =        "Performance Analysis of Competitive {O}r-Parallel Theorem Proving",
+  institution =  "Technische Universitat Munchen",
+  year =         "1992",
+   number =      "FKI-162-92 (revised)",
+   month =       "September",
+ }
+
+
+@Book{rtg:90,
+  author = 	 "Robertazzi, T. G. ",
+  title = 	 "Computer Network and Systems : Queueing Theory and
+		  Performance Evaluation ",
+  publisher = 	 "Springer-Verlag",
+  year = 	 "1990",
+ }
+
+@Book{aao:86,
+  author = 	 "Allen, A. O. ",
+  title = 	 "Probability, Statistics and Queuing Theory: with Computer Science Applications",
+  publisher = 	 "Academic Press, Inc.  Harcourt Brace Jovanovich",
+  year = 	 "1986",
+ 
+}
+
+
+
+
+@Article{richard:92,
+  author = 	 "LaRowe, R. P., Jr. and others ",
+  title = 	 "Evaluation of {NUMA} Memory Management Through Modelling and 
+                  Measurements", 
+  journal = 	 "IEEE Transaction on Parallel and Distributed Systems", 
+  year = 	 "1992",
+  volume =       "3",
+  number = 	 "6",
+  pages = 	 "686-701",
+  month =       "November",
+ }
+
+
+@Article{ghosh:95,
+  author = 	 "Ghosh, S. and Yu, M. ",
+  title = 	 "An Asynchronous Distributed Approach for the Simulation and 
+                  Behaviour-Level Models on Parallel Processors", 
+  journal = 	 "IEEE Transaction on Parallel and Distributed Systems", 
+  year = 	 "1995",
+  volume =       "6",
+  number = 	 "6",
+  pages = 	 "639-652",
+  month =       "June",
+ }
+
+
+
+@Article{leff:94,
+  author = 	 "Leff, A. and Yu, P. S.",
+  title = 	 "A Performance Study of Robust Distributed Load Sharing Strategies", 
+  journal = 	 "IEEE Transaction on Parallel and Distributed Systems", 
+  year = 	 "1994",
+  volume =       "5",
+  number = 	 "12",
+  pages = 	 "1286-1301",
+  month =       "December",
+}
+
+
+
+@Article{shin:93,
+  author = 	 "Shin, K. G. and Hou, C.",
+  title = 	 "Analytical Models of Adaptive Load Sharing Schemes in 
+  Distributed Real-Time Systems",
+  journal = 	 "IEEE Transaction on Parallel and Distributed Systems", 
+  year = 	 "1993",
+  volume =       "4",
+  number = 	 "7",
+  pages = 	 "740-761",
+  month =       "July",
+}
+
+@Article{agarwal:92,
+  author = 	 "Agarwal, V.  D.  and Chakradhar, S. T. ",
+  title = 	 "Performance Analysis of Synchronized Iterative Algorithms on
+                  Multiprocessor Systems",
+  journal = 	 "IEEE Transaction on Parallel and Distributed Systems", 
+  year = 	 "1992",
+  volume =       "3",
+  number = 	 "6",
+  pages = 	 "739-746",
+  month =       "November",
+}
+
+@InProceedings{al:77,
+  author = 	 "Al-Dabass, D. and Ratherford, D.",
+  title = 	 "Simulation techniques for microprocessor-based parallel
+                 architecture",
+  editor =      "Feilmeire, M.",
+  booktitle = "Parallel Computers - Parallel Mathematics",
+  year = 	 "1977",
+  pages = 	 "125-131",
+}
+
+@Article{ogle:93,
+  author = 	 "Ogle, D. M. and others ",
+  title = 	 "Application-Dependent Dynamic Monitoring of Distributed and Parallel Systems",
+  journal = 	 "IEEE Transaction on Parallel and Distributed Systems", 
+  year = 	 "1993",
+  volume =       "4",
+  number = 	 "7",
+  pages = 	 "762-778",
+  month =       "July",
+}
+
+
+@Article{dubey:95,
+  author = 	 "Dubey, P. K. and others ",
+  title = 	 "Evaluating Performance Tradeoffs between Fine-Grained and 
+Coarse-Grained Alternatives",
+  journal = 	 "IEEE Transaction on Parallel and Distributed Systems", 
+  year = 	 "1995",
+  volume =       "6",
+  number = 	 "1",
+  pages = 	 "17-27",
+  month =       "January",
+}
+
+
+
+@InProceedings{clark:81,
+  author = 	 "Clark, K. L. and Gregory, S.",
+  title = 	 "A Rational Language for Parallel Programming",
+   pages = 	 "171-178",
+    year = 	 "1981",
+   note = 	 "In the Proceedings of the 1981 Conference on Functional 
+Programming Languages and Computer Architectures",
+}
+
+
+@Article{kerg:94,
+  author = 	 "Chassin De Kergommeaux, J. and Codognet, P.",
+  title = 	 "Parallel Logic Programming Systems",
+  journal = 	 "ACM Computing Surveys", 
+  year = 	 "1994",
+  volume =       "26",
+  number = 	 "3",
+  pages = 	 "295-336",
+  month =       "September",
+}
+
+@Article{kerg:90,
+  author = 	 "Chassin De Kergommeaux, J. and Codognet, P.",
+  title = 	 "An efficient machine to implement efficiently {OR-AND} Parallel {P}rolog",
+   journal = 	 "The Journal of Logic Programming",
+  year = 	 "1990",
+  volume =       "8",
+  number = 	 "3",
+  pages = 	 "",
+}
+
+@Article{shapiro:89,
+  author = 	 "Shapiro, E.",
+  title = 	 "The family of Concurrent Logic Programming Languages",
+  journal = 	 "ACM Computing Surveys", 
+  year = 	 "1989",
+  volume =       "21",
+  number = 	 "3",
+  pages = 	 "412-510",
+  month =       "September",
+}
+
+@InProceedings{briate:91,
+  author = 	 "Briate, J. and others",
+  title = 	 "Scheduling of {OR}-parallel {P}rolog on a scalable reconfigurable, distributed memory multi-processor",
+  year = 	 "1991",
+  volume =       "506",
+  pages = 	 "385-402",
+   note = 	 "In Parallel Architecture and Languages Europe, PARLE' 91, Lecture Notes in Computer Science, Springer-Verlag, New York",
+}
+
+@Book{manber:89,
+  author = 	 "Manber, U.",
+  title = 	 "Introduction to Algorithms: a creative approach",
+  publisher = 	 "Addison-wesley",
+  year = 	 "1989",
+ }
+
+@Article{robinson:65, 
+  author = 	 "Robinson, J. A.",
+  title = 	 "A Machine-Oriented Logic Based on the Resolution Principle",
+  journal = 	 "Journal of the ACM", 
+  year = 	 "1965",
+  volume =       "12",
+  number = 	 "1",
+  pages = 	 "23-41",
+  month =       "January",
+}
+
+@Article{emden:76, 
+  author = 	 "Emden, M. H. V. and Kowalski, R. A.",
+  title = 	 "The Semantic of Predicate Logic as a Programming Language", 
+  journal = 	 "ACM Computing Surveys", 
+  year = 	 "1976",
+  volume =       "23",
+  number = 	 "4",
+  pages = 	 "733-742",
+}
+
+@Book{New90,
+  author = 	 "J. D. Newmarch",
+  title = 	 {Logic Programming: {P}rolog and Stream Parallel Languages},
+  publisher = 	 PPH,
+  year = 	 "1990"
+ }

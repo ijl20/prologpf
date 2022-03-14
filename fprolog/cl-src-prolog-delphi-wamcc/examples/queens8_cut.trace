@@ -1,0 +1,174 @@
+cpu(0) started
+cpu(0) BFtime=89ms for limit=19 for 94 oracles.
+cpu(0) completed. Ftime=211ms Total_time=300ms
+cpu(0) solution count:
+       5
+------------------------------------------
+cpu(1) started
+cpu(1) BFtime=97ms for limit=19 for 94 oracles.
+cpu(1) completed. Ftime=172ms Total_time=269ms
+cpu(1) solution count:
+       4
+------------------------------------------
+cpu(2) started
+cpu(2) BFtime=90ms for limit=19 for 94 oracles.
+cpu(2) completed. Ftime=195ms Total_time=285ms
+cpu(2) solution count:
+       2
+------------------------------------------
+cpu(3) started
+cpu(3) BFtime=90ms for limit=19 for 94 oracles.
+cpu(3) completed. Ftime=277ms Total_time=367ms
+cpu(3) solution count:
+       4
+------------------------------------------
+cpu(4) started
+cpu(4) BFtime=94ms for limit=19 for 94 oracles.
+cpu(4) completed. Ftime=195ms Total_time=289ms
+cpu(4) solution count:
+       1
+------------------------------------------
+cpu(5) started
+cpu(5) BFtime=90ms for limit=19 for 94 oracles.
+cpu(5) completed. Ftime=285ms Total_time=375ms
+cpu(5) solution count:
+       6
+------------------------------------------
+cpu(6) started
+cpu(6) BFtime=90ms for limit=19 for 94 oracles.
+cpu(6) completed. Ftime=234ms Total_time=324ms
+cpu(6) solution count:
+       2
+------------------------------------------
+cpu(7) started
+cpu(7) BFtime=89ms for limit=19 for 94 oracles.
+cpu(7) completed. Ftime=101ms Total_time=190ms
+cpu(7) solution count:
+       1
+------------------------------------------
+cpu(8) started
+cpu(8) BFtime=94ms for limit=19 for 94 oracles.
+cpu(8) completed. Ftime=102ms Total_time=196ms
+cpu(8) solution count:
+       1
+------------------------------------------
+cpu(9) started
+cpu(9) BFtime=98ms for limit=19 for 94 oracles.
+cpu(9) completed. Ftime=133ms Total_time=231ms
+cpu(9) solution count:
+       3
+------------------------------------------
+cpu(10) started
+cpu(10) BFtime=85ms for limit=19 for 94 oracles.
+cpu(10) completed. Ftime=215ms Total_time=300ms
+cpu(10) solution count:
+       4
+------------------------------------------
+cpu(11) started
+cpu(11) BFtime=90ms for limit=19 for 94 oracles.
+cpu(11) completed. Ftime=148ms Total_time=238ms
+cpu(11) solution count:
+       6
+------------------------------------------
+cpu(12) started
+cpu(12) BFtime=98ms for limit=19 for 94 oracles.
+cpu(12) completed. Ftime=242ms Total_time=340ms
+cpu(12) solution count:
+      11
+------------------------------------------
+cpu(13) started
+cpu(13) BFtime=86ms for limit=19 for 94 oracles.
+cpu(13) completed. Ftime=129ms Total_time=215ms
+cpu(13) solution count:
+       3
+------------------------------------------
+cpu(14) started
+cpu(14) BFtime=78ms for limit=19 for 94 oracles.
+cpu(14) completed. Ftime=157ms Total_time=235ms
+cpu(14) solution count:
+       2
+------------------------------------------
+cpu(15) started
+cpu(15) BFtime=90ms for limit=19 for 94 oracles.
+cpu(15) completed. Ftime=184ms Total_time=274ms
+cpu(15) solution count:
+       4
+------------------------------------------
+cpu(16) started
+cpu(16) BFtime=90ms for limit=19 for 94 oracles.
+cpu(16) completed. Ftime=207ms Total_time=297ms
+cpu(16) solution count:
+       1
+------------------------------------------
+cpu(17) started
+cpu(17) BFtime=82ms for limit=19 for 94 oracles.
+cpu(17) completed. Ftime=152ms Total_time=234ms
+cpu(17) solution count:
+       3
+------------------------------------------
+cpu(18) started
+cpu(18) BFtime=82ms for limit=19 for 94 oracles.
+cpu(18) completed. Ftime=101ms Total_time=183ms
+cpu(18) solution count:
+       0
+------------------------------------------
+cpu(19) started
+cpu(19) BFtime=93ms for limit=19 for 94 oracles.
+cpu(19) completed. Ftime=141ms Total_time=234ms
+cpu(19) solution count:
+       0
+------------------------------------------
+cpu(20) started
+cpu(20) BFtime=89ms for limit=19 for 94 oracles.
+cpu(20) completed. Ftime=211ms Total_time=300ms
+cpu(20) solution count:
+       4
+------------------------------------------
+cpu(21) started
+cpu(21) BFtime=90ms for limit=19 for 94 oracles.
+cpu(21) completed. Ftime=203ms Total_time=293ms
+cpu(21) solution count:
+       6
+------------------------------------------
+cpu(22) started
+cpu(22) BFtime=86ms for limit=19 for 94 oracles.
+cpu(22) completed. Ftime=149ms Total_time=235ms
+cpu(22) solution count:
+       2
+------------------------------------------
+cpu(23) started
+cpu(23) BFtime=82ms for limit=19 for 94 oracles.
+cpu(23) completed. Ftime=179ms Total_time=261ms
+cpu(23) solution count:
+       2
+------------------------------------------
+cpu(24) started
+cpu(24) BFtime=90ms for limit=19 for 94 oracles.
+cpu(24) completed. Ftime=243ms Total_time=333ms
+cpu(24) solution count:
+       5
+------------------------------------------
+cpu(25) started
+cpu(25) BFtime=94ms for limit=19 for 94 oracles.
+cpu(25) completed. Ftime=231ms Total_time=325ms
+cpu(25) solution count:
+       5
+------------------------------------------
+cpu(26) started
+cpu(26) BFtime=78ms for limit=19 for 94 oracles.
+cpu(26) completed. Ftime=148ms Total_time=226ms
+cpu(26) solution count:
+       3
+------------------------------------------
+cpu(27) started
+cpu(27) BFtime=90ms for limit=19 for 94 oracles.
+cpu(27) completed. Ftime=109ms Total_time=199ms
+cpu(27) solution count:
+       2
+------------------------------------------
+cpu(28) started
+cpu(28) BFtime=90ms for limit=19 for 94 oracles.
+cpu(28) completed. Ftime=133ms Total_time=223ms
+cpu(28) solution count:
+       0
+------------------------------------------

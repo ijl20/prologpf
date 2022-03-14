@@ -1,0 +1,11 @@
+
+BEGIN        { max_time = 0
+	     }
+/Total_time/ { t_index = index($0,"Total_time")+11
+               t_str   = substr($0,t_index)
+               ms_index = index(t_str,"ms")
+               cpu_time = substr(t_str,1,ms_index-1)+0
+               if (cpu_time > max_time)
+                       max_time = cpu_time
+	     }
+END          { print prog "\t" group_count "\t" limit "\t" max_time }

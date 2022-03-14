@@ -1,0 +1,450 @@
+\begin{thebibliography}{10}
+
+\bibitem{AK90}
+\textsc{A\"{\i}t-Kaci, H.}
+\newblock \emph{The {WAM}: A (real) tutorial}.
+\newblock Tech. rep., Digital Paris Research Laboratory, Jan. 1990.
+
+\bibitem{AKLN87}
+\textsc{A\"{\i}t-Kaci, H., Lincoln, P., and Nasr, R.}
+\newblock \emph{{L}e {F}un: Logic, equations and functions}.
+\newblock In \emph{Proc. IEEE Intl. Symposium on Logic Programming, San
+  Francisco}, pp. 17--23. 1987.
+
+\bibitem{Ali88}
+\textsc{Ali, K.}
+\newblock \emph{{OR}-parallel execution of {P}rolog on {BC}-machine}.
+\newblock In \emph{Proceedings of the Fifth intl. conf. and symposium Logic
+  Programming}, eds. R.~A. Kowalski and K.~A. Bowen, pp. 1531--1545. MIT Press,
+  1988.
+
+\bibitem{AKM91}
+\textsc{Ali, K., Karlsson, R., and Mudambi, S.}
+\newblock \emph{Performance of {M}use on the {BBN} butterfly {TC2000}}.
+\newblock In \emph{Parallel Execution of Logic Programs}, eds. A.~Beaumont and
+  G.~Gupta, pp. 104--119. Springer-Verlag, 1991.
+
+\bibitem{Ali87}
+\textsc{Ali, K. A.~M.}
+\newblock \emph{{OR}-parallel execution of {P}rolog on a multi-sequential
+  machine}.
+\newblock International Journal of Parallel Programming, 15(3), pp.~189--214,
+  1987.
+
+\bibitem{AM88}
+\textsc{Alshawi, H. and Moran, D.~B.}
+\newblock \emph{The {D}elphi model and some preliminary experiments}.
+\newblock In \emph{Proceedings of the Fifth intl. conf. and symposium Logic
+  Programming}, eds. R.~A. Kowalski and K.~A. Bowen, pp. 1578--1589. MIT Press,
+  1988.
+
+\bibitem{App92}
+\textsc{Appel, A.}
+\newblock \emph{Compiling with Continuations}.
+\newblock Cambridge University Press, 1992.
+
+\bibitem{AdBR93}
+\textsc{Apt, K.~R., de~Bakker, J.~W., and Rutten, J. J. M.~M.}, eds.
+\newblock \emph{Logic Programming Languages: Constraints, Functions, and
+  Objects}.
+\newblock MIT Press, 1993.
+
+\bibitem{Bar84}
+\textsc{Barendregt, H.~P.}
+\newblock \emph{The Lambda Calculus: Its Syntax and Semantics}.
+\newblock {N}orth-{H}olland, 1984.
+
+\bibitem{Bar92}
+\textsc{Barham, P.~R.}
+\newblock \emph{Distributed {D}el{P}hi parallel {P}rolog}.
+\newblock Computer Science Tripos Part II Project, Computer Laboratory,
+  University of Cambridge.
+
+\bibitem{Bea91}
+\textsc{Beaumont, A.}
+\newblock \emph{Scheduling strategies and speculative work}.
+\newblock In \emph{Parallel Execution of Logic Programs}, eds. A.~Beaumont and
+  G.~Gupta, pp. 120--131. Springer-Verlag, 1991.
+
+\bibitem{BL86}
+\textsc{Bellia, M. and Levi, G.}
+\newblock \emph{The relationship between logic and functional languages: a
+  survey}.
+\newblock Journal of Logic Programming, 3, pp.~217--236, 1986.
+
+\bibitem{Bon92}
+\textsc{Bonnier, S.}
+\newblock \emph{A formal basis for {H}orn {C}lause logic with external
+  polymorphic functions}.
+\newblock Tech. Rep. 276, Dept. of Computer Science, Link\"oping University,
+  Sweden, 1992.
+
+\bibitem{BM88}
+\textsc{Bonnier, S. and Maluszy{\'{n}}sk, J.}
+\newblock \emph{Towards a clean amalgamation of logic programs with external
+  procedures}.
+\newblock In \emph{Proceedings of the 5th Intl. Conf. and Symposium on Logic
+  Programming}, eds. R.~Kowalski and K.~A. Bowen, vol.~1, pp. 311--326. MIT
+  Press, 1988.
+\newblock Re. S-Unification.
+
+\bibitem{BGM88}
+\textsc{Bosco, P.~G., Giovannetti, E., and Moiso, C.}
+\newblock \emph{Narrowing vs. {SLD-R}esolution}.
+\newblock Theoretical Computer Science, 59, pp.~3--23, 1988.
+
+\bibitem{BBP+94}
+\textsc{Bowen, D.~L., Byrd, L., Pereira, F. C.~N., Pereira, L.~M., and Warren,
+  D. H.~D.}
+\newblock \emph{SICStus Prolog User's manual}.
+\newblock Swedish Institute of Computer Science, Apr. 1994.
+
+\bibitem{B+92}
+\textsc{Briat, J., Favre, M., Geyer, C., and de~Kergommeaux, J.~C.}
+\newblock \emph{{OPERA}: {OR}-parallel {P}rolog system on supernode}.
+\newblock In Kacsuk and Wise  \cite{KW92}.
+
+\bibitem{BDLO+88}
+\textsc{Butler, R., Disz, T., Lusk, E., Olson, R., Overbeek, R., and Stevens,
+  R.}
+\newblock \emph{Scheduling {OR}-parallelism: an {A}rgonne perspective}.
+\newblock In \emph{Proceedings of the Fifth intl. conf. and symposium Logic
+  Programming}, eds. R.~A. Kowalski and K.~A. Bowen, pp. 1590--1605. MIT Press,
+  1988.
+
+\bibitem{CSA87}
+\textsc{Cecchi, C., Sartini, D., and Aiello, L.}
+\newblock \emph{Evaluating logic programs via set-valued functions}.
+\newblock In \emph{Proceedings of the 4th Intl. Conf. on Logic Programming},
+  ed. J.~Lassez, vol.~1, pp. 428--455. MIT Press, 1987.
+
+\bibitem{CL91}
+\textsc{Chakravarty, M. M.~T. and Lock, H. C.~R.}
+\newblock \emph{The implementation of lazy narrowing}.
+\newblock In \emph{Proc. 3rd Intl. Symposium Programming Language
+  Implementation and Logic Programming}, pp. 123--134. Springer-Verlag, 1991.
+
+\bibitem{CL73}
+\textsc{Chang, C. and Lee, R.}
+\newblock \emph{Symbolic logic and mechanical theorem proving}.
+\newblock Academic Press, 1973.
+
+\bibitem{CF93}
+\textsc{Cheong, P.~H. and Fribourg, L.}
+\newblock \emph{Implementation of narrowing: The {P}rolog-based approach}.
+\newblock In Apt \emph{et~al.}  \cite{AdBR93}.
+
+\bibitem{CG81}
+\textsc{Clark, K. and Gregory, S.}
+\newblock \emph{A relational language for parallel programming}.
+\newblock Tech. rep., Dept. of Computer Science, Imperial College, London,
+  1981.
+
+\bibitem{CG84}
+\textsc{Clark, K. and Gregory, S.}
+\newblock \emph{{PARLOG}: Parallel programming in logic}.
+\newblock Tech. Rep. 84/4, Dept. of Computer Science, Imperial College, London,
+  1984.
+
+\bibitem{Clo87}
+\textsc{Clocksin, W.~F.}
+\newblock \emph{Principles of the {D}el{P}hi parallel inference machine}.
+\newblock Computer Journal, 30(5), pp.~386--392, 1987.
+
+\bibitem{Clo92}
+\textsc{Clocksin, W.~F.}
+\newblock \emph{The {D}el{P}hi multiprocessor inference machine}.
+\newblock In \emph{Proc. 4th U.K.\ {C}onf.\ on Logic Programming}, ed.
+  K.~Broda, pp. 189--198. Springer-Verlag, 1992.
+
+\bibitem{Clo97}
+\textsc{Clocksin, W.~F.}
+\newblock \emph{Clause and Effect, {P}rolog for the Working Programmer}.
+\newblock Springer-Verlag, 1997.
+
+\bibitem{CA87}
+\textsc{Clocksin, W.~F. and Alshawi, H.}
+\newblock \emph{A method of efficiently executing {H}orn {C}lause using
+  multiple processors}.
+\newblock Tech. Rep. CCSC-3, SRI International (Cambridge Computer Science
+  Centre), 1987.
+
+\bibitem{CM87}
+\textsc{Clocksin, W.~F. and Mellish, C.~S.}
+\newblock \emph{Programming in {P}rolog, 3rd {E}dition}.
+\newblock Springer-Verlag, 1987.
+
+\bibitem{CD95}
+\textsc{Codognet, P. and Diaz, D.}
+\newblock \emph{{wamcc}: Compiling {P}rolog to {C}}.
+\newblock Tech. rep., INRIA-Rocquencourt, France, 1995.
+
+\bibitem{CK81}
+\textsc{Conery, J. and Kibler, D.}
+\newblock \emph{Parallel interpretation of logic programs}.
+\newblock Proc. ACM Conference on Functional Programming Languages and Computer
+  Architecture, pp. 163--170, 1981.
+
+\bibitem{CMCP92}
+\textsc{Cuhna, J., Medeiros, P., Carvalhosa, M., and Pereira, L.}
+\newblock \emph{{D}elta {P}rolog: a distributed logic programming language and
+  its implementation on distributed memory multiprocessors}.
+\newblock In Kacsuk and Wise  \cite{KW92}.
+
+\bibitem{Cur30}
+\textsc{Curry, H.~B.}
+\newblock \emph{Grundlagen der kombinatorischen {L}ogik}.
+\newblock American Journal of Mathematics, 52, pp.~509--536, 789--834, 1930.
+
+\bibitem{DR92}
+\textsc{Delgado-Rannauro, S.~A.}
+\newblock \emph{{OR}-parallel logic computation models}.
+\newblock In Kacsuk and Wise  \cite{KW92}.
+
+\bibitem{DEDC96}
+\textsc{Deransart, P., Ed-Dbali, A., and Cervoni, L.}
+\newblock \emph{Prolog: {T}he {S}tandard}.
+\newblock Springer, 1996.
+
+\bibitem{DvH87}
+\textsc{Dincbas, M. and van Hentenryk, P.}
+\newblock \emph{Extended unification algorithms for the integration of
+  functional programming into logic programming}.
+\newblock Journal of Logic Programming, 4, pp.~199--227, 1987.
+
+\bibitem{DLO87}
+\textsc{Disz, T., Lusk, E., and Overbeek, R.}
+\newblock \emph{Experiments with {OR}-parallel logic programs}.
+\newblock In \emph{Proceedings of the 4th Intl. Conf. on Logic Programming},
+  ed. J.~Lassez, vol.~2, pp. 576--600. MIT Press, 1987.
+
+\bibitem{Fri85}
+\textsc{Fribourg, L.}
+\newblock \emph{{SLOG}: A logic programming language interpreter based on
+  clausal superposition and rewriting}.
+\newblock In \emph{Proc. IEEE Intl. Symposium on Logic Programming}, pp.
+  172--184. IEEE Computer Soc. Press, 1985.
+
+\bibitem{GN86}
+\textsc{Genesereth, M.~R. and Nilsson, N.~J.}
+\newblock \emph{Logical Foundations of Artifical Intelligence}.
+\newblock Morgan Kaufman, 1986.
+
+\bibitem{GSC92}
+\textsc{Gupta, G. and Santos~Costa, V.}
+\newblock \emph{Cuts and side-effects in and-or parallel {P}rolog}.
+\newblock Tech. rep., Lab. for Logic and Databases, Dept. of Computer Science,
+  New Mexico State University, USA, 1992.
+
+\bibitem{Han94}
+\textsc{Hanus, M.}
+\newblock \emph{The integration of functions into logic programming: from
+  theory to practice}.
+\newblock Journal of Logic Programming, 19,20, pp.~583--628, 1994.
+
+\bibitem{HAK+97}
+\textsc{Hanus, M., Antoy, S., Kucken, H., and L\'opez-Fraguas, F.}
+\newblock \emph{Curry, an integrated functional logic language}.
+\newblock Tech. rep., RWTH Aachen, Germany, 1997.
+
+\bibitem{HCSR95}
+\textsc{Henderon, F., Conway, T., Somogyi, Z., and Ross, P.}
+\newblock \emph{The Mercury Language Reference Manual}.
+\newblock University of Melbourne, 1995.
+
+\bibitem{HS86}
+\textsc{Hindley, J.~R. and Seldin, J.~P.}
+\newblock \emph{Introduction to Combinators and $\lambda$-Calculus}.
+\newblock Cambridge University Press, 1986.
+
+\bibitem{Hoa85}
+\textsc{Hoare, C. A.~R.}
+\newblock \emph{Communicating Sequential Processes}.
+\newblock Prentice Hall, 1985.
+
+\bibitem{Hul80}
+\textsc{Hullot, J.~M.}
+\newblock \emph{Canonical forms and unification}.
+\newblock In \emph{Proc. of the Fifth Conference on Automated Deduction, Les
+  Arcs, France}, vol.~87, pp. 318--334. Springer-Verlag, Jul. 1980.
+
+\bibitem{JD89}
+\textsc{Josephson, A. and Dershowitz, N.}
+\newblock \emph{An implementation of narrowing}.
+\newblock Journal of Logic Programming, pp. 57--77, 1989.
+
+\bibitem{KW92}
+\textsc{Kacsuk, P. and Wise, M.}, eds.
+\newblock \emph{Implementations of Distributed {P}rolog}.
+\newblock Wiley, 1992.
+
+\bibitem{Kle91}
+\textsc{Klein, C.~S.}
+\newblock \emph{Exploiting {OR}-Parallelism in {P}rolog using Multiple
+  Sequential Machines.}
+\newblock Ph.D. thesis, Computer Laboratory, Cambridge University, England,
+  February 1991.
+\newblock Reprinted as Technical Report No. 216.
+
+\bibitem{Llo84}
+\textsc{Lloyd, J.}
+\newblock \emph{Foundations of Logic Programming}.
+\newblock Springer-Verlag, 1984.
+
+\bibitem{Llo94}
+\textsc{Lloyd, J.~W.}
+\newblock \emph{Combining functional and logic programming languages}.
+\newblock In \emph{Proc. 1994 Intl. Logic Programming Symposium}. 1994.
+
+\bibitem{LWH+90}
+\textsc{Lusk, E., Warren, D. H.~D., Haridi, S., \emph{et~al.}}
+\newblock \emph{The {A}urora {OR}-parallel {P}rolog system}.
+\newblock New Generation Computing, 7, pp.~243--271, 1990.
+
+\bibitem{MBB+93}
+\textsc{Maluszy{\'{n}}ski, J., Bonnier, S., Boye, J., Klu{\'{z}}niak, F.,
+  K{\r{a}}gedal, A., and Nilsson, U.}
+\newblock \emph{Logic programs with external procedures}.
+\newblock In Apt \emph{et~al.}  \cite{AdBR93}.
+\newblock Re. {S}-Unification.
+
+\bibitem{MKI+86}
+\textsc{Masuzawa, H., Kumon, K., Itashiki, A., Satoh, K., and Sohma, Y.}
+\newblock \emph{Kabu {W}ake parallel inference mechanism and its evaluation}.
+\newblock Proc. Fifth Generation Computer Conference, pp. 955--962, 1986.
+
+\bibitem{MTH90}
+\textsc{Milner, R., Tofte, M., and Harper, R.}
+\newblock \emph{The {D}efinition of {S}tandard {ML}}.
+\newblock MIT Press, 1990.
+
+\bibitem{MNRA92}
+\textsc{Moreno-Navarro, J.~J. and Rodriguez-Artalejo, M.}
+\newblock \emph{Logic programming with functions and predicates: The language
+  {B}abel}.
+\newblock Journal of Logic Programming, 12, pp.~191--223, 1992.
+
+\bibitem{Nai91}
+\textsc{Naish, L.}
+\newblock \emph{Adding equations to {NU}-{P}rolog}.
+\newblock In \emph{Proceedings of the 3rd Intl. Symposium Programming Language
+  Implementation and Logic Programming}, eds. J.~Maluszy\'{n}ski and
+  M.~Wirsing, pp. 15--26. Springer-Verlag, Aug. 1991.
+
+\bibitem{Nai96}
+\textsc{Naish, L.}
+\newblock \emph{Higher-order logic programming in {P}rolog}.
+\newblock Tech. Rep. 96/2, Dept. of Computer Science, University of Melbourne,
+  Australia, 1996.
+
+\bibitem{New90}
+\textsc{Newmarch, J.~D.}
+\newblock \emph{Logic Programming: {P}rolog and Stream Parallel Languages}.
+\newblock Prentice Hall, 1990.
+
+\bibitem{Pau88}
+\textsc{Paulson, L.~C.}
+\newblock \emph{{ML Exercise Sheets, Part 1A CST and Mathematics with Computer
+  Science}}.
+\newblock Tech. rep., Computer Laboratory, Cambridge University, England, 1988.
+
+\bibitem{Pau91}
+\textsc{Paulson, L.~C.}
+\newblock \emph{ML for the Working Programmer}.
+\newblock Cambridge University Press, 1991.
+
+\bibitem{PS91}
+\textsc{Paulson, L.~C. and Smith, A.~W.}
+\newblock \emph{Logic programming, functional programming, and inductive
+  definitions}.
+\newblock In \emph{Extensions of Logic Programming}, ed. P.~Schroeder-Heister,
+  LNAI 475, pp. 283--310. Springer, 1991.
+
+\bibitem{Red84}
+\textsc{Reddy, U.~S.}
+\newblock \emph{Transformation of logic programs into functional programs}.
+\newblock In \emph{Proc. IEEE Intl. Symposium on Logic Programming}, pp.
+  187--196. 1984.
+
+\bibitem{Red85}
+\textsc{Reddy, U.~S.}
+\newblock \emph{Narrowing as the operational semantics of functional
+  languages}.
+\newblock In \emph{Proc. IEEE Intl. Symposium on Logic Programming, Boston},
+  pp. 138--151. 1985.
+
+\bibitem{RKKL85}
+\textsc{R\'{e}ty, P., Kirchner, C., Kirchner, H., and Lescanne, P.}
+\newblock \emph{{NARROWER}: a new algorithm for unification and its application
+  to {L}ogic {P}rogramming}.
+\newblock In \emph{Proc. 1st Conference on Rewriting Techniques and
+  Applications}, vol. 202, pp. 141--157. Springer-Verlag, 1985.
+
+\bibitem{Sar95}
+\textsc{Saraswat, S.}
+\newblock \emph{Performance Evaluation of the Delphi Machine}.
+\newblock Ph.D. thesis, Computer Laboratory, Cambridge University, England,
+  Dec. 1995.
+\newblock Reprinted as Technical Report No. 385.
+
+\bibitem{Sch24}
+\textsc{Sch\"onfinkel, M.}
+\newblock \emph{\"{U}ber die {B}austeine der mathematischen {L}ogik}.
+\newblock Mathematische Annalen, 92, pp.~305--316, 1924.
+
+\bibitem{Sha87a}
+\textsc{Shapiro, E.}
+\newblock \emph{A subset of {C}oncurrent {P}rolog and its interpreter}.
+\newblock In \emph{Concurrent Prolog: Collected Papers}, ed. E.~Shapiro. MIT
+  Press, 1987.
+
+\bibitem{SHC95}
+\textsc{Somogyi, Z., Henderson, F.~J., and Conway, T.~C.}
+\newblock \emph{Mercury, an efficient purely declarative logic programming
+  language}.
+\newblock Tech. rep., Dept. of Computer Science, University of Melbourne,
+  Australia, 1995.
+
+\bibitem{Sti88}
+\textsc{Stickel, M.}
+\newblock \emph{A {P}rolog technology theorem prover: {I}mplementation by an
+  extended {P}rolog compiler}.
+\newblock J. Auto. Reas., 4(4), pp.~353--380, 1988.
+
+\bibitem{Tic91}
+\textsc{Tick, E.}
+\newblock \emph{Parallel Logic Programming}.
+\newblock MIT Press, 1991.
+
+\bibitem{TL87}
+\textsc{Tinker, P. and Lindstrom, G.}
+\newblock \emph{A performance-oriented design for {OR}-parallel logic
+  programming}.
+\newblock In \emph{Proceedings of the 4th Intl. Conf. on Logic Programming},
+  ed. J.~Lassez, vol.~2, pp. 601--615. MIT Press, 1987.
+
+\bibitem{War83}
+\textsc{Warren, D. H.~D.}
+\newblock \emph{An abstract {P}rolog instruction set}.
+\newblock Tech. Rep. TN-309, SRI International, Menlo Park, CA, 1983.
+
+\bibitem{War87}
+\textsc{Warren, D. H.~D.}
+\newblock \emph{The {SRI} model for {OR}-parallel execution of {P}rolog -
+  abstract design and implementation issues}.
+\newblock In \emph{Proc. Symposium on Logic Programming}. IEEE Computer Society
+  Press, Los Alamitos, California, 1987.
+
+\bibitem{Wis86}
+\textsc{Wise, M.}
+\newblock \emph{Prolog Multiprocessors}.
+\newblock Prentice Hall International, 1986.
+
+\bibitem{Wre90}
+\textsc{Wrench, K.~L.}
+\newblock \emph{A Distributed {AND-OR} Parallel {P}rolog Network}.
+\newblock Ph.D. thesis, Computer Laboratory, University of Cambridge, Dec.
+  1990.
+\newblock Available in summary form as Technical Report No. 212.
+
+\end{thebibliography}

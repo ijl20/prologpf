@@ -1,0 +1,61 @@
+(*  ML ASSESSED EXERCISES. TICK 5 SUBMISSION *)
+
+(* PROBLEM 1. plus(m), yielding a function that adds m to it input *)
+(* add needs both parameters given to be evaluable                 *)
+(* plus can be given only one parameter to evaluate to a function, *)
+(*   or two to evaluate to a value                                 *)
+(* i.e. add(m,n)=plus(m)(n), but plus(m) has no equivalent in add  *)
+
+fun plus(m:int)=
+  let
+    fun f(n)=m+n
+  in
+    f
+  end;
+
+(* PROBLEM 2.                                               *)
+(* For m*n:                                                 *)
+(*   Let t(x)=x+m                                           *)
+(*   Then m*n=(t^n)(m) - here ^n represents a superscript n *)
+(* For m^n:                                                 *)
+(*   Let u(x)=x*m                                           *)
+(*   Then m^n=(u^n)(m) - here ^n represents a superscript n *)
+
+(* PROBLEN 3. nfold(f,n) yielding f^n *)
+(*            sum(m,n) yielding m+n   *)
+(*            prod(m,n) yielding m*n  *)
+(*            power(m,n) yielding m^n *)
+
+fun nfold(f,n)=
+  let
+    fun result(x)=
+      let
+        fun g(x,0)=x
+          | g(x,n)=g(f(x),n-1)
+      in
+        g(x,n)
+      end
+  in
+    result
+  end;
+
+fun sum(m,n)=
+  let
+    fun s(x:int)=x+1
+  in
+    nfold(s,n)(m)
+  end;
+
+fun prod(m,n)=
+  let
+    fun t(x:int)=x+m
+  in
+    nfold(t,n-1)(m)
+  end;
+
+fun power(m,n)=
+  let
+    fun u(x:int)=x*m
+  in
+    nfold(u,n-1)(m)
+  end;

@@ -1,0 +1,175 @@
+/****************************************************************************
+Prolog to Wam Compiler                     INRIA Rocquencourt - ChLoE Project
+Version 0.02                                               Daniel Diaz - 1994
+
+file : o_utils_c.usr
+****************************************************************************/
+
+#define MAXORC  150                 /* maximum length of oracle            */
+#define MAXORCS 7000                /* maximum number of oracles (S)       */
+#define MAXBORC 10000               /* max size of orc being built         */
+
+static int build;                   /* boolean flag for BUILD mode         */
+
+static int build_orc[MAXBORC];      /* array to hold orc as it is built    */
+static int orcs[MAXORCS][MAXORC];   /* array to hold oracles               */
+                                    /* orcs[n][0] holds length of oracle n */
+                                    /* orcs[n][1..MAXORC] holds oracle n   */
+
+static int b_depth,                 /* current BUILD or-depth              */
+           f_depth;                 /* current FOLLOW or-depth             */
+
+static int orc_l;                   /* depth limit L                       */
+static int orc_g;                   /* group count G                       */
+static int orc_n;                   /* unique processor number P           */
+static int orc_s;                   /* count of oracles S                  */
+
+
+static int orc_current;             /* index of current oracle in orcs     */
+
+#define o_build1                                                        \
+    { ++b_depth;                                                        \
+      if (build)                                                        \
+        { Deref(A(0),word,tag,adr)                                      \
+          build_orc[b_depth - f_depth] = UnTag_INT(word);               \
+          if (b_depth - f_depth == orc_l)                               \
+            {open_orc(); fail}                                          \
+        }                                                               \
+    }
+
+#define o_build2                                                        \
+    {                                                                   \
+      b_depth--;                                                        \
+      fail                                                              \
+    }
+
+#define o_follow                                                        \
+    {                                                                   \
+      if (!build)                                                       \
+        { if (orcs[orc_current][0]==f_depth)                            \
+            {build = 1;}                                                \
+          else                                                          \
+            {f_depth++; get_integer(orcs[orc_current][f_depth],0)}      \
+        }                                                               \
+    }
+
+#define o_set_build                                                     \
+    {                                                                   \
+      build = 1;                                                        \
+    }
+
+#define o_set_follow                                                    \
+    {                                                                   \
+      build = 0;                                                        \
+    }
+
+#define o_set_l                                                         \
+    {                                                                   \
+      Deref(A(0),word,tag,adr)                                          \
+      orc_l = UnTag_INT(word);                                          \
+    }
+
+#define o_read_l                                                        \
+    {                                                                   \
+      get_integer(orc_l,0)                                              \
+    }
+
+
+#define o_set_g                                                         \
+    {                                                                   \
+      Deref(A(0),word,tag,adr)                                          \
+      orc_g = UnTag_INT(word);                                          \
+    }
+
+#define o_read_g                                                        \
+    {                                                                   \
+      get_integer(orc_g,0)                                              \
+    }
+
+#define o_set_n                                                         \
+    {                                                                   \
+      Deref(A(0),word,tag,adr)                                          \
+      orc_n = UnTag_INT(word);                                          \
+    }
+
+#define o_read_n                                                        \
+    {                                                                   \
+      get_integer(orc_n,0)                                              \
+    }
+
+#define o_read_s                                                        \
+    {                                                                   \
+      get_integer(orc_s,0)                                              \
+    }
+
+#define o_read_build                                                    \
+    {                                                                   \
+      get_integer(build,0)                                              \
+    }
+
+#define o_read_b_depth                                                  \
+    {                                                                   \
+      get_integer(b_depth,0)                                            \
+    }
+
+#define o_read_f_depth                                                  \
+    {                                                                   \
+      get_integer(f_depth,0)                                            \
+    }
+
+#define o_read_orc                                                      \
+    {                                                                   \
+      int orc, i;                                                       \
+      Deref(A(0),word,tag,adr)                                          \
+      orc = UnTag_INT(word);                                            \
+      Deref(A(1),word,tag,adr)                                          \
+      i = UnTag_INT(word);                                              \
+      get_integer(orcs[orc][i],2)                                       \
+    }
+
+#define o_init                                                          \
+    {                                                                   \
+      build = 1;                                                        \
+      b_depth = 0;                                                      \
+      f_depth = 0;                                                      \
+      orc_s = 0;                                                        \
+      orc_current = 0;                                                  \
+      orc_l = MAXORC;                                                   \
+    }
+
+#define o_set_current                                                   \
+    {                                                                   \
+      Deref(A(0),word,tag,adr)                                          \
+      orc_current = UnTag_INT(word);                                    \
+      f_depth = 0;                                                      \
+    }
+
+#define o_read_current                                                  \
+    {                                                                   \
+      get_integer(orc_current,0)                                        \
+    }
+
+/* Above this line, put your first macros (these included by pragma_c) */
+
+#undef  fail
+#define fail Fail_Like_Bool
+
+/* Below this line, put your others macros and your functions */
+
+static void open_orc()
+{
+  int i;
+  for (i=1;i<=(b_depth - f_depth);i++) orcs[orc_s][i] = build_orc[i];
+  orcs[orc_s][0] = b_depth - f_depth;
+  orc_s++;
+}
+
+static void Initialize_Usr(void)
+{
+  o_init
+}
+
+/* end of user file */
+
+#undef  fail
+#define fail Fail_Like_Wam

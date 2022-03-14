@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<meta name="generator" content="hevea 2.05">
+
+<meta name="Author" content="Daniel Diaz">
+<meta name="Keywords" content="GNU Prolog, manual, Prolog, compiler, constraints, finite domains">
+<link rel="icon" type="image/x-icon" href="/gprolog.ico"><link rel="stylesheet" type="text/css" href="gprolog.css">
+<title>Debugger commands</title>
+</head>
+<body TEXT=black BGCOLOR=white>
+<h3 class="subsection" id="sec30">5.5&#XA0;&#XA0;Debugger commands</h3>
+<p>
+<a id="Debugger-commands"></a>
+When the debugger reaches a leashed port it shows the current goal followed
+by the <span class="c003">?</span> symbol. At this point there are many commands available.
+Typing <span class="c003">RETURN</span> will creep into the program. Continuing to creep will
+show all the control flow. The debugger shows every port for every predicate
+encountered during the execution. It is possible to select the ports at
+which the debugger will prompt the user using the built-in predicate
+<a id="hevea_default165"></a><span class="c003">leash/1</span> (section&#XA0;<a href="gprolog013.html#Leashing-ports">5.3.2</a>). Each command is only one
+character long:</p><table class="c000 cellpadding1" border=1><tr><td class="c017">
+Command</td><td class="c017">Name</td><td class="c019">Description </td></tr>
+<tr><td class="c017">
+<span class="c003">RET</span> or <span class="c003">c</span></td><td class="c017">creep</td><td class="c019">single-step to the next port </td></tr>
+<tr><td class="c017">
+<span class="c003">l</span></td><td class="c017">leap</td><td class="c019">continue the execution only stopping when a goal with a
+spy-point is reached </td></tr>
+<tr><td class="c017">
+<span class="c003">s</span></td><td class="c017">skip</td><td class="c019">skip over the entire execution of the current goal. No
+message will be shown until control returns </td></tr>
+<tr><td class="c017">
+<span class="c003">G</span></td><td class="c017">go to</td><td class="c019">ask for an invocation number and continue the execution
+until a port is reached for that invocation number </td></tr>
+<tr><td class="c017">
+<span class="c003">r</span></td><td class="c017">retry</td><td class="c019">try to restart the invocation of the current goal by
+failing until reaching the invocation of the goal. The state of
+execution is the same as when the goal was initially invoked (except when
+using side-effect predicates) </td></tr>
+<tr><td class="c017">
+<span class="c003">f</span></td><td class="c017">fail</td><td class="c019">force the current goal to fail immediately </td></tr>
+<tr><td class="c017">
+<span class="c003">w</span></td><td class="c017">write</td><td class="c019">show the current goal using <span class="c003">write/2</span>
+(section&#XA0;<a href="gprolog038.html#write-term%2F3">8.14.6</a>)
+</td></tr>
+<tr><td class="c017">
+<span class="c003">d</span></td><td class="c017">display</td><td class="c019">show the current goal using <span class="c003">display/2</span>
+(section&#XA0;<a href="gprolog038.html#write-term%2F3">8.14.6</a>) </td></tr>
+<tr><td class="c017">
+<span class="c003">p</span></td><td class="c017">print</td><td class="c019">show the current goal using <span class="c003">print/2</span>
+(section&#XA0;<a href="gprolog038.html#write-term%2F3">8.14.6</a>)
+</td></tr>
+<tr><td class="c017">
+<span class="c003">e</span></td><td class="c017">exception</td><td class="c019">show the pending exception. Only applicable to an
+<span class="c003">exception</span> port </td></tr>
+<tr><td class="c017">
+<span class="c003">g</span></td><td class="c017">ancestors</td><td class="c019">show the list of ancestors of the current goal </td></tr>
+<tr><td class="c017">
+<span class="c003">A</span></td><td class="c017">alternatives</td><td class="c019">show the list of ancestors of the current goal
+combined with choice-points </td></tr>
+<tr><td class="c017">
+<span class="c003">u</span></td><td class="c017">unify</td><td class="c019">ask for a term and unify the current goal with this
+term. This is convenient for getting a specific solution. Only available at
+a <span class="c003">call</span> port </td></tr>
+<tr><td class="c017">
+<span class="c003">.</span></td><td class="c017">father file</td><td class="c019">show the Prolog file name and the line number
+where the current predicate is defined </td></tr>
+<tr><td class="c017">
+<span class="c003">n</span></td><td class="c017">no debug</td><td class="c019">switch the debugger off. Same as <a id="hevea_default166"></a><span class="c003">nodebug/0</span>
+(section&#XA0;<a href="gprolog013.html#Running-and-stopping-the-debugger">5.3.1</a>) </td></tr>
+<tr><td class="c017">
+<span class="c003">=</span></td><td class="c017">debugging</td><td class="c019">show debugger information. Same as
+<a id="hevea_default167"></a><span class="c003">debugging/0</span> (section&#XA0;<a href="gprolog013.html#Running-and-stopping-the-debugger">5.3.1</a>) </td></tr>
+<tr><td class="c017">
+<span class="c003">+</span></td><td class="c017">spy this</td><td class="c019">set a spy-point on the current goal. Uses
+<a id="hevea_default168"></a><span class="c003">spy/1</span> (section&#XA0;<a href="gprolog013.html#Spy-points">5.3.3</a>) </td></tr>
+<tr><td class="c017">
+<span class="c003">-</span></td><td class="c017">nospy this</td><td class="c019">remove a spy-point on the current goal. Uses
+<a id="hevea_default169"></a><span class="c003">nospy/1</span> (section&#XA0;<a href="gprolog013.html#Spy-points">5.3.3</a>) </td></tr>
+<tr><td class="c017">
+<span class="c003">*</span></td><td class="c017">spy conditionally</td><td class="c019">ask for a term <span class="c003">Goal, Port, Test</span>
+(terminated by a dot) and set a conditional spy-point on the current
+predicate. <span class="c003">Goal</span> and the current goal must have the same predicate
+indicator. Uses <a id="hevea_default170"></a><span class="c003">spypoint_condition/3</span> (section&#XA0;<a href="gprolog013.html#Spy-points">5.3.3</a>) </td></tr>
+<tr><td class="c017">
+<span class="c003">L</span></td><td class="c017">listing</td><td class="c019">list all the clauses associated with the current
+predicate. Uses <a id="hevea_default171"></a><span class="c003">listing/1</span> (section&#XA0;<a href="gprolog047.html#listing%2F1">8.23.3</a>) </td></tr>
+<tr><td class="c017">
+<span class="c003">a</span></td><td class="c017">abort</td><td class="c019">abort the current execution. Same as <a id="hevea_default172"></a><span class="c003">abort/0</span>
+(section&#XA0;<a href="gprolog042.html#abort%2F0">8.18.1</a>) </td></tr>
+<tr><td class="c017">
+<span class="c003">b</span></td><td class="c017">break</td><td class="c019">invoke a recursive top-level. Same as <a id="hevea_default173"></a><span class="c003">break/0</span>
+(section&#XA0;<a href="gprolog042.html#abort%2F0">8.18.1</a>) </td></tr>
+<tr><td class="c017">
+<span class="c003">@</span></td><td class="c017">execute goal</td><td class="c019">ask for a goal and execute it </td></tr>
+<tr><td class="c017">
+<span class="c003">&lt;</span></td><td class="c017">set print depth</td><td class="c019">ask for an integer and set the print
+depth to this value (<span class="c003">-1</span> for no depth limit) </td></tr>
+<tr><td class="c017">
+<span class="c003">h</span> or <span class="c003">?</span></td><td class="c017">help</td><td class="c019">display a summary of available commands </td></tr>
+<tr><td class="c017">
+<span class="c003">W</span></td><td class="c017">WAM debugger</td><td class="c019">invoke the low-level WAM debugger
+(section&#XA0;<a href="gprolog016.html#The-WAM-debugger">5.6</a>) </td></tr>
+</table>
+
+</body>
+</html>

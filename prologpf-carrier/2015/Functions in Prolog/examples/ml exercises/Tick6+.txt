@@ -1,0 +1,41 @@
+(* ML ASSESSED EXERCISES. TICK 6+ SUBMISSION *)
+
+(* PROBLEM 1. A function map2 that applies a function f to     *)
+(*            elements of two streams (i.e. f has two inputs   *)
+
+fun map2 f xs ys=
+  cons(f(head xs)(head ys),fn()=>map2 f (tail xs) (tail ys));
+
+(* PROBLEM 2. Code to find Fibonacci numbers                   *)
+
+fun plus m n = m+n;
+
+fun fibs() =
+    cons(1, fn()=>
+         cons(1, fn()=> map2 plus (fibs()) (tail(fibs())) ));
+
+(* PROBLEM 3. A function merge to merge two increasing streams *)
+
+fun merge(xs,ys)=if (head xs=head ys) then
+                   cons(head xs,fn()=>merge(tail xs,tail ys))
+                 else if (head xs<head ys) then
+                   cons(head xs,fn()=>merge(tail xs,ys))
+                 else
+                   cons(head ys,fn()=>merge(xs,tail ys));
+
+(* PROBLEM 4. A stream of all numbers of form 2^i*3^j          *)
+
+fun double n=n*2;
+fun triple n=n*3;
+
+fun ij()=
+    cons(1,fn()=>
+      merge(maps double (ij()),maps triple (ij())));
+
+(* PROBLEM 5. A stream of all numbers of form  2^i*3^j*5^k     *)
+
+fun quint n=n*5;
+
+fun ijk()=
+    cons(1,fn()=>
+      merge((tail (ij())),maps quint (ijk())));

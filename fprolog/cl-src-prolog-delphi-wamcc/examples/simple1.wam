@@ -1,0 +1,206 @@
+/****************************************************************************
+PrologPF: A Parallel Functional Prolog Compiler    Cambridge University
+Version 0.02                                       I.Lewis, D.Diaz(wamcc)-1994
+
+File : simple1.wam
+Main : main
+****************************************************************************/
+
+#define DEBUG_LEVEL    0
+
+#include "wam_engine.h"
+
+#include "simple1.h"
+#include "simple1.usr"
+
+
+#define ASCII_PRED "a"
+#define PRED       X61
+#define ARITY      1
+
+Begin_Private_Pred
+      allocate(1)
+      get_y_variable(0,0)
+      put_y_value(0,0)
+      call(Pred_Name(X62,1),1,1,"b",1)          /* begin sub 1 */
+      put_y_value(0,0)
+      deallocate
+      execute(Pred_Name(X63,1),1,"c",1)
+
+End_Pred
+
+#undef ASCII_PRED
+#undef PRED
+#undef ARITY
+
+
+
+#define ASCII_PRED "b"
+#define PRED       X62
+#define ARITY      1
+
+Begin_Private_Pred
+      execute(Pred_Name(X65,1),1,"e",1)
+
+End_Pred
+
+#undef ASCII_PRED
+#undef PRED
+#undef ARITY
+
+
+
+#define ASCII_PRED "c"
+#define PRED       X63
+#define ARITY      1
+
+Begin_Private_Pred
+      switch_on_term(G_label(1),fail,G_label(1),fail,fail)
+
+label(1)
+      get_integer(1,0)
+      proceed
+
+End_Pred
+
+#undef ASCII_PRED
+#undef PRED
+#undef ARITY
+
+
+
+#define ASCII_PRED "e"
+#define PRED       X65
+#define ARITY      1
+
+Begin_Private_Pred
+      try_me_else(1)
+      execute(Pred_Name(X66,1),1,"f",1)
+
+label(1)
+      trust_me_else_fail
+      execute(Pred_Name(X67,1),1,"g",1)
+
+End_Pred
+
+#undef ASCII_PRED
+#undef PRED
+#undef ARITY
+
+
+
+#define ASCII_PRED "f"
+#define PRED       X66
+#define ARITY      1
+
+Begin_Private_Pred
+      switch_on_term(G_label(1),fail,G_label(1),fail,fail)
+
+label(1)
+      get_integer(2,0)
+      proceed
+
+End_Pred
+
+#undef ASCII_PRED
+#undef PRED
+#undef ARITY
+
+
+
+#define ASCII_PRED "g"
+#define PRED       X67
+#define ARITY      1
+
+Begin_Private_Pred
+      switch_on_term(G_label(1),fail,G_label(1),fail,fail)
+
+label(1)
+      get_integer(1,0)
+      proceed
+
+End_Pred
+
+#undef ASCII_PRED
+#undef PRED
+#undef ARITY
+
+
+
+#define ASCII_PRED "$exe_1"
+#define PRED       X246578655F31
+#define ARITY      0
+
+Begin_Private_Pred
+      put_constant(X74727565,0,"true")
+      put_constant(X74727565,1,"true")
+      execute(Pred_Name(X746F705F6C6576656C,2),0,"top_level",2)
+
+End_Pred
+
+#undef ASCII_PRED
+#undef PRED
+#undef ARITY
+
+
+Begin_Init_Tables(simple1)
+
+ Define_Atom(X5B5D,"[]")
+ Define_Atom(X61,"a")
+ Define_Atom(X62,"b")
+ Define_Atom(X63,"c")
+ Define_Atom(X65,"e")
+ Define_Atom(X66,"f")
+ Define_Atom(X67,"g")
+ Define_Atom(X246578655F31,"$exe_1")
+ Define_Atom(X74727565,"true")
+
+
+ Define_Pred(X61,1,0)
+
+ Define_Pred(X62,1,0)
+
+ Define_Pred(X63,1,0)
+
+ Define_Pred(X65,1,0)
+
+ Define_Pred(X66,1,0)
+
+ Define_Pred(X67,1,0)
+
+ Define_Pred(X246578655F31,0,0)
+
+ Init_Usr_File
+
+End_Init_Tables
+
+
+Begin_Exec_Directives(simple1)
+
+
+ Exec_Directive(1,Pred_Name(X246578655F31,0))
+
+End_Exec_Directives
+
+
+/*** MAIN ***/
+
+int main(int argc,char *argv[])
+
+{
+ unix_argc=argc;
+ unix_argv=argv;
+
+
+ Init_Wam_Engine();
+
+ Init_Tables_Of_Module(Builtin)
+ Init_Tables_Of_Module(simple1)
+
+ Exec_Directives_Of_Module(Builtin)
+ Exec_Directives_Of_Module(simple1)
+
+ Term_Wam_Engine();
+
+ return 0;
+}

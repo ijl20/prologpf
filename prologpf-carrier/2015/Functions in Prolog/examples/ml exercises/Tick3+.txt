@@ -1,0 +1,11 @@
+(*  ML ASSESSED EXERCISES. TICK 3* SUBMISSION *)
+
+fun choose(k,xs)=
+  let
+    fun f(_,0,asub,subs)=asub::subs
+      | f([],_,_,subs)=subs
+      | f(x::xs,k,asub,subs)=
+          f(xs,k-1,asub @ [x],f(xs,k,asub,subs))
+  in
+    f(xs,k,[],[])
+  end;

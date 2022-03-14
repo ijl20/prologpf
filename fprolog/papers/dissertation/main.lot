@@ -1,0 +1,34 @@
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {3.1}{\ignorespaces Single cpu execution times (in milliseconds)}}{70}
+\contentsline {table}{\numberline {3.2}{\ignorespaces Overhead of PrologPF(C) oracle support.}}{71}
+\contentsline {table}{\numberline {3.3}{\ignorespaces Parallel execution performance of PrologPF}}{72}
+\contentsline {table}{\numberline {3.4}{\ignorespaces Oracle work distribution for 8-queens at $L=21$}}{79}
+\contentsline {table}{\numberline {3.5}{\ignorespaces Oracle work distribution for 10-queens at $L=27$.}}{80}
+\contentsline {table}{\numberline {3.6}{\ignorespaces Oracle work distribution for Pentominoes at $L=21$}}{81}
+\contentsline {table}{\numberline {3.7}{\ignorespaces Large oracle allocation in Pentominoes}}{81}
+\contentsline {table}{\numberline {3.8}{\ignorespaces Runtimes of four longest running path processors in Pentominoes problem $G=24$.}}{81}
+\contentsline {table}{\numberline {3.9}{\ignorespaces Oracle work distribution for Pentominoes at $L=21,24$.}}{83}
+\contentsline {table}{\numberline {3.10}{\ignorespaces Pentominoes runtimes for $G=12$, $L=24$}}{83}
+\contentsline {table}{\numberline {3.11}{\ignorespaces Oracle count $S$ and oracle sizes for 8-queens with $L=1\dots 36$.}}{90}
+\contentsline {table}{\numberline {3.12}{\ignorespaces Runtimes of each path processor for Pentominoes $G=12$, $L=21$ using demand allocation with no retrieval delay.}}{90}
+\contentsline {table}{\numberline {3.13}{\ignorespaces Oracle count $S$ and initial oracle discovery time (BFtime) for Pentominoes problem with $L=1\dots 30$.}}{94}
+\contentsline {table}{\numberline {3.14}{\ignorespaces Single cpu runtime ratios.}}{100}
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {4.1}{\ignorespaces Count of cuts encountered for the benchmarks on a single cpu.}}{106}
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {5.1}{\ignorespaces Syntax: Function Definition with the \texttt {fun} Relation}}{119}
+\contentsline {table}{\numberline {5.2}{\ignorespaces Syntax: Function Application with the \texttt {@} Operator}}{124}
+\contentsline {table}{\numberline {5.3}{\ignorespaces Syntax: \texttt {if}}}{128}
+\contentsline {table}{\numberline {5.4}{\ignorespaces Comparison of \texttt {call/N}, \texttt {apply/3} and PrologPF}}{144}
+\contentsline {table}{\numberline {5.5}{\ignorespaces Queries from \cite {Nai96} for \texttt {call/N}, \texttt {apply/3}, PrologPF}}{145}
+\contentsline {table}{\numberline {5.6}{\ignorespaces Further programming examples showing PrologPF capabilities}}{148}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {7.1}{\ignorespaces Definition of parallelisation primitive \texttt {kappa}.}}{173}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
