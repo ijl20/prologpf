@@ -19,9 +19,6 @@ true.
 'map() test ok'
 true.
 
-?- fib(4,X).
-X = 10.
-
 ?-
 ```
 
