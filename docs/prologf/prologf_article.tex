@@ -1,0 +1,262 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Journal Article
+% LaTeX Template
+% Version 1.4 (15/5/16)
+%
+% This template has been downloaded from:
+% http://www.LaTeXTemplates.com
+%
+% Original author:
+% Frits Wenneker (http://www.howtotex.com) with extensive modifications by
+% Vel (vel@LaTeXTemplates.com)
+%
+% License:
+% CC BY-NC-SA 3.0 (http://creativecommons.org/licenses/by-nc-sa/3.0/)
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[twoside,twocolumn]{article}
+
+\usepackage{blindtext}                                          % Package to generate dummy text throughout this template
+
+\usepackage[sc]{mathpazo}                                       % Use the Palatino font
+\usepackage[T1]{fontenc}                                        % Use 8-bit encoding that has 256 glyphs
+\linespread{1.05}                                               % Line spacing - Palatino needs more space between lines
+\usepackage{microtype}                                          % Slightly tweak font spacing for aesthetics
+
+\usepackage[english]{babel}                                     % Language hyphenation and typographical rules
+
+\usepackage[hmarginratio=1:1,top=32mm,columnsep=20pt]{geometry} % Document margins
+\usepackage[hang, small,labelfont=bf,up,textfont=it,up]{caption} % Custom captions under/above floats in tables or figures
+\usepackage{booktabs}                                           % Horizontal rules in tables
+
+\usepackage{lettrine}                                     % The lettrine is the first enlarged letter at the beginning of the text
+
+\usepackage{enumitem}                                           % Customized lists
+\setlist[itemize]{noitemsep}                                    % Make itemize lists more compact
+
+\usepackage{abstract} % Allows abstract customization
+\renewcommand{\abstractnamefont}{\normalfont\bfseries}          % Set the "Abstract" text to bold
+\renewcommand{\abstracttextfont}{\normalfont\small\itshape}     % Set the abstract itself to small italic text
+
+\usepackage{titlesec}                                           % Allows customization of titles
+\renewcommand\thesection{\Roman{section}}                       % Roman numerals for the sections
+\renewcommand\thesubsection{\roman{subsection}}                 % roman numerals for subsections
+\titleformat{\section}[block]{\large\scshape\centering}{\thesection.}{1em}{} % Change the look of the section titles
+\titleformat{\subsection}[block]{\large}{\thesubsection.}{1em}{} % Change the look of the section titles
+
+\usepackage{fancyhdr}                                           % Headers and footers
+\pagestyle{fancy}                                               % All pages have headers and footers
+\fancyhead{}                                                    % Blank out the default header
+\fancyfoot{}                                                    % Blank out the default footer
+\fancyhead[C]{PrologPF: Adding functions to Prolog}             % Custom header text
+\fancyfoot[RO,LE]{\thepage}                                     % Custom footer text
+
+\usepackage{titling}                                            % Customizing the title section
+
+\usepackage{hyperref}                                           % For hyperlinks in the PDF
+
+\usepackage{listings}                                           % For code blocks
+\lstset{language=Prolog}
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\setlength{\droptitle}{-4\baselineskip}                     % Move the title up
+
+\pretitle{\begin{center}\Huge\bfseries}                     % Article title formatting
+\posttitle{\end{center}}                                    % Article title closing formatting
+\title{PrologPF: Adding functions to Prolog}                % Article title
+\author{%
+\textsc{Ian Lewis}\thanks{A thank you or further information} \\[1ex] % Your name
+\normalsize University of Cambridge \\                      % Your institution
+\normalsize \href{mailto:ijl20@cam.ac.uk}{ijl20@cam.ac.uk}  % Your email address
+%\and                                                       % Uncomment if 2 authors are required, duplicate these 4 lines if more
+%\textsc{Jane Smith}\thanks{Corresponding author} \\[1ex]   % Second author's name
+%\normalsize University of Utah \\                          % Second author's institution
+%\normalsize \href{mailto:jane@smith.com}{jane@smith.com}   % Second author's email address
+}
+\date{\today}                                               % Leave empty to omit a date
+\renewcommand{\maketitlehookd}{%
+\begin{abstract}
+\noindent
+PrologPF is a language that combines the logic programming of Prolog with the
+functional reduction of the language ML. The syntax has been pragmatically designed to
+provide a consistent combined style that would be familiar to both Prolog and ML programmers.
+Declared functions can be called naturally from within Prolog clauses, i.e. a function reference
+can appear as the functor of a compound term resulting in functional reduction of that term.
+Prolog relations can be called with one-solution semantics as the condition in functional
+if-then-else statements. Unification is used consistently for argument matching in both relations
+and functions, and unifications from the functional if-then-else condition are propagated into the
+then and else statements. Higher-order functional programming and lazy reduction of
+functions are supported. The implementation is designed as an extension of Prolog, and has been
+shown to support all of the ML programming exercises in an undergraduate CS course. The PrologPF approach
+to blending functional and logic programming combines the declarative nature of both paradigms while
+replacing deterministic relations with declarative function definitions and reducing the need
+for Prolog's extra-logical \textit{cut}.
+\end{abstract}
+}
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+% Print the title
+\maketitle
+
+%----------------------------------------------------------------------------------------
+%	ARTICLE CONTENTS
+%----------------------------------------------------------------------------------------
+
+\section{Introduction}
+
+Prolog code tends to be a mix of relations and functions although the limited
+syntax requires the functions to be expressed using the relational head-normal form.
+
+For example, a factorial function in Prolog will typically be written
+
+\begin{verbatim}
+fact(0,1).
+fact(N,F) :-
+    N > 0,
+    M is N - 1,
+    fact(M,FM),
+    F is N * FM.
+\end{verbatim}
+
+Note this relation is deterministic and requires the first argument to be instantiated
+to a number without those details being clearly expressed. More problematically, the
+implementation of functions as relations encourages the use of \textit{cut}, as in
+
+\begin{verbatim}
+fact(0,1) :- !.
+fact(N,F) :-
+    M is N - 1,
+    fact(M,FM),
+    F is N * FM.
+\end{verbatim}
+
+The extra-logical behaviour of \textit{cut} destroys the declarative nature of Prolog
+code and in this case silently introduces non-terminating behaviour when the first
+argument is a negative number.
+
+\section{Method}
+
+In PrologPF, the factorial function can be defined as below.
+                                                    % Start code-block
+\begin{verbatim}
+fun fact(1) = 1;
+    fact(N) = N * fact(N-1).
+\end{verbatim}
+
+This style of the function definition has familiarity to both Prolog's alternate head terms
+for typical relation declarations and the alternate argument matching cases in Standard ML.
+
+As PrologPF has special treatment for if-then-else in function definitions, the
+factorial function can equally be written using this style.
+                                                    % Start code-block
+\begin{verbatim}
+fun fact(N) = if (N=1)
+              then 1
+              else N * fact(N-1).
+\end{verbatim}
+
+Function references can occur naturally in place of Prolog terms, for example
+\begin{verbatim}
+% fact_list(+L,?FL) succeeds if FL is
+% a list of factorials from numbers L.
+fact_list([],[]).
+fact_list([H|T],[fact(H)|FT])
+    :- fact_list(T,FT).
+\end{verbatim}
+
+In PrologPF, the operator @ is used to express functional application, i.e.
+\begin{verbatim}
+    fact(5)
+\end{verbatim}
+where fact has been declared as a function using the fun operator, is equivalent to
+\begin{verbatim}
+    fact @ [5]
+\end{verbatim}
+
+%------------------------------------------------
+
+\section{Methods}
+
+Maecenas sed ultricies felis. Sed imperdiet dictum arcu a egestas.
+\begin{itemize}
+\item Donec dolor arcu, rutrum id molestie in, viverra sed diam
+\item Curabitur feugiat
+\item turpis sed auctor facilisis
+\item arcu eros accumsan lorem, at posuere mi diam sit amet tortor
+\item Fusce fermentum, mi sit amet euismod rutrum
+\item sem lorem molestie diam, iaculis aliquet sapien tortor non nisi
+\item Pellentesque bibendum pretium aliquet
+\end{itemize}
+\blindtext % Dummy text
+
+Text requiring further explanation\footnote{Example footnote}.
+
+%------------------------------------------------
+
+\section{Results}
+
+\begin{table}
+\caption{Example table}
+\centering
+\begin{tabular}{llr}
+\toprule
+\multicolumn{2}{c}{Name} \\
+\cmidrule(r){1-2}
+First name & Last Name & Grade \\
+\midrule
+John & Doe & $7.5$ \\
+Richard & Miles & $2$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\blindtext % Dummy text
+
+\begin{equation}
+\label{eq:emc}
+e = mc^2
+\end{equation}
+
+\blindtext % Dummy text
+
+%------------------------------------------------
+
+\section{Discussion}
+
+\subsection{Subsection One}
+
+A statement requiring citation \cite{Figueredo:2009dg}.
+\blindtext % Dummy text
+
+\subsection{Subsection Two}
+
+\blindtext % Dummy text
+
+%----------------------------------------------------------------------------------------
+%	REFERENCE LIST
+%----------------------------------------------------------------------------------------
+
+\begin{thebibliography}{99} % Bibliography - this is intentionally simple in this template
+
+\bibitem[Figueredo and Wolf, 2009]{Figueredo:2009dg}
+Figueredo, A.~J. and Wolf, P. S.~A. (2009).
+\newblock Assortative pairing and life history strategy - a cross-cultural
+  study.
+\newblock {\em Human Nature}, 20:317--330.
+
+\end{thebibliography}
+
+%----------------------------------------------------------------------------------------
+
+\end{document}
