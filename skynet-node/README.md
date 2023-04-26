@@ -2,7 +2,10 @@
 
 Master control framework for parallel AI
 
-This uses node.js to create a webserver and a websocket server
+This uses node.js to create a webserver and a websocket server, serving a webpage (browser/index.html) as
+a console from which the status of the Path Processors can be seen and commands and data exchenged with those.
+
+![skynet architecture](images/skynet_architecture.png)
 
 ## Install
 
