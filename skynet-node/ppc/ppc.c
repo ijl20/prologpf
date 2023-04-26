@@ -15,7 +15,7 @@
 #include <errno.h>
 #include <stdlib.h>
 
-#define SKYNET_SRV_PORT 10083 
+#define SKYNET_SRV_PORT 10083
 #define SKYNET_SRV_NAME "localhost"
 #define SKYNET_SRV_IP "127.0.0.1"
 
@@ -28,7 +28,8 @@
 #define CHILD 0
 #define CONTROLLER 1
 
-#define MAX_BUF 4096
+#define MAX_BUF_IN 2048
+#define MAX_BUF_OUT 4096
 
 #define TO_CHILD to_child[1]
 #define FROM_CHILD to_control[0]
@@ -115,7 +116,7 @@ int skynet_get_msg(int fd, char *buf)
 {
   int nread;
       /* fprintf(stderr, "in skynet_get_msg i=%d\n",i);  */
-  nread = read(fd, buf, MAX_BUF);
+  nread = read(fd, buf, MAX_BUF_IN);
       /* fprintf(stderr, "leaving skynet_get_msg i=%d\n",i); */
   buf[nread] = '\0';
   printf("ppc: skynet_get_msg: <%s>\n",buf);
@@ -129,7 +130,7 @@ int skynet_get_msg(int fd, char *buf)
 int do_command(int *cont)
 {
     int n_read, n_written, command_cont = 1;
-    char buffer_in[MAX_BUF], buffer_out[MAX_BUF];
+    char buffer_in[MAX_BUF_IN], buffer_out[MAX_BUF_OUT];
     char command[MAX_COMMAND];
     char var_name[VAR_SIZE], var_value[VAR_SIZE];
 
@@ -147,7 +148,7 @@ int do_command(int *cont)
     */
     sscanf(buffer_in,"%s",command);
     printf("ppc do_command: %s\n",command);
-    /* check if first word is NOT "ppc" */ 
+    /* check if first word is NOT "ppc" */
     if (strcmp(command,PPC) != 0)
     {
         /* this is NOT a ppc command, so send to child */
@@ -156,7 +157,7 @@ int do_command(int *cont)
                skynet_send_msg(buffer_out) */;
           }
         else
-          { 
+          {
             printf("ppc do_command child_send_msg error: %s",buffer_in);
             sprintf(buffer_out,"%s %s",NOK,buffer_in);
             skynet_send_msg(buffer_out);
@@ -187,13 +188,13 @@ int do_command(int *cont)
         skynet_send_msg(buffer_out);
         sprintf(buffer_out,"%s %s %s\n", command, var_name, var_value);
         skynet_send_msg(buffer_out);
-      }        
+      }
     else if (strcmp(command,START) == 0)
       {
         if (child_running)
-          sprintf(buffer_out,"%s %s child running\n",NOK,START);  
+          sprintf(buffer_out,"%s %s child running\n",NOK,START);
         else if (start_prog(buffer_in + strlen(PPC) + 1 + strlen(START)) == 0)
-          { 
+          {
             printf("ppc: start ok: %s", buffer_in + strlen(PPC) + 1 + strlen(START));
             /* sprintf(buffer_out,"%s %s",OK,buffer_in);
                skynet_send_msg(buffer_out) */;
@@ -257,7 +258,7 @@ int do_command(int *cont)
     else
       {
         // unrecognized command from skynet - send back "nok <command>"
-        sprintf(buffer_out,"%s %s",NOK, buffer_in);
+        snprintf(buffer_out,sizeof(buffer_out), "%s %s",NOK, buffer_in);
         skynet_send_msg(buffer_out);
       }
 
@@ -271,7 +272,7 @@ int do_command(int *cont)
 void err_exit(char *msg)
 {
  close(sock_fd);
- printf("%s\n",msg);
+ printf("ppc: Exit %s\n",msg);
  exit(1);
 }
 
@@ -283,7 +284,7 @@ void init_vars()
 {
  int i;
  for (i=0;i<MAX_VARS;i++) vars[i][0] = '!'; /* skynet vars alphanumeric */
-}  
+}
 
 /************************************************************************/
 /*                        read_var                                      */
@@ -305,7 +306,7 @@ void read_var(char *var_name, char *var_value)
           i = MAX_VARS;
 	}
       else i++;
-      
+
     }
 }
 
@@ -360,7 +361,7 @@ int start_prog(char *command)
       dup(to_child[0]);     /* to_child[0] is child stdin */
       close(1);              /* close child stdout */
       dup(to_control[1]);    /* control[1] is child stdout */
-      close(to_child[1]);   /* close unnecessary file descriptors */ 
+      close(to_child[1]);   /* close unnecessary file descriptors */
       close(to_child[0]);
       close(to_control[0]);
       close(to_control[1]);
@@ -400,11 +401,11 @@ int child_send_msg(char *msg)
 
 int child_get_msg(void)
 {
-  char buf[MAX_BUF];
+  char buf[MAX_BUF_IN];
   int nread;
   if (child_running == 0) return 0;
       /* fprintf(stderr, "in skynet_get_msg i=%d\n",i);  */
-  nread = read(FROM_CHILD, buf, MAX_BUF);
+  nread = read(FROM_CHILD, buf, MAX_BUF_IN);
       /* fprintf(stderr, "leaving skynet_get_msg i=%d\n",i); */
   if (nread <= 0)
     { child_running = 0;
@@ -429,9 +430,6 @@ int child_get_msg(void)
 
 void child_signal(int sig)
 {
-  //union wait status;
-  char buffer_out[MAX_BUF];
-
   if (sig == SIGCHLD)
     {
       printf("%s","ppc: SIGCHLD\n");
@@ -458,15 +456,14 @@ void main(int argc, char *argv[])
     struct hostent *server;
 
     int max_fd;
-    char buf[MAX_BUF];              /* message buffer for child             */
+    //char buf[MAX_BUF];              /* message buffer for child             */
     int  i = 0;                 /* message count */
 
                               /* max fd calculation for select */
 
-    if (argc <  3) 
-    {
-    printf("ppc: Usage %s <hostname> <slotname>\n", argv[0]);
-    err_exit("ppc: hostname/slotname missing in call");
+    if (argc <  3) {
+        printf("ppc: Usage %s <hostname> <slotname>\n", argv[0]);
+        err_exit("ppc: hostname/slotname missing in call");
     }
 
     strcpy(host_name, argv[1]);
@@ -494,7 +491,7 @@ void main(int argc, char *argv[])
 
     printf("ppc: connecting to %s:%d",SKYNET_SRV_IP,SKYNET_SRV_PORT);
 
-    if (connect(sock_fd,(struct sockaddr *) &sv_addr,sizeof(sv_addr)) < 0) 
+    if (connect(sock_fd,(struct sockaddr *) &sv_addr,sizeof(sv_addr)) < 0)
     {
         err_exit("ppc: ERROR connecting to Skynet");
     }
@@ -502,7 +499,7 @@ void main(int argc, char *argv[])
 
     //sprintf(buf,"%s %s %s %s\n",OK,SKY_CONNECT, host_name, slot_name);
     //skynet_send_msg(buf);
-    
+
     command_cont = 1;
     while (command_cont)
       {
@@ -513,14 +510,14 @@ void main(int argc, char *argv[])
         do
           { if (child_running)
               { FD_SET(FROM_CHILD, &fd_var);
-                max_fd = (FROM_CHILD > sock_fd) ? 
+                max_fd = (FROM_CHILD > sock_fd) ?
                               FROM_CHILD + 1 :
-                              sock_fd + 1;  
+                              sock_fd + 1;
               }
             else max_fd = sock_fd + 1;
             printf("ppc: max_fd = %d, calling select...\n", max_fd);
             fflush(stdout);
-            retval = select( max_fd, &fd_var /*reads*/, 
+            retval = select( max_fd, &fd_var /*reads*/,
                                     (fd_set *) NULL /*writes*/,
                                     (fd_set *) NULL /*excpts*/,
                                     (struct timeval *) NULL);
@@ -532,4 +529,5 @@ void main(int argc, char *argv[])
         if (FD_ISSET(sock_fd, &fd_var)) command_cont = do_command(&cont);
         if (FD_ISSET(FROM_CHILD, &fd_var)) child_get_msg();
       }
+      printf("ppc: Exit...\n");
 }
