@@ -8,7 +8,7 @@
 %          [ _ , _ , _ ],
 %          [ _ , _ , _ ]].
 % We identify the Row/Column of the first free variable (in this case 0,0)
-% and unify each row of that board with the corresponding row of 
+% and unify each row of that board with the corresponding row of
 % 'select'ed Pentomino piece patterns, such as:
 %         [['C','C'|_],
 %          ['C', _ |_],
@@ -52,7 +52,7 @@ pents(P) :- setof(Pent,Pattern^pent(Pent,Pattern),P).
 %          [_,_,_],
 %          [_,_,_]].
 board(0,_,[]).
-board(Rows,Cols,[Row|Board]) :- 
+board(Rows,Cols,[Row|Board]) :-
     Rows > 0,
     board_row(Cols,Row),
     Rem_rows is Rows-1,
@@ -60,7 +60,7 @@ board(Rows,Cols,[Row|Board]) :-
 
 % board_row(Cols,Board_row) builds a simple list of Col free vars.
 board_row(0,[]).
-board_row(Cols,[_|Row]) :- 
+board_row(Cols,[_|Row]) :-
     Cols > 0,
     Rem_cols is Cols-1,
     board_row(Rem_cols,Row).
@@ -99,14 +99,14 @@ row_offset([P|_],0) :- atom(P).
 row_offset([X|P],Offset) :- \+ atom(X), row_offset(P,N), Offset is N+1.
 
 % place(Pieces,Board) succeeds if we can fill Board with unique Pieces
-place([Piece|Pieces],Board) :- 
-    free_row_col(Board,Free_row,Free_col), 
+place([Piece|Pieces],Board) :-
+    free_row_col(Board,Free_row,Free_col),
     select(Pn,[Piece|Pieces],Rem_pieces),
     pent(Pn,Pattern),
     offset(Pattern,Offset),
     Col is Free_col-Offset,
     Col >= 0,
-    place_row_col(Pattern,Board,Free_row,Col), 
+    place_row_col(Pattern,Board,Free_row,Col),
     %    ( place(Rem_pieces,Board) -> true ; print_board(Board), nl, fail ).
     place(Rem_pieces,Board).
 % Ultimate success condition is there are no free cells left in Board
@@ -123,8 +123,10 @@ print_board([]).
 print_board_row([Cell|Cells]) :- print_cell(Cell), print_board_row(Cells).
 print_board_row([]) :- nl.
 
-print_cell(C) :- atom(C), print(' '), print(C).
-print_cell(C) :- \+ atom(C), print(' '), print('_').
+% print_cell(C) :- atom(C), print(' '), print(C).
+% print_cell(C) :- \+ atom(C), print(' '), print('_').
+print_cell(C) :- atom(C), write(' '), write(C).
+print_cell(C) :- \+ atom(C), write(' '), write('_').
 
 solution(Board) :- solution(6,10,Board).
 
@@ -383,4 +385,3 @@ pent('I',[['I'|_],
           ['I'|_],
           ['I'|_],
           ['I'|_]]).
-

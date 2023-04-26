@@ -3,8 +3,9 @@
   "version": "0.0.1",
   "description": "Real-time control for distributed parallel AI",
   "dependencies": {
-    "socket.io": "latest",
-    "express": "latest"
+    "express": "latest",
+    "http-server": "^14.1.1",
+    "socket.io": "latest"
   },
   "author": "ijl20"
 }

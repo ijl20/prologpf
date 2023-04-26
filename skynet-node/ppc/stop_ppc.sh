@@ -6,9 +6,14 @@
 # If count is not given, then it will default to 1, ppc launched in foreground, stdout and stderr to terminal
 # If count IS given, then each ppc launched in background with stdout,stderr piped to /tmp
 
-cd /home/ijl20/prologpf
+EXEC_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
+echo EXEC_DIR=${EXEC_DIR}
+
+#cd /home/ijl20/src/prologpf
 
 ppc_count=$(ps aux | grep "ppc $HOSTNAME" | grep -v grep | wc -l)
+
+echo Found ${ppc_count} PPC\'s running.
 
 # if no argument then default to kill all ppc processes
 for ((i=1;i<=${1-99999};++i))

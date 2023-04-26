@@ -18,10 +18,12 @@
 </head>
 <body onload="on_load()">
 
-<div id='user_input_area' class="ui-layout-center">
+    <h1>--Skynet--</h1>
+
+    <div id='user_input_area' class="ui-layout-center">
     <div id='user_input_box'>
         Command:
-        <input type='text' id='user_input' 
+        <input type='text' id='user_input'
             onkeydown="if (event.keyCode == 13) user_text()"
             onfocus="user_menu_show()"
         />
@@ -39,15 +41,13 @@
 </div> <!-- end user_input_area -->
 
 <div id="hosts_area" onclick="user_menu_hide()" class="ui-layout-north">
-<h1>--Skynet--</h1>
-
 </div> <!-- end hosts_area -->
 
 <div id="status_area" onclick="user_menu_hide()" class="ui-layout-south">
     <div>
         <label>Console: <input type="radio" name="status_format" value="console" onclick="user_status_console()" checked/></label>
         <label>Flow: <input type="radio" name="status_format" value="flow" onclick="user_status_flow()" /></label>
-        <button onclick="user_status_clear()">Clear</button> 
+        <button onclick="user_status_clear()">Clear</button>
     </div>
 
     <ul id='status_text' style="display: block">

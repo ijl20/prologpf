@@ -8,14 +8,14 @@
 # Message sequence (-> = TO ppc/skynet, <- = FROM ppc/skynet)
 # (... ppc connects to skynet server) (web status YELLOW)
 # (... this program is spawned)
-# -> skynet loaded                    (web status BLUE) 
-# <- run G N WORK
+# -> skynet loaded                    (web status BLUE)
+#         <- run G N WORK
 # -> skynet started                   (web status GREEN)
 # (...program executes work)
 # -> skynet completed                 (web status BLUE)
 #
 # or if ppc receives CHILD_INTERRUPT
-# <- SIGCHILD
+#         <- SIGCHILD
 # -> skynet split WORK                (web status FLASH WHITE)
 
 ####################################################################

@@ -11,7 +11,7 @@
 
 // using node.js websockets
 
-var VERSION = 1.06;
+var VERSION = 1.07;
 // 1.06 initial port to new machine
 // 1.05 as imported from carrier
 //
@@ -20,7 +20,7 @@ var VERSION = 1.06;
 var SKYNET_BROWSER_PORT = 10082;
 var SKYNET_PPC_PORT = 10083;
 
-var SKYNET_DOCROOT = '/home/ijl20/src/prolog/skynet-node/browser';
+var SKYNET_DOCROOT = '/home/ijl20/src/prologpf/skynet-node/browser';
 
 // PPC Commands
 var OK = "ok";
@@ -421,7 +421,15 @@ var web_server = http.createServer(app);
 web_server.listen(SKYNET_BROWSER_PORT);
 
 //require socket.io module
-var web_socket = require('socket.io').listen(web_server);
+var io = require('socket.io')(web_server, {
+    cors: {
+        origin: "http://localhost",
+        methods: ["GET", "POST"],
+        credentials: true,
+        transports: ['websocket', 'polling'],
+    },
+    allowEIO3: true
+});
 
 console.log('\n-----\n---- Skynet web server listening on port', SKYNET_BROWSER_PORT);
 
@@ -455,7 +463,7 @@ app.get('/hello.txt', function(req, res){
 
 console.log('Skynet web server listening on websocket');
 
-web_socket.on('connection', function (client_socket) {
+io.sockets.on('connection', function (client_socket) {
     console.log('-------\nSkynet web server websocket browser connection event');
 
     // initialize the hosts area on the connecting browser
@@ -659,7 +667,7 @@ var browser_broadcast = function( msg )
     console.log(msg);
     //console.log('browser_broadcast (room:', msg.room,')', msg);
     // only send the shout to the room listed in the message
-    web_socket.sockets.emit('shout', msg );
+    io.emit('shout', msg );
 }
 
 //-----------------------------------------------------

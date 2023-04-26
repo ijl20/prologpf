@@ -8,6 +8,8 @@ function Skynet()
 
   that.server = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
 
+  console.log("Skynet(): defined server = "+that.server);
+
   that.title = "Skynet";
 
   that.skynet_socket = SkynetSocket(); // used for websockets connection to Skynet server

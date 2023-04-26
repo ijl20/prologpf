@@ -28,7 +28,7 @@ var flow_node_index = {}; // mapping from node_name to index 0..flow_host_count-
 var flow_status; // array. holds current status value for each node
 var flow_row_status = PPC_IDLE; // current default 'status' for flow row (change triggers new row)
 
-function on_load() 
+function on_load()
 {
     skynet.init();
     // debug - test button create
@@ -145,15 +145,17 @@ function make_host_button(host_name, slot_name)
     return host_name+':'+slot_name+':button';
 }
 
-// make a node_name from host & slot    
+// make a node_name from host & slot
 function make_nn(host_name, slot_name)
 {
     return host_name+':'+slot_name;
 }
-    
+
 // process PPC_CONNECTED event from skynet server
 function do_connect(host_name, slot_name)
 {
+    console.log("main.js do_connect() "+host_name+":"+slot_name);
+
     /* E.g.
     <div id="skynet:slot7:button" class="host">
     <ul><li id="skynet:slot7" class="ppc_connected"><a href="#">skynet:slot4</a>
@@ -166,18 +168,29 @@ function do_connect(host_name, slot_name)
     </ul>
     </div>
     */
-    
+
     // check to see if host_area element already exists for this node
     var node_name = make_nn(host_name, slot_name);
-    
+
     var node_element = document.getElementById(node_name);
     if (node_element)
     {
+            console.log("main.js do_connect() existing page element "+node_name);
             // if it exists, just set its background color to 'connected'
-            node_element.setAttribute('class','ppc_connected');
+            var li = document.getElementById(make_host_button(host_name,slot_name));
+            if (li)
+            {
+                li.setAttribute('class','ppc_connected');
+            }
+            else
+            {
+                //debug
+                console.log('Just received a disconnect for unknown node '+host_name+':'+slot_name);
+            }
             return;
     }
-    
+    console.log("main.js do_connect() creating new page element "+node_name);
+
     // an existing host_area button doesn't exist for this node, so create one
     var div = document.createElement('DIV');
     div.setAttribute('id', node_name);
@@ -191,7 +204,7 @@ function do_connect(host_name, slot_name)
     var displayname = document.createTextNode(node_name);
     a1.appendChild(displayname);
     var ul2 = document.createElement('UL');
-    
+
     var a2 = document.createElement('A');
     var li2 = document.createElement('LI');
     var menu2 = document.createTextNode('Send Command');
@@ -199,7 +212,7 @@ function do_connect(host_name, slot_name)
     a2.appendChild(menu2);
     li2.appendChild(a2);
     ul2.appendChild(li2);
-    
+
     var a3 = document.createElement('A');
     var li3 = document.createElement('LI');
     var menu3 = document.createTextNode('menu2');
@@ -207,7 +220,7 @@ function do_connect(host_name, slot_name)
     a3.appendChild(menu3);
     li3.appendChild(a3);
     ul2.appendChild(li3);
-    
+
     var a4 = document.createElement('A');
     var li4 = document.createElement('LI');
     var menu4 = document.createTextNode('Split');
@@ -215,7 +228,7 @@ function do_connect(host_name, slot_name)
     a4.appendChild(menu4);
     li4.appendChild(a4);
     ul2.appendChild(li4);
-    
+
     var a5 = document.createElement('A');
     var li5 = document.createElement('LI');
     var menu5 = document.createTextNode('Kill');
@@ -223,7 +236,7 @@ function do_connect(host_name, slot_name)
     a5.appendChild(menu5);
     li5.appendChild(a5);
     ul2.appendChild(li5);
-    
+
     var a6 = document.createElement('A');
     var li6 = document.createElement('LI');
     var menu6 = document.createTextNode('Disconnect');
@@ -231,14 +244,14 @@ function do_connect(host_name, slot_name)
     a6.appendChild(menu6);
     li6.appendChild(a6);
     ul2.appendChild(li6);
-    
+
     li1.appendChild(a1);
     li1.appendChild(ul2);
     ul1.appendChild(li1);
     div.appendChild(ul1);
-    
+
     document.getElementById('hosts_area').appendChild(div);
-    
+
     // reset the status area
     status_area_clear();
     status_flow_init(); // this will update the top row with the correct number of nodes
@@ -249,7 +262,7 @@ function do_connect(host_name, slot_name)
 // process PPC_DISCONNECTED event from skynet server
 function do_disconnect(host_name, slot_name)
 {
-    console.log('do_disconnect');
+    console.log("main.js do_disconnect() "+host_name+":"+slot_name);
     var li = document.getElementById(make_host_button(host_name,slot_name));
     if (li)
     {
@@ -275,19 +288,19 @@ function do_ppc_status(host_name, slot_name, status)
         case PPC_WAITING:
             do_ppc_waiting(host_name, slot_name);
             break;
-            
+
         case PPC_RUNNING:
             do_ppc_running(host_name, slot_name);
             break;
-            
+
         case PPC_IDLE:
             do_ppc_idle(host_name, slot_name);
             break;
-            
+
         case PPC_RESERVED:                      // received during refresh
             do_ppc_reserved(host_name, slot_name);
             break;
-            
+
         default:
             status_text('status_text_warning',"Unexpected PPC status: "+
                             host_name+" "+slot_name+ " "+status);
@@ -492,7 +505,7 @@ function status_flow_init()
     flow_node_index = {};
     flow_row_status = PPC_IDLE;
     var flow_node_count = 0;
-    
+
     // iterate the nodes
     var host_elements = document.getElementById('hosts_area').children;
     for (var i=0; i<host_elements.length; i++)
@@ -508,7 +521,7 @@ function status_flow_init()
             flow_node_count++;
         }
     }
-    
+
     // add a TH element to "status_flow" for each host
     var tr = document.createElement('TR');
     // first add blank TH above timestamp column
@@ -580,27 +593,27 @@ function status_flow_flush()
             case PPC_IDLE:
                 status_element.innerHTML = ':';
                 break;
-                
+
             case PPC_CONNECTED:
                 status_element.innerHTML = 'C';
                 break;
-                
+
             case PPC_WAITING:
                 status_element.innerHTML = '|';
                 break;
-                
+
             case PPC_RUNNING:
                 status_element.innerHTML = 'R';
                 break;
-                
+
             case PPC_SPLIT:
                 status_element.innerHTML = '*';
                 break;
-                
+
             case PPC_NOSPLIT:
                 status_element.innerHTML = 'X';
                 break;
-                
+
             default:
                 status_element.innerHTML = '?';
         }
@@ -608,7 +621,7 @@ function status_flow_flush()
         tr.appendChild(td);
     }
     document.getElementById('status_flow').appendChild(tr);
-    
+
     // auto-scroll status_area to bottom of content
     var status_div = document.getElementById('status_area');
     status_div.scrollTop = status_div.scrollHeight;

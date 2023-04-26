@@ -24,7 +24,7 @@ do
         fi
         if [[ $1 ]]
         then
-            ./ppc $HOSTNAME $i >/tmp/ppc_$i.log 2>/tmp/ppc_$i.log2 &
+            ./ppc $HOSTNAME $i >/tmp/ppc_$i.log 2>/tmp/ppc_$i.err &
         else
             ./ppc $HOSTNAME 1
         fi
