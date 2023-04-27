@@ -4,13 +4,20 @@
 /* GENERAL PAGE CSS            */
 /* *************************** */
 
-html, body { 
+html, body {
     font-family: sans-serif;
     height: 90%;
 }
 
 h1 {
     text-align: center;
+}
+
+.legend_color {
+    display: inline-block;
+    border: 1px solid black;
+    padding-left: 4px;
+    padding-right: 4px;
 }
 
 /* *************************** */
@@ -79,6 +86,52 @@ h1 {
 
 /* ************************************************************************** */
 /* ************************************************************************** */
+/*                       STATUS COLORS                                        */
+/* ************************************************************************** */
+/* ************************************************************************** */
+
+.ppc_disconnected
+{
+    background-color:#ddd;
+}
+
+.ppc_connected
+{
+    background-color:#ffff99;
+}
+
+.ppc_idle
+{
+    background-color:#ffda99;
+}
+
+.ppc_waiting
+{
+    background-color:#bae8ff;
+}
+
+.ppc_reserved
+{
+    background-color:#65ccff;
+}
+
+.ppc_running
+{
+    background-color:#99ff66;
+}
+
+.ppc_split
+{
+    background-color:#ffffff;
+}
+
+.ppc_nosplit
+{
+    background-color:#33aa33;
+}
+
+/* ************************************************************************** */
+/* ************************************************************************** */
 /*                       HOSTS AREA                                           */
 /* ************************************************************************** */
 /* ************************************************************************** */
@@ -124,54 +177,56 @@ h1 {
     padding:0;
 }
 
+/*
 .host ul li.ppc_connected
 {
-    background:#ffff99;
+    background-color:#ffff99;
 }
 
 .host ul li.ppc_disconnected
 {
-    background:#ddd;
+    background-color:#ddd;
 }
 
 .host ul li.ppc_idle
 {
-    background:#ffff99;
+    background-color:#ffff99;
 }
 
 .host ul li.ppc_waiting
 {
-    background:#aae2ff;
+    background-color:#aae2ff;
 }
 
 .host ul li.ppc_reserved
 {
-    background:#aae2ff;
+    background-color:#aae2ff;
 }
 
 .host ul li.ppc_running
 {
-    background:#99ff66;
+    background-color:#99ff66;
 }
 
 .host ul li.ppc_split
 {
-    background:#ffffff;
+    background-color:#ffffff;
 }
 
 .host ul li.ppc_nosplit
 {
-    background:#33aa33;
+    background-color:#33aa33;
 }
+*/
 
 .host ul li:hover > ul
 {
-    background:#f6f6f6;
+    background-color:#f6f6f6;
 }
 
 .host ul li li:hover
 {
-    background:#ccffcc;
+    background-color:#ccffcc;
 }
 
 .host ul ul
@@ -224,6 +279,10 @@ h1 {
     list-style-type: none;
 }
 
+/* ********************************************************* */
+/* *************     STATUS FLOW                 *********** */
+/* ********************************************************* */
+
 #status_flow .status_text_user {
     color: green;
     font-weight: bold;
@@ -244,6 +303,7 @@ h1 {
     text-align: center;
 }
 
+/*
 #status_flow td.ppc_waiting {
     color: #0000ff;
     background-color: #B8DBFF;
@@ -258,4 +318,4 @@ h1 {
     color: #00CC66;
     background-color: #00FF99;
 }
-
+*/

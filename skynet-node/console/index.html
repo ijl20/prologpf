@@ -2,12 +2,12 @@
 <html>
 <head>
 
-<title>Skynet</title>
+<title>Skynet Console</title>
 
 <link rel="stylesheet" type="text/css" href="css/skynet.css" />
 
 <!-- websocket library -->
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 
 <!-- routines for communicating via websockets with skynet server -->
 <script src="skynet.js"></script>
@@ -18,12 +18,31 @@
 </head>
 <body onload="on_load()">
 
-    <h1>--Skynet--</h1>
-
+    <h1>Skynet Console</h1>
+<div id="legend_colors">
+    <div class="legend_color ppc_disconnected">disconnected</div>
+    <div class="legend_color ppc_connected">connected</div>
+    <div class="legend_color ppc_idle">idle</div>
+    <div class="legend_color ppc_waiting">waiting</div>
+    <div class="legend_color ppc_reserved">reserved</div>
+    <div class="legend_color ppc_running">running</div>
+    <div class="legend_color ppc_split">split</div>
+    <div class="legend_color ppc_nosplit">nosplit</div>
+</div>
+<!--
+.ppc_connected
+.ppc_idle
+.ppc_waiting
+.ppc_reserved
+.ppc_running
+.ppc_split
+.ppc_nosplit
+-->
     <div id='user_input_area' class="ui-layout-center">
     <div id='user_input_box'>
         Command:
         <input type='text' id='user_input'
+            placeholder="'skynet xxxx' is xxxx command to skynet server. Otherwise broadcast msg to PPC's."
             onkeydown="if (event.keyCode == 13) user_text()"
             onfocus="user_menu_show()"
         />
@@ -50,8 +69,15 @@
         <button onclick="user_status_clear()">Clear</button>
     </div>
 
-    <ul id='status_text' style="display: block">
-    </ul>
+    <div id="console_text">
+        Filter:
+        <input type='text' id='console_filter'
+            onkeydown="if (event.keyCode == 13) user_console_filter()"
+        />
+        <ul id='status_text' style="display: block">
+        </ul>
+    </div>
+
     <table id="status_flow" style="display: none">
     </table>
 </div> <!-- end status_area -->

@@ -17,10 +17,11 @@ var VERSION = 1.07;
 //
 
 // port number for node web server and websocket handler
-var SKYNET_BROWSER_PORT = 10082;
+var SKYNET_HTTP_PORT = 10082;
 var SKYNET_PPC_PORT = 10083;
 
-var SKYNET_DOCROOT = '/home/ijl20/src/prologpf/skynet-node/browser';
+// This is the docroot for node to be serving web pages on the http port
+var SKYNET_DOCROOT = '/home/ijl20/src/prologpf/skynet-node/console';
 
 // PPC Commands
 var OK = "ok";
@@ -418,7 +419,7 @@ var http = require('http');
 var app = express();
 
 var web_server = http.createServer(app);
-web_server.listen(SKYNET_BROWSER_PORT);
+web_server.listen(SKYNET_HTTP_PORT);
 
 //require socket.io module
 var io = require('socket.io')(web_server, {
@@ -431,7 +432,7 @@ var io = require('socket.io')(web_server, {
     allowEIO3: true
 });
 
-console.log('\n-----\n---- Skynet web server listening on port', SKYNET_BROWSER_PORT);
+console.log('\n-----\n---- Skynet web server listening on port', SKYNET_HTTP_PORT);
 
 // WEB SERVER CODE
 
@@ -514,15 +515,15 @@ function browser_refresh(client_socket)
     }
 }
 
-function do_browser_command(msg)
+function handle_console_msg(msg)
 {
     // message from browser begins "skynet..." i.e. this is a command to the skynet server
     // (as opposed to "ppc..." or just plain text)
-    console.log('---- Skynet do_browser_command:',msg);
+    console.log('---- Skynet do_console_command: "'+msg+'"');
     var words = msg.split(" ");
     if (words.length < 2)
     {
-        console.log('---- Skynet do_browser_command: bad command (short):',msg);
+        console.log('---- Skynet do_console_command: bad command (short):',msg);
         return;
     }
     switch (words[1])
@@ -617,7 +618,7 @@ function do_browser_command(msg)
             break;
 
         default:
-            console.log('---- Skynet do_browser_command: bad command (unrecognized):',msg);
+            console.log('---- Skynet do_console_command: bad command (unrecognized):',msg);
     }
 }
 
@@ -628,7 +629,7 @@ function process_browser_message(client_socket, msg)
     switch (msg.event_type)
     {
         case 'person_joined':
-            console.log('browser connected to web server:',msg.userid);
+            console.log('browser console connected to web server:',msg.userid);
             break;
 
         case 'user_input':
@@ -636,7 +637,7 @@ function process_browser_message(client_socket, msg)
             console.log('user_input received:',msg.userid);
             if (msg.data.toLowerCase().indexOf('skynet')==0)
             {
-                do_browser_command(msg.data);
+                handle_console_msg(msg.data);
             } else {
                 // will broadcast that text to all ppc's
                 ppc_broadcast(msg.data+'\n');

@@ -4,7 +4,7 @@
 // The actual communication routines (websockets) are in skynet.js
 /////////////////////////////////////////////////////////////////////////////////////////
 
-var skynet = Skynet(); // object to hold base skynet function calls e.g. send_message
+var skynet = new Skynet(); // object to hold base skynet function calls e.g. send_message
 
 // skynet message event_type:
 var PPC_CONNECTED = "ppc_connected";
@@ -40,8 +40,7 @@ function on_load()
 //---------------------------------------------------------------------------------------
 
 // triggered on button next to user text input field, or enter key
-function user_text()
-{
+function user_text() {
     // get text input by user
     var user_input = document.getElementById('user_input').value;
     // write text to browser status area
@@ -52,8 +51,7 @@ function user_text()
 }
 
 // call 'user_text()' to execute the command chosen from the menu dropdown
-function user_menu_command(el)
-{
+function user_menu_command(el) {
     console.log('user_menu_command');
     // set text input as if by user
     document.getElementById('user_input').value = el.innerHTML;
@@ -62,8 +60,7 @@ function user_menu_command(el)
 }
 
 // display the drop_down menu below the user command input box
-function user_menu_show()
-{
+function user_menu_show() {
     //alert('show_user_menu');
     console.log('show_user_menu');
     var user_menu = document.getElementById('user_input_menu');
@@ -71,28 +68,39 @@ function user_menu_show()
 }
 
 // hide the drop_down menu below the user command input box
-function user_menu_hide()
-{
+function user_menu_hide() {
     //alert('hide_user_menu');
     var user_menu = document.getElementById('user_input_menu');
     user_menu.setAttribute('class','user_input_menu_hide');
 }
 
 // set the logging/flow window to display the flow diagram
-function user_status_flow()
-{
-    document.getElementById('status_text').style.display = "none";
+function user_status_flow() {
+    document.getElementById('console_text').style.display = "none";
     document.getElementById('status_flow').style.display = "block";
 }
 
-function user_status_console()
-{
+function user_status_console() {
     document.getElementById('status_flow').style.display = "none";
-    document.getElementById('status_text').style.display = "block";
+    document.getElementById('console_text').style.display = "block";
 }
 
-function user_status_clear()
-{
+// Triggered on user input of filter value for console log messages
+function user_console_filter() {
+    let filter_value = document.getElementById('console_filter').value;
+    alert(filter_value);
+    let console_list = document.getElementById("status_text");
+    let rows = console_list.getElementsByTagName("li");
+    for (let i=0; i < rows.length; i++) {
+        if (rows[i].innerText.indexOf(filter_value) >= 0) {
+            rows[i].style.display = "list-item";
+        } else {
+            rows[i].style.display = "none";
+        }
+    }
+}
+
+function user_status_clear() {
     status_area_clear();
     status_flow_init();
 }
@@ -484,8 +492,8 @@ function status_text(status_class, text)
     // add this text as a new 'user' line for the status area
     var new_line = document.createElement('LI');
     new_line.setAttribute('class',status_class);
-    var line_text = document.createTextNode(timestamp()+' '+text);
-    new_line.appendChild(line_text);
+    new_line.innerText = timestamp()+' '+text;
+    //new_line.appendChild(line_text);
     document.getElementById('status_text').appendChild(new_line);
     var status_div = document.getElementById('status_area');
     status_div.scrollTop = status_div.scrollHeight;

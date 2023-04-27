@@ -70,7 +70,7 @@
 void skynet_send_msg(char *msg);
 int skynet_get_msg(int fd, char *buf);
 void err_exit(char *msg);
-int do_command(int *cont);
+int handle_server_msg(int *cont);
 void init_vars();
 void read_var(char *var_name, char *var_value);
 void set_var(char *var_name, char *var_value);
@@ -124,10 +124,10 @@ int skynet_get_msg(int fd, char *buf)
 }
 
 /************************************************************************/
-/*               do_command                                             */
+/*               handle_server_msg                                             */
 /************************************************************************/
 
-int do_command(int *cont)
+int handle_server_msg(int *cont)
 {
     int n_read, n_written, command_cont = 1;
     char buffer_in[MAX_BUF_IN], buffer_out[MAX_BUF_OUT];
@@ -139,7 +139,7 @@ int do_command(int *cont)
     n_read = skynet_get_msg(sock_fd, buffer_in);
     if ( n_read == 0 )
       {
-        printf("ppc do_command: zero chars from skynet_get_msg\n");
+        printf("ppc handle_server_msg: zero chars from skynet_get_msg\n");
         return(0);
       }
     /* get first word as command
@@ -147,7 +147,7 @@ int do_command(int *cont)
        if anything else then just send to child
     */
     sscanf(buffer_in,"%s",command);
-    printf("ppc do_command: %s\n",command);
+    printf("ppc handle_server_msg: %s\n",command);
     /* check if first word is NOT "ppc" */
     if (strcmp(command,PPC) != 0)
     {
@@ -158,7 +158,7 @@ int do_command(int *cont)
           }
         else
           {
-            printf("ppc do_command child_send_msg error: %s",buffer_in);
+            printf("ppc handle_server_msg child_send_msg error: %s",buffer_in);
             sprintf(buffer_out,"%s %s",NOK,buffer_in);
             skynet_send_msg(buffer_out);
           }
@@ -167,7 +167,7 @@ int do_command(int *cont)
     }
     /* command is 'ppc' so now check second word */
     sscanf(buffer_in,"ppc %s",command);
-    printf("ppc do_command PPC command %s\n",command);
+    printf("ppc handle_server_msg PPC command %s\n",command);
     if (strcmp(command,CONNECT) == 0)
       {
         sprintf(buffer_out,"%s %s %s %s",OK, buffer_in, host_name, slot_name);
@@ -225,11 +225,11 @@ int do_command(int *cont)
       }
     else if (strcmp(command,SPLIT) == 0)
       {
-        printf("ppc: do_command split - sending signal %d to pid %d\n", SPLIT_SIGNAL, pid);
+        printf("ppc: handle_server_msg split - sending signal %d to pid %d\n", SPLIT_SIGNAL, pid);
         if (kill(pid,SPLIT_SIGNAL) == 0)
           { /* sprintf(buffer_out,"%s %s",OK,buffer_in);
                skynet_send_msg(buffer_out) */;
-            printf("ppc: do_command split - signal %d to pid %d OK\n", SPLIT_SIGNAL, pid);
+            printf("ppc: handle_server_msg split - signal %d to pid %d OK\n", SPLIT_SIGNAL, pid);
           }
         else
           { sprintf(buffer_out,"%s %s",NOK,buffer_in);
@@ -241,7 +241,7 @@ int do_command(int *cont)
         sprintf(buffer_out,"%s %s",OK,buffer_in);
         n_written = write(sock_fd,buffer_out,strlen(buffer_out));
         if (n_written != strlen(buffer_out))
-          err_exit("ppc: do_commands: SHUTDOWN nwritten");
+          err_exit("ppc: handle_server_msgs: SHUTDOWN nwritten");
         close(sock_fd);
         command_cont = 0;
         *cont = 0;
@@ -251,7 +251,7 @@ int do_command(int *cont)
         sprintf(buffer_out,"%s %s",OK,buffer_in);
         n_written = write(sock_fd,buffer_out,strlen(buffer_out));
         if (n_written != strlen(buffer_out))
-          err_exit("ppc: do_commands: CLOSE nwritten");
+          err_exit("ppc: handle_server_msgs: CLOSE nwritten");
         close(sock_fd);
         command_cont = 0;
       }
@@ -272,7 +272,7 @@ int do_command(int *cont)
 void err_exit(char *msg)
 {
  close(sock_fd);
- printf("ppc: Exit %s\n",msg);
+ printf("ppc: Error exit %s\n",msg);
  exit(1);
 }
 
@@ -526,7 +526,7 @@ void main(int argc, char *argv[])
         if (retval < 0) err_exit("ppc: bad select");
         printf("ppc: back from select, testing fd_var...\n");
         fflush(stdout);
-        if (FD_ISSET(sock_fd, &fd_var)) command_cont = do_command(&cont);
+        if (FD_ISSET(sock_fd, &fd_var)) command_cont = handle_server_msg(&cont);
         if (FD_ISSET(FROM_CHILD, &fd_var)) child_get_msg();
       }
       printf("ppc: Exit...\n");
