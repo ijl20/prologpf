@@ -11,17 +11,9 @@ class Skynet {
 
         this.title = "Skynet";
 
-        this.skynet_socket = new SkynetSocket(); // used for websockets connection to Skynet server
+        this.skynet_socket = new SkynetSocket(this); // used for websockets connection to Skynet server
 
         this.userid = this.query_string('userid'); //debug insecure
-
-        // object to contain ready status if items by id
-        // if item is ready, ready[id] == true
-        var ready = {};
-
-        // object to contain callbacks for ready items
-        // e.g. for item X, ready_callback[X] is the function to call, with arg X
-        var ready_callback = {};
     }
 
     init() {
@@ -83,39 +75,6 @@ class Skynet {
     }
 
     //------------------------------------------------------------
-    // Functions to manage queue of callbacks for ready items
-
-    // function called when an item is ready
-    // e.g. in the onload callback of an image
-    ready (id) {
-        ready[id] = true;
-        console.log("camxy.js ready[",id,"] set to true");
-        if (ready_callback[id] != null)
-        {
-            ready_callback[id].forEach(function (callback)
-            {
-                console.log("camxy.js ready: ",id," with callbacks - calling now...");
-                callback(id);
-            });
-            console.log('camxy.js callbacks complete for',id);
-            delete(ready_callback[id]);
-        }
-    }
-
-    // Request a callback be applied to an item when that item is ready
-    apply_when_ready(id, callback) {
-        if ( ready[id] == true )
-        {
-            console.log("camxy.js apply_when_ready: ",id," immediately ready so callback");
-            callback(id);
-        } else {
-            if (ready_callback[id] == null) ready_callback[id] = new Array();
-            ready_callback[id].push(callback);
-            console.log("camxy.js apply_when_ready: ",id," will call callback");
-        }
-    }
-
-    //------------------------------------------------------------
     // get querystring value X in ...?name=X&...
     query_string(name) {
         name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
@@ -132,8 +91,9 @@ class Skynet {
 
 class SkynetSocket {
 
-    constructor() {
+    constructor(skynet) {
         this.socket = null;
+        this.skynet = skynet;
     }
 
     init() {
@@ -141,7 +101,7 @@ class SkynetSocket {
         if (typeof io === 'undefined') {
             console.log("Error", "Cannot contact server");
         } else {
-            this.socket = io.connect(skynet.server); // servername global in skynet.js
+            this.socket = io.connect(this.skynet.server); // servername global in skynet.js
 
             this.socket.on('shout', this.receive_shout);
         }

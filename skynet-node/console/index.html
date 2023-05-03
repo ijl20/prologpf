@@ -16,7 +16,7 @@
 <script src="main.js"></script>
 
 </head>
-<body onload="on_load()">
+<body onload="skynet_console.on_load()">
 
     <h1>Skynet Console</h1>
 <div id="legend_colors">
@@ -43,37 +43,37 @@
         Command:
         <input type='text' id='user_input'
             placeholder="'skynet xxxx' is xxxx command to skynet server. Otherwise broadcast msg to PPC's."
-            onkeydown="if (event.keyCode == 13) user_text()"
-            onfocus="user_menu_show()"
+            onkeydown="if (event.keyCode == 13) skynet_console.user_text()"
+            onfocus="skynet_console.user_menu_show()"
         />
-        <button onclick="user_text()">OK</button>
+        <button onclick="skynet_console.user_text()">OK</button>
         <ul id='user_input_menu' class='user_input_menu_hide'>
-          <li><a href="#" onclick="user_menu_command(this);">ppc start ./kappa.sh</a></li>
-          <li><a href="#" onclick="user_menu_command(this)">skynet bfp kappa 4</a></li>
-          <li><a href="#" onclick="user_menu_command(this)">skynet bfp kappa 6</a></li>
-          <li><a href="#" onclick="user_menu_command(this)">skynet bfp kappa 12</a></li>
-          <li><a href="#" onclick="user_menu_command(this)">skynet bfp kappa 32</a></li>
-          <li><a href="#" onclick="user_menu_command(this)">ppc kill</a></li>
-          <li><a href="#" onclick="user_menu_command(this)">ppc split</a></li>
-          <li><a href="#" onclick="user_menu_command(this)">run kappa 450 12 3</a></li>
+          <li><a href="#" onclick="skynet_console.user_menu_command(this);">ppc start ./kappa.sh</a></li>
+          <li><a href="#" onclick="skynet_console.user_menu_command(this)">skynet bfp kappa 4</a></li>
+          <li><a href="#" onclick="skynet_console.user_menu_command(this)">skynet bfp kappa 6</a></li>
+          <li><a href="#" onclick="skynet_console.user_menu_command(this)">skynet bfp kappa 12</a></li>
+          <li><a href="#" onclick="skynet_console.user_menu_command(this)">skynet bfp kappa 32</a></li>
+          <li><a href="#" onclick="skynet_console.user_menu_command(this)">ppc kill</a></li>
+          <li><a href="#" onclick="skynet_console.user_menu_command(this)">ppc split</a></li>
+          <li><a href="#" onclick="skynet_console.user_menu_command(this)">run kappa 450 12 3</a></li>
         </ul>
     </div>
 </div> <!-- end user_input_area -->
 
-<div id="hosts_area" onclick="user_menu_hide()" class="ui-layout-north">
+<div id="hosts_area" onclick="skynet_console.user_menu_hide()" class="ui-layout-north">
 </div> <!-- end hosts_area -->
 
-<div id="status_area" onclick="user_menu_hide()" class="ui-layout-south">
+<div id="status_area" onclick="skynet_console.user_menu_hide()" class="ui-layout-south">
     <div>
-        <label>Console: <input type="radio" name="status_format" value="console" onclick="user_status_console()" checked/></label>
-        <label>Flow: <input type="radio" name="status_format" value="flow" onclick="user_status_flow()" /></label>
-        <button onclick="user_status_clear()">Clear</button>
+        <label>Console: <input type="radio" name="status_format" value="console" onclick="skynet_console.user_status_console()" checked/></label>
+        <label>Flow: <input type="radio" name="status_format" value="flow" onclick="skynet_console.user_status_flow()" /></label>
+        <button onclick="skynet_console.user_status_clear()">Clear</button>
     </div>
 
     <div id="console_text">
         Filter:
         <input type='text' id='console_filter'
-            onkeydown="if (event.keyCode == 13) user_console_filter()"
+            onkeydown="if (event.keyCode == 13) skynet_console.user_console_filter()"
         />
         <ul id='status_text' style="display: block">
         </ul>
@@ -82,6 +82,10 @@
     <table id="status_flow" style="display: none">
     </table>
 </div> <!-- end status_area -->
+
+<script>
+    var skynet_console = new SkynetConsole();
+</script>
 
 </body>
 </html>
