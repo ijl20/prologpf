@@ -147,23 +147,14 @@ class SkynetSocket {
         }
     }
 
-    // handle a received message from CamXY server
+    // handle a received message from server.js
     receive_shout(shout_packet) {
-        console.log("skynet.js shout received:", shout_packet);
-        console.log("skynet.js shout data =", shout_packet.data);
-
-        // if the message is not for this room, discard
-        //debug - the server should track users by room and not send to all
-
-        if (shout_packet.room != skynet.room)
-        {
-            console.log('camxy.js discarding shout for room',shout_packet.room, "( here is",skynet.room,")");
-            return;
-        }
+        console.log("skynet.js shout received: "+shout_packet.data, shout_packet);
+        //console.log("skynet.js shout data =", shout_packet.data);
 
         // JavaScript CustomEvent that CamXY server socket messages are mapped to
         // map socket messages to javascript events
-        var skynet_event = document.createEvent("CustomEvent");
+        let skynet_event = document.createEvent("CustomEvent");
 
         // map the socket message to a javascript custom event...
         // the shout packet will be in event.detail

@@ -46,8 +46,8 @@ var PPC_RESERVED = "ppc_reserved";          // A 'split' command has been sent t
 var PPC_EXIT = "ppc_exit";                  // PPC child program has exitted
 
 // PPC MESSAGES
-var PPC_MSG = "ppc_msg";                    // event type for general message to browser
-var PPC_STATUS = "ppc_status";              // event type for messages to browser
+var PPC_MSG = "ppc_msg";                    // event type for general message to console
+var PPC_STATUS = "ppc_status";              // event type for messages to console
 var SKYNET = "skynet";
 var LOADED = "loaded";
 var RUNNING = "running";
@@ -56,7 +56,7 @@ var NOSPLIT = "nosplit";
 var COMPLETED = "completed";
 var EXIT = "exit";
 
-// BROWSER EVENTS
+// CONSOLE EVENTS
 var SKYNET_WARNING = "skynet_warning";
 var SKYNET_MSG = "skynet_msg";
 
@@ -376,11 +376,11 @@ function split_assign(node_name, proc, O, G)
             break; // exit this for loop
         }
     }
-    // if we haven't enough PPC's then tell browser and do nothing
+    // if we haven't enough PPC's then tell console and do nothing
     if (ppc_found != ppc_required)
     {
         console.log('---- Skynet not enough WAITING ppcs for bfp',O,G);
-        browser_broadcast({ userid: 'skynet',
+        console_broadcast({ userid: 'skynet',
             zone: 'skynet',
             event_type: SKYNET_WARNING,
             data: 'Not enough path processors for bfp '+O+' '+G
@@ -457,7 +457,7 @@ app.get('/hello.txt', function(req, res){
 
 // declare functions to process messages from web clients
 
-// BROWSER SOCKET HANDLING CODE
+// CONSOLE SOCKET HANDLING CODE
 
 // error, warn, info, debug
 //web_socket.set('log level', 1);
@@ -465,29 +465,29 @@ app.get('/hello.txt', function(req, res){
 console.log('Skynet web server listening on websocket');
 
 io.sockets.on('connection', function (client_socket) {
-    console.log('-------\nSkynet web server websocket browser connection event');
+    console.log('-------\nSkynet web server websocket console connection event');
 
-    // initialize the hosts area on the connecting browser
-    browser_refresh(client_socket);
+    // initialize the hosts area on the connecting console
+    console_refresh(client_socket);
 
     client_socket.on('message', function (msg) {
-        console.log('------- Skynet web server websocket Message Received from browser:')
+        console.log('------- Skynet web server websocket Message Received from console:')
         console.log(msg);
         //-----------------------------------------------------
         // process message
         //-----------------------------------------------------
-        process_browser_message(client_socket, msg);
+        process_console_message(client_socket, msg);
     });
 
     client_socket.on('disconnect', function () {
-        console.log('-------\nSkynet web server websocket browser disconnect event');
+        console.log('-------\nSkynet web server websocket console disconnect event');
     });
 });
 
-// called when browser first connects its websocket
-function browser_refresh(client_socket)
+// called when console first connects its websocket
+function console_refresh(client_socket)
 {
-    console.log('---- Skynet browser_refresh ---');
+    console.log('---- Skynet console_refresh ---');
     var all_nodes = ppc.all();
     for (var i=0; i<all_nodes.length; i++)
     {
@@ -497,13 +497,13 @@ function browser_refresh(client_socket)
         //console.log('Status is ', status);
         if (ppc.connected(node_name))
         {
-            browser_send( client_socket,
+            console_send( client_socket,
                           { userid: 'skynet',
                             zone: 'skynet',
                             event_type: PPC_CONNECTED,
                             host_name: status.host_name,
                             slot_name: status.slot_name });
-            browser_send( client_socket,
+            console_send( client_socket,
                           { userid: 'skynet',
                             zone: 'skynet',
                             event_type: PPC_STATUS,
@@ -517,7 +517,7 @@ function browser_refresh(client_socket)
 
 function handle_console_msg(msg)
 {
-    // message from browser begins "skynet..." i.e. this is a command to the skynet server
+    // message from console begins "skynet..." i.e. this is a command to the skynet server
     // (as opposed to "ppc..." or just plain text)
     console.log('---- Skynet do_console_command: "'+msg+'"');
     var words = msg.split(" ");
@@ -584,7 +584,7 @@ function handle_console_msg(msg)
                 split_assign('',proc,'init',G);
             } else {
                 // we didn't get the required number of ppc's so warn user
-                browser_broadcast({ userid: 'skynet',
+                console_broadcast({ userid: 'skynet',
                     zone: 'skynet',
                     event_type: SKYNET_WARNING,
                     data: 'Not enough path processors for bfp '+G
@@ -624,12 +624,12 @@ function handle_console_msg(msg)
 
     // incoming messages are processed here.
     // the default is to act as a simple REFLECTOR and re-broadcast
-function process_browser_message(client_socket, msg)
+function process_console_message(client_socket, msg)
 {
     switch (msg.event_type)
     {
         case 'person_joined':
-            console.log('browser console connected to web server:',msg.userid);
+            console.log('console connected to web server:',msg.userid);
             break;
 
         case 'user_input':
@@ -645,14 +645,14 @@ function process_browser_message(client_socket, msg)
             break;
 
         default:
-            console.log('---- browser message skipped ---');
-            // by default we simple re-broadcast the message as a browser_broadcast
-            // browser_broadcast(msg);
+            console.log('---- unrecognized message from console skipped ---',msg);
+            // by default we simple re-broadcast the message as a console_broadcast
+            // console_broadcast(msg);
     }
 }
 
     // This function sends a message to the requesting client.
-function browser_send(client_socket, msg)
+function console_send(client_socket, msg)
 {
     console.log('------- Skynet server reply Shout Sent: ',msg,' ---')
     client_socket.emit('shout', msg);
@@ -662,11 +662,11 @@ function browser_send(client_socket, msg)
 // send shout message to all occupants of room
 //---------------------------------------------------------
 
-var browser_broadcast = function( msg )
+var console_broadcast = function( msg )
 {
-    console.log('------- Skynet server browser Shout Sent to ALL')
+    console.log('------- Skynet server console Shout Sent to ALL')
     console.log(msg);
-    //console.log('browser_broadcast (room:', msg.room,')', msg);
+    //console.log('console_broadcast (room:', msg.room,')', msg);
     // only send the shout to the room listed in the message
     io.emit('shout', msg );
 }
@@ -755,7 +755,7 @@ function handle_ppc_line(host_name, slot_name, msg)
     // if message doesn't begin with 'skynet', just broadcast unchanged
     if (msg.indexOf(SKYNET)!=0)
     {
-        browser_broadcast({ userid: 'skynet',
+        console_broadcast({ userid: 'skynet',
                         zone: 'skynet',
                         event_type: PPC_MSG,
                         host_name: host_name,
@@ -772,7 +772,7 @@ function handle_ppc_line(host_name, slot_name, msg)
         // got "skynet loaded Proc" from PPC
         case LOADED:
             ppc.set_status(node_name, PPC_WAITING);
-            browser_broadcast({ userid: 'skynet',
+            console_broadcast({ userid: 'skynet',
                         zone: 'skynet',
                         event_type: PPC_STATUS,
                         host_name: host_name,
@@ -789,7 +789,7 @@ function handle_ppc_line(host_name, slot_name, msg)
             var ppc_msg = words[2];
             for (var i=3; i<words.length; i++) ppc_msg += ' '+words[i];
 
-            browser_broadcast({ userid: 'skynet',
+            console_broadcast({ userid: 'skynet',
                         zone: 'skynet',
                         event_type: PPC_RUNNING,
                         host_name: host_name,
@@ -800,7 +800,7 @@ function handle_ppc_line(host_name, slot_name, msg)
 
         // got "skynet completed $PROC $O $G $N $work_required" from PPC
         case COMPLETED:
-            // note we set status to 'WAITING' although we send 'completed' event to browser
+            // note we set status to 'WAITING' although we send 'completed' event to console
             ppc.set_status(node_name, PPC_WAITING);
 
             // expecting skynet completed $PROC $O $G $N $WORK_COMPLETED
@@ -808,7 +808,7 @@ function handle_ppc_line(host_name, slot_name, msg)
             var ppc_msg = words[2];
             for (var i=3; i<words.length; i++) ppc_msg += ' '+words[i];
 
-            browser_broadcast({ userid: 'skynet',
+            console_broadcast({ userid: 'skynet',
                         zone: 'skynet',
                         event_type: PPC_COMPLETED,
                         host_name: host_name,
@@ -828,7 +828,7 @@ function handle_ppc_line(host_name, slot_name, msg)
             // accumulate remaining strings into ppc_msg
             var ppc_msg = words[2];
             for (var i=3; i<words.length; i++) ppc_msg += ' '+words[i];
-            browser_broadcast({ userid: 'skynet',
+            console_broadcast({ userid: 'skynet',
                         zone: 'skynet',
                         event_type: PPC_SPLIT,
                         host_name: host_name,
@@ -843,7 +843,7 @@ function handle_ppc_line(host_name, slot_name, msg)
             // accumulate remaining strings into ppc_msg
             var ppc_msg = words[2];
             for (var i=3; i<words.length; i++) ppc_msg += ' '+words[i];
-            browser_broadcast({ userid: 'skynet',
+            console_broadcast({ userid: 'skynet',
                         zone: 'skynet',
                         event_type: PPC_NOSPLIT,
                         host_name: host_name,
@@ -856,9 +856,9 @@ function handle_ppc_line(host_name, slot_name, msg)
             break;
 
         case EXIT:
-            // note we set status to 'IDLE' although we send 'exit' event to browser
+            // note we set status to 'IDLE' although we send 'exit' event to console
             ppc.set_status(node_name, PPC_IDLE);
-            browser_broadcast({ userid: 'skynet',
+            console_broadcast({ userid: 'skynet',
                         zone: 'skynet',
                         event_type: PPC_EXIT,
                         host_name: host_name,
@@ -868,7 +868,7 @@ function handle_ppc_line(host_name, slot_name, msg)
 
         default:
             // if we don't recognize it, or have nothing to do, just broadcast to browsers
-            browser_broadcast({ userid: 'skynet',
+            console_broadcast({ userid: 'skynet',
                         zone: 'skynet',
                         event_type: PPC_MSG,
                         host_name: host_name,
@@ -917,7 +917,7 @@ net.createServer(function(socket){
 
                 ppc.set_status(node_name, PPC_IDLE); // note initial status is connected & idle...
 
-                browser_broadcast({ userid: 'skynet',
+                console_broadcast({ userid: 'skynet',
                         zone: 'skynet',
                         event_type: PPC_CONNECTED,
                         host_name: host_name,
@@ -926,8 +926,8 @@ net.createServer(function(socket){
         } else {
             handle_ppc_msg(host_name, slot_name, msg);
         }
-        //var msg = browser_messages.make_message('skynet','from_ppc',data.toString());
-        //browser_broadcast(msg);
+        //var msg = console_messages.make_message('skynet','from_ppc',data.toString());
+        //console_broadcast(msg);
         //socket.write(data.toString().toUpperCase())
     });
 
@@ -935,7 +935,7 @@ net.createServer(function(socket){
         console.log('---- Skynet server received PPC disconnect. ', host_name, slot_name);
         if (typeof(host_name) == "undefined" | !host_name) return;
         ppc.disconnect(make_nn(host_name,slot_name));
-        browser_broadcast({ userid: 'skynet',
+        console_broadcast({ userid: 'skynet',
                 zone: 'skynet',
                 event_type: PPC_DISCONNECTED,
                 host_name: host_name,
@@ -945,7 +945,7 @@ net.createServer(function(socket){
     socket.on('error', function(){
         console.log('---- Skynet PPC socket error. ', host_name, slot_name);
         ppc.disconnect(make_nn(host_name,slot_name));
-        browser_broadcast({ userid: 'skynet',
+        console_broadcast({ userid: 'skynet',
                 zone: 'skynet',
                 event_type: PPC_DISCONNECTED,
                 host_name: host_name,

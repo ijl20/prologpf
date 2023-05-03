@@ -1,4 +1,4 @@
-/////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////Skynet/////////////
 // main.js
 // the framework for communicating with skynet server and displaying console in browser
 // The actual communication routines (websockets) are in skynet.js
@@ -31,8 +31,6 @@ var flow_row_status = PPC_IDLE; // current default 'status' for flow row (change
 function on_load()
 {
     skynet.init();
-    // debug - test button create
-    //do_connect('foo','bah');
 }
 
 //---------------------------------------------------------------------------------------
@@ -563,20 +561,20 @@ function status_flow_all_waiting()
 function status_flow_update(node_name, status)
 {
     console.log('status_flow_update',node_name,status);
-    console.log('current row is',flow_row_status);
+    //console.log('current row is',flow_row_status);
     var node_index = flow_node_index[node_name];
-    if (flow_row_status != status)
-    {
-        status_flow_flush();
-        flow_row_status = status;
-    }
-    console.log('update setting flow_status[',node_index,'] to',status);
+    //if (flow_row_status != status)
+    //{
+    //    status_flow_flush();
+    //    flow_row_status = status;
+    //}
+    //console.log('update setting flow_status[',node_index,'] to',status);
     flow_status[node_index] = status;
     // final flush if all nodes are waiting
-    if (status_flow_all_waiting())
-    {
+    //if (status_flow_all_waiting())
+    //{
         status_flow_flush();
-    }
+    //}
 }
 
 // some node status has changed, so it's time to output the current row
@@ -650,26 +648,21 @@ var zone_id = 'skynet';
 // have been mapped to javascript custom events by skynet.js
 
 // listen for JavaScript events from Skynet socket
-window.addEventListener("skynet_event", skynet_event, false);
+window.addEventListener("skynet_event", handle_skynet_event, false);
 
-function skynet_event(event)
+function handle_skynet_event(skynet_event)
 {
-    //console.log("main.js skynet_event", event.detail);
-    process_shout(event.detail, false);
-}
+    console.log("handle_skynet_event",skynet_event);
 
-// Process shout messages from the server.
-// Either called from skynet_event above, or recursively called when
-// an incoming shout contains a list of messages.
-// 'refresh' is a boolean that says 'act on all messages' rather then
-// be picky about is this message from this client or other clients.
-function process_shout(msg, refresh)
-{
+    let msg = skynet_event.detail;
+
+    console.log("skynet server msg: "+msg.host_name+":"+msg.slot_name+" "+msg.event_type+" "+msg.data);
+
     // ignore events not directed at this 'zone' of the browser window
     // main zone is zone 'skynet'
     if (msg.zone == zone_id)
     {
-        console.log("main.js shout received for event_type", msg.event_type, "(refresh=",refresh,")");
+        console.log("main.js shout received for event_type", msg.event_type);
         switch (msg.event_type)
         {
             case PPC_CONNECTED:
@@ -713,8 +706,8 @@ function process_shout(msg, refresh)
                 status_text('status_text_warning', "Skynet warning: "+msg.data);
                 break;
             default:
-                console.log("main.js process_shout unknown msg:", msg);
-                document.getElementById('status_area').innerHTML += '<br/>From server: ' + JSON.stringify(msg);
+                console.log("main.js process_shout unknown event:", skynet_event);
+                document.getElementById('status_area').innerHTML += '<br/>From server: ' + JSON.stringify(skynet_event);
         }
     }
 }
