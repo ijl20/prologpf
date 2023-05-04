@@ -35,6 +35,10 @@ class SkynetConsole {
 
         this.zone_id = 'skynet';
 
+        this.chart_el = document.getElementById("utilisation_chart");
+        this.chart = null;
+        this.prev_nodes_running = 0; // previous count of nodes in RUNNING status, used for chart steps
+
         // Here is where we receive 'shout' messages from the server, which
         // have been mapped to javascript custom events by skynet.js
 
@@ -47,6 +51,7 @@ class SkynetConsole {
     }
 
     on_load() {
+        this.chart_init();
         this.skynet.init();
     }
 
@@ -61,6 +66,13 @@ class SkynetConsole {
         // write text to browser status area
         this.write_console('status_console_user', user_input);
         // send the user text as a message to skynet server
+
+        // Detect start of "skynet bfp" run
+
+        if (user_input.startsWith("skynet bfp")) {
+            this.chart_reset();
+        }
+
         this.skynet.skynet_send_msg('skynet', 'user_input', user_input);
         this.user_menu_hide();
     }
@@ -119,7 +131,7 @@ class SkynetConsole {
 
     user_status_clear() {
         this.status_area_clear();
-        this.status_flow_init();
+        this.flow_init();
     }
 
     timestamp() {
@@ -129,6 +141,15 @@ class SkynetConsole {
         let s = ("0"+d.getSeconds()).slice(-2);
         let ms = ("000"+d.getMilliseconds()).slice(-3);
         return h+':'+m+':'+s+'.'+ms;
+    }
+
+    timestamp_ms() {
+        let now  = new Date();
+        if (this.run_start_time == null) {
+            this.run_start_time = now;
+            return 0;
+        }
+        return now - this.run_start_time;
     }
 
     //---------------------------------------------------------------------------------------
@@ -153,6 +174,66 @@ class SkynetConsole {
         // write text to browser status area
         this.write_console('status_console_user', host_name+':'+slot_name+'~ '+user_input);
         this.skynet.skynet_send_msg('skynet', 'user_input', 'skynet send '+host_name+' '+slot_name+' '+user_input);
+    }
+
+    //---------------------------------------------------------------------------------------
+    //------------------- UTILISATION CHART                              --------------------
+    //---------------------------------------------------------------------------------------
+
+    chart_init() {
+        this.chart = Highcharts.chart(this.chart_el, {
+            chart:{
+                type:'scatter'
+            },
+            title:{
+                text:''
+            },
+            subTitle:{
+                text:''
+            },
+            plotOptions:{
+                scatter:{
+                    lineWidth:2
+                }
+            },
+            xAxis: {
+                title: { text: 'time' },
+                labels: { format: '{value} ms' },
+                min: 0,
+                max: 300000,
+                tickInterval: 10000
+            },
+            yAxis: {
+                title: { text: 'active' },
+                labels: { format: '{value}' },
+                min: 0
+            },
+            series: [
+                {
+                    marker: {
+                        enabled: false
+                    },
+                    data: [[0,0]]
+                }],
+            legend: { enabled: false }
+        });
+    }
+
+    chart_reset() {
+        this.chart.series[0].setData([]);
+        this.run_start_time = new Date();
+    }
+
+    chart_update() {
+        // DEBUG remove this 'return' statement
+        //return;
+        // Update the utilisation chart
+        let nodes_running = this.node_running_count();
+        let time_ms = this.timestamp_ms();
+        // Add point to chart, with step, bools: redraw,shift,animation
+        this.chart.series[0].addPoint([time_ms, this.prev_nodes_running], true, false, false);
+        this.chart.series[0].addPoint([time_ms, nodes_running], true, false, false);
+        this.prev_nodes_running = nodes_running;
     }
 
     //---------------------------------------------------------------------------------------
@@ -197,7 +278,6 @@ class SkynetConsole {
             if (li) {
                 li.setAttribute('class','ppc_connected');
             } else {
-                //debug
                 console.log('Just received a disconnect for unknown node '+host_name+':'+slot_name);
             }
             return;
@@ -267,17 +347,16 @@ class SkynetConsole {
 
         // reset the status area
         this.status_area_clear();
-        this.status_flow_init(); // this will update the top row with the correct number of nodes
+        this.flow_init(); // this will update the top row with the correct number of nodes
     }
 
     // process PPC_DISCONNECTED event from skynet server
     do_disconnect(host_name, slot_name) {
         console.log("main.js do_disconnect() "+host_name+":"+slot_name);
-        let li = document.getElementById(make_host_button(host_name,slot_name));
+        let li = document.getElementById(this.make_host_button(host_name,slot_name));
         if (li) {
             li.setAttribute('class','ppc_disconnected');
         } else {
-            //debug
             console.log('Just received a disconnect for unknown node '+host_name+':'+slot_name);
         }
     }
@@ -319,9 +398,8 @@ class SkynetConsole {
         if (li) {
             li.setAttribute('class','ppc_waiting');
             // update status flow diagram
-            this.status_flow_update(node_name, this.PPC_WAITING);
+            this.ppc_status_update(node_name, this.PPC_WAITING);
         } else {
-            //debug
             console.log('Just received a ppc_waiting status for unknown node '+host_name+':'+slot_name);
         }
     }
@@ -337,9 +415,8 @@ class SkynetConsole {
                 this.do_ppc_msg(host_name, slot_name, "RUNNING "+task_info);
             }
             // update status flow diagram
-            this.status_flow_update(node_name, this.PPC_RUNNING);
+            this.ppc_status_update(node_name, this.PPC_RUNNING);
         } else {
-            //debug
             console.log('Just received a ppc_running for unknown node '+host_name+':'+slot_name);
         }
     }
@@ -355,9 +432,8 @@ class SkynetConsole {
                 this.do_ppc_msg(host_name, slot_name, "SPLIT "+split_info);
             }
             // update status flow diagram
-            this.status_flow_update(node_name, this.PPC_SPLIT);
+            this.ppc_status_update(node_name, this.PPC_SPLIT);
         } else {
-            //debug
             console.log('Just received a ppc_split for unknown node '+host_name+':'+slot_name);
         }
     }
@@ -371,9 +447,8 @@ class SkynetConsole {
             li.setAttribute('class','ppc_nosplit');
             this.do_ppc_msg(host_name, slot_name, "NOSPLIT");
             // update status flow diagram
-            this.status_flow_update(node_name, this.PPC_NOSPLIT);
+            this.ppc_status_update(node_name, this.PPC_NOSPLIT);
         } else {
-            //debug
             console.log('Just received a ppc_nosplit for unknown node '+host_name+':'+slot_name);
         }
     }
@@ -389,9 +464,8 @@ class SkynetConsole {
             li.setAttribute('class','ppc_waiting');
             this.do_ppc_msg(host_name, slot_name, "COMPLETED "+task_info)
             // update status flow diagram
-            this.status_flow_update(node_name, this.PPC_WAITING);
+            this.ppc_status_update(node_name, this.PPC_WAITING);
         } else {
-            //debug
             console.log('Just received a ppc_completed for unknown node '+host_name+':'+slot_name);
         }
     }
@@ -411,9 +485,8 @@ class SkynetConsole {
             // note we reset node to 'IDLE' status
             li.setAttribute('class','ppc_idle');
             // update status flow diagram
-            this.status_flow_update(node_name, this.PPC_IDLE);
+            this.ppc_status_update(node_name, this.PPC_IDLE);
         } else {
-            //debug
             console.log('Just received a ppc_idle for unknown node '+host_name+':'+slot_name);
         }
     }
@@ -421,12 +494,13 @@ class SkynetConsole {
     // process PPC_RESERVED event from skynet server
     do_ppc_reserved(host_name, slot_name) {
         console.log('do_ppc_reserved');
+        let node_name = this.make_nn(host_name, slot_name);
         let li = document.getElementById(this.make_host_button(host_name,slot_name));
         if (li) {
-            // note we reset node to 'IDLE' status
+            // note we reset node to 'RESERVED' status
             li.setAttribute('class','ppc_reserved');
+            this.ppc_status_update(node_name, this.PPC_RESERVED);
         } else {
-            //debug
             console.log('Just received a ppc_reserved for unknown node '+host_name+':'+slot_name);
         }
     }
@@ -470,7 +544,7 @@ class SkynetConsole {
 
     // initialize the status flow
     // i.e. reset vars and draw headings
-    status_flow_init() {
+    flow_init() {
         this.flow_node_names = new Array(); // cache the node names found while iterating the hosts_area children
         this.flow_status = new Array(); // will hold current status for each node
         this.flow_node_index = {};
@@ -519,27 +593,8 @@ class SkynetConsole {
         return true;
     }
 
-    // Update the current row in the status flow, moving to new row if necessary
-    status_flow_update(node_name, status) {
-        console.log('status_flow_update',node_name,status);
-        //console.log('current row is',flow_row_status);
-        let node_index = this.flow_node_index[node_name];
-        //if (flow_row_status != status)
-        //{
-        //    status_flow_flush();
-        //    flow_row_status = status;
-        //}
-        //console.log('update setting flow_status[',node_index,'] to',status);
-        this.flow_status[node_index] = status;
-        // final flush if all nodes are waiting
-        //if (status_flow_all_waiting())
-        //{
-        this.status_flow_flush();
-        //}
-    }
-
     // some node status has changed, so it's time to output the current row
-    status_flow_flush() {
+    flow_update() {
         // add a TH element to "status_flow" for each host
         let tr = document.createElement('TR');
         // add timestamp to start of row
@@ -550,7 +605,6 @@ class SkynetConsole {
         for (let i=0; i<this.flow_node_names.length; i++) {
             let td = document.createElement('TD');
             td.className = this.flow_status[i];
-            //debug
             let status_element = document.createElement('SPAN');
             //console.log('flushing row flow_status[',i,'] is',flow_status[i]);
             switch (this.flow_status[i]) {
@@ -659,6 +713,33 @@ class SkynetConsole {
                     document.getElementById('status_area').innerHTML += '<br/>From server: ' + JSON.stringify(skynet_event);
             }
         }
+
+        this.flow_update();
+        this.chart_update();
+    }
+
+    node_running_count() {
+        let running_count = 0;
+        for (let i=0; i<this.flow_status.length; i++) {
+            if (this.flow_status[i] == this.PPC_RUNNING) {
+                running_count++;
+            }
+        }
+        return running_count;
+    }
+
+    // Update the current row in the status flow, moving to new row if necessary
+    ppc_status_update(node_name, status) {
+        console.log('status_flow_update',node_name,status);
+        //console.log('current row is',flow_row_status);
+        let node_index = this.flow_node_index[node_name];
+        //if (flow_row_status != status)
+        //{
+        //    status_flow_flush();
+        //    flow_row_status = status;
+        //}
+        //console.log('update setting flow_status[',node_index,'] to',status);
+        this.flow_status[node_index] = status;
     }
 
 } // End class SkynetConsole

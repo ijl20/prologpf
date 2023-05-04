@@ -9,6 +9,10 @@
 <!-- websocket library -->
 <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 
+<!-- Highcharts -->
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<link rel="stylesheet" type="text/css" href="css/highcharts.css" />
+
 <!-- routines for communicating via websockets with skynet server -->
 <script src="js/skynet.js"></script>
 
@@ -60,11 +64,13 @@
     </div>
 </div> <!-- end user_input_area -->
 
-<div id="utilisation_area">
-</div>
-
 <div id="hosts_area" onclick="skynet_console.user_menu_hide()" class="ui-layout-north">
 </div> <!-- end hosts_area -->
+
+<div id="utilisation_area">
+    <div id="utilisation_chart">
+    </div>
+</div>
 
 <div>
     <button onclick="skynet_console.user_status_clear()">Clear</button>
