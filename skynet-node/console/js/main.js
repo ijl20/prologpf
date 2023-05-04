@@ -59,7 +59,7 @@ class SkynetConsole {
         // get text input by user
         let user_input = document.getElementById('user_input').value;
         // write text to browser status area
-        this.status_text('status_text_user', user_input);
+        this.write_console('status_console_user', user_input);
         // send the user text as a message to skynet server
         this.skynet.skynet_send_msg('skynet', 'user_input', user_input);
         this.user_menu_hide();
@@ -89,22 +89,24 @@ class SkynetConsole {
         user_menu.setAttribute('class','user_input_menu_hide');
     }
 
+    /*
     // set the logging/flow window to display the flow diagram
     user_status_flow() {
-        document.getElementById('console_text').style.display = "none";
+        document.getElementById('console_area').style.display = "none";
         document.getElementById('status_flow').style.display = "block";
     }
 
     user_status_console() {
         document.getElementById('status_flow').style.display = "none";
-        document.getElementById('console_text').style.display = "block";
+        document.getElementById('console_area').style.display = "block";
     }
+    */
 
     // Triggered on user input of filter value for console log messages
     user_console_filter() {
         let filter_value = document.getElementById('console_filter').value;
         alert(filter_value);
-        let console_list = document.getElementById("status_text");
+        let console_list = document.getElementById("status_console");
         let rows = console_list.getElementsByTagName("li");
         for (let i=0; i < rows.length; i++) {
             if (rows[i].innerText.indexOf(filter_value) >= 0) {
@@ -149,7 +151,7 @@ class SkynetConsole {
         // get text input by user
         let user_input = document.getElementById('user_input').value;
         // write text to browser status area
-        this.status_text('status_text_user', host_name+':'+slot_name+'~ '+user_input);
+        this.write_console('status_console_user', host_name+':'+slot_name+'~ '+user_input);
         this.skynet.skynet_send_msg('skynet', 'user_input', 'skynet send '+host_name+' '+slot_name+' '+user_input);
     }
 
@@ -282,7 +284,7 @@ class SkynetConsole {
 
     // process PPC_MSG event from skynet server
     do_ppc_msg(host_name, slot_name, msg) {
-        this.status_text('status_text_ppc', host_name+':'+slot_name+'~ '+msg);
+        this.write_console('status_console_ppc', host_name+':'+slot_name+'~ '+msg);
     }
 
     do_ppc_status(host_name, slot_name, status) {
@@ -304,7 +306,7 @@ class SkynetConsole {
                 break;
 
             default:
-                this.status_text('status_text_warning',"Unexpected PPC status: "+
+                this.write_console('status_console_warning',"Unexpected PPC status: "+
                                 host_name+" "+slot_name+ " "+status);
         }
     }
@@ -436,7 +438,7 @@ class SkynetConsole {
 
     status_area_clear() {
         // clear existing status console rows
-        let myNode = document.getElementById('status_text');
+        let myNode = document.getElementById('status_console');
         while (myNode.firstChild) {
             myNode.removeChild(myNode.firstChild);
         }
@@ -448,15 +450,18 @@ class SkynetConsole {
     }
 
     // write text to browser status area
-    status_text(status_class, text) {
+    write_console(status_class, text) {
         // add this text as a new 'user' line for the status area
         let new_line = document.createElement('LI');
         new_line.setAttribute('class',status_class);
         new_line.innerText = this.timestamp()+' '+text;
         //new_line.appendChild(line_text);
-        document.getElementById('status_text').appendChild(new_line);
+        document.getElementById('status_console').appendChild(new_line);
+        /*
         let status_div = document.getElementById('status_area');
         status_div.scrollTop = status_div.scrollHeight;
+        */
+        new_line.scrollIntoView();
     }
 
     //---------------------------------------------------------------------------------------
@@ -580,10 +585,11 @@ class SkynetConsole {
             tr.appendChild(td);
         }
         document.getElementById('status_flow').appendChild(tr);
+        tr.scrollIntoView();
 
         // auto-scroll status_area to bottom of content
-        let status_div = document.getElementById('status_area');
-        status_div.scrollTop = status_div.scrollHeight;
+        //let status_div = document.getElementById('status_area');
+        //status_div.scrollTop = status_div.scrollHeight;
     }
 
 //---------------------------------------------------------------------------------------
@@ -646,7 +652,7 @@ class SkynetConsole {
                     break;
                 case this.SKYNET_WARNING:
                     console.log("main.js got SKYNET_WARNING message ",msg.data);
-                    this.status_text('status_text_warning', "Skynet warning: "+msg.data);
+                    this.write_console('status_console_warning', "Skynet warning: "+msg.data);
                     break;
                 default:
                     console.log("main.js process_shout unknown event:", skynet_event);

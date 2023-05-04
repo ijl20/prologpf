@@ -10,10 +10,10 @@
 <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 
 <!-- routines for communicating via websockets with skynet server -->
-<script src="skynet.js"></script>
+<script src="js/skynet.js"></script>
 
 <!-- main functionality taking skynet messages and updating web console display -->
-<script src="main.js"></script>
+<script src="js/main.js"></script>
 
 </head>
 <body onload="skynet_console.on_load()">
@@ -38,7 +38,7 @@
 .ppc_split
 .ppc_nosplit
 -->
-    <div id='user_input_area' class="ui-layout-center">
+<div id='user_input_area' class="ui-layout-center">
     <div id='user_input_box'>
         Command:
         <input type='text' id='user_input'
@@ -60,27 +60,30 @@
     </div>
 </div> <!-- end user_input_area -->
 
+<div id="utilisation_area">
+</div>
+
 <div id="hosts_area" onclick="skynet_console.user_menu_hide()" class="ui-layout-north">
 </div> <!-- end hosts_area -->
 
-<div id="status_area" onclick="skynet_console.user_menu_hide()" class="ui-layout-south">
-    <div>
-        <label>Console: <input type="radio" name="status_format" value="console" onclick="skynet_console.user_status_console()" checked/></label>
-        <label>Flow: <input type="radio" name="status_format" value="flow" onclick="skynet_console.user_status_flow()" /></label>
-        <button onclick="skynet_console.user_status_clear()">Clear</button>
-    </div>
+<div>
+    <button onclick="skynet_console.user_status_clear()">Clear</button>
+</div>
 
-    <div id="console_text">
+<div id="status_area" onclick="skynet_console.user_menu_hide()" class="ui-layout-south">
+    <div id="console_area">
         Filter:
         <input type='text' id='console_filter'
             onkeydown="if (event.keyCode == 13) skynet_console.user_console_filter()"
         />
-        <ul id='status_text' style="display: block">
+        <ul id='status_console'>
         </ul>
     </div>
 
-    <table id="status_flow" style="display: none">
-    </table>
+    <div id="flow_area">
+        <table id="status_flow">
+        </table>
+    </div>
 </div> <!-- end status_area -->
 
 <script>
